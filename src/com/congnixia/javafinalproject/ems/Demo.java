@@ -1,9 +1,12 @@
 package com.congnixia.javafinalproject.ems;
 
+import java.util.Scanner;
+
 public class Demo {
 
 	public static void main(String[] args) {
 
+		start();
 		/**
 		 * 
 		 * goal is to demo our EMS for Best Boughts Store
@@ -77,7 +80,8 @@ public class Demo {
 		 * {{updated employees info}}
 		 * 
 		 */
-
+		
+		
 		
 		
 		
@@ -92,5 +96,11 @@ public class Demo {
 		System.out.println("Hello, Welcome to the Best Boughts Data Base");
 	}
 	
+	public static void parting() {
+		System.out.println("Thanks for visiting the database of Best Boughts");
+	}
 
+	public static void start() {
+		Scanner scanny = new Scanner(System.in);
+	}
 }
