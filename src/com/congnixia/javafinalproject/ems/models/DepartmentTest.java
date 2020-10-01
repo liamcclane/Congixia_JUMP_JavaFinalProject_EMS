@@ -27,11 +27,6 @@ class DepartmentTest {
 	 * 	allEmployees array in the departments object
 	 * 
 	 */
-	
-	@Test
-	void test() {
-		fail("Not yet implemented");
-	}
 
 	@Test
 	public void testDepartmentGetter() {
