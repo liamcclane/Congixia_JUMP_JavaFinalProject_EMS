@@ -33,4 +33,23 @@ class DepartmentTest {
 		fail("Not yet implemented");
 	}
 
+	@Test
+	public void testDepartmentGetter() {
+		Department testDepartment = new Department("HR", 0, 40000);
+		assertEquals("HR", testDepartment.getType());
+		assertEquals(0, testDepartment.getPhoneNumberExt());
+		assertEquals(40000, testDepartment.getBudget());
+	}
+	
+	@Test
+	public void testDepartmentSetter() {
+		Department testDepartment = new Department("HR", 0, 40000);
+		testDepartment.setType("Sales");
+		testDepartment.setPhoneNumberExt(1);
+		testDepartment.setBudget(30000);
+		assertEquals("Sales", testDepartment.getType());
+		assertEquals(1, testDepartment.getPhoneNumberExt());
+		assertEquals(30000, testDepartment.getBudget());
+	}
+
 }

@@ -36,4 +36,13 @@ class EmployeeTest {
 		fail("Not yet implemented");
 	}
 
+	@Test
+	// Tests if the DepartmentHeadSetter works
+	public void testDepartmentHeadSetter() {
+		Department testDepartment = new Department("HR", 0, 40000);
+		Employee josh = new Employee("Josh Tan", "0000000000", testDepartment);
+		testDepartment.setDepartmentHead(josh);
+		assertTrue(josh.isDepartmentHead());
+	}
+
 }
