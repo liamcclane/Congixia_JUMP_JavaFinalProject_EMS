@@ -15,11 +15,11 @@ public class FileDriver {
 
 		makeTestData();
 		
-		ReadingFiles.writeAllToFile(employees);
-		ReadingFiles.writeAllToFile(departments);
+		// ReadingFiles.writeAllToFile(employees);
+		// ReadingFiles.writeAllToFile(departments);
 		
-		Employee.listEmployees();
-		Department.listDepartments();
+		// Employee.listEmployees();
+		// Department.listDepartments();
 	}
 
 	public static void makeTestData() throws IOException {
