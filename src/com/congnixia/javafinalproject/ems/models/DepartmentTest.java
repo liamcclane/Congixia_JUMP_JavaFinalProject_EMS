@@ -28,20 +28,20 @@ class DepartmentTest {
 	 * 
 	 */
 	@Test
-	public void testDepartmentGetter() {
-		Department testDepartment = new Department("HR", 0, 40000);
-		assertEquals("HR", testDepartment.getType());
+	public void testDepartmentGetters() {
+		Department testDepartment = new Department(0, "HR", 0, 40000, 0);
+		assertEquals("HR", testDepartment.getName());
 		assertEquals(0, testDepartment.getPhoneNumberExt());
 		assertEquals(40000, testDepartment.getBudget());
 	}
 	
 	@Test
-	public void testDepartmentSetter() {
-		Department testDepartment = new Department("HR", 0, 40000);
-		testDepartment.setType("Sales");
+	public void testDepartmentSetters() {
+		Department testDepartment = new Department(0, "HR", 0, 40000, 0);
+		testDepartment.setName("Sales");
 		testDepartment.setPhoneNumberExt(1);
 		testDepartment.setBudget(30000);
-		assertEquals("Sales", testDepartment.getType());
+		assertEquals("Sales", testDepartment.getName());
 		assertEquals(1, testDepartment.getPhoneNumberExt());
 		assertEquals(30000, testDepartment.getBudget());
 	}
