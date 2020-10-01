@@ -102,5 +102,6 @@ public class Demo {
 
 	public static void start() {
 		Scanner scanny = new Scanner(System.in);
+		scanny.close();
 	}
 }

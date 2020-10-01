@@ -1,5 +1,7 @@
 package com.congnixia.javafinalproject.ems.filemanipulation;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,9 +12,21 @@ public class FileDriver {
 	private static List<Department> departments = new ArrayList<Department>();
 	private static List<Employee> employees = new ArrayList<Employee>();
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
 		makeTestData();
+		
+//		System.out.println(ReadingFiles.checkIfObjectExists(new File("resources/employee.csv")));
+
+		Employee emp = new Employee(Employee.getLastEmployeeId(), "Joe", "joe@google.com", "123-555-0000", "1990-08-27", 55000.00d, false, 1);
+		try {
+			Employee.addEmployee(emp);
+			Employee.listEmployees();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 

@@ -2,6 +2,10 @@ package com.congnixia.javafinalproject.ems.models;
 
 import java.io.IOException;
 
+import com.congnixia.javafinalproject.ems.filemanipulation.ReadingFiles;
+
+//import com.cognixia.jump.advancedjava.projects.ReadingFiles;
+
 public class Employee {
 	
 	private int employeeId;
@@ -24,6 +28,10 @@ public class Employee {
 		this.salary = salary;
 		this.isDepartmentHead = isDepartmentHead;
 		this.departmentId = departmentId;
+	}
+	
+	public static int getLastEmployeeId() throws IOException {
+		return ReadingFiles.findLastOfEmployeeId() + 1;
 	}
 
 	public int getEmployeeId() {
@@ -93,11 +101,11 @@ public class Employee {
 	public static void listEmployees() throws IOException {
 
 		System.out.println("Here are all the employees:");
-		System.out.println(ReadingFiles.readEmployee().toString());
+		 System.out.println(ReadingFiles.readEmployee().toString());
 	}
 
 	public static void addEmployee(Employee e) throws IOException {
-		ReadingFiles.writeToFile(e);
+		 ReadingFiles.writeToFile(e);
 	}
 
 	@Override
