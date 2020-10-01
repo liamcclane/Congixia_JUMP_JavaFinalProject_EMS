@@ -10,13 +10,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-//import com.cognixia.jump.advancedjava.projects.Department;
-//import com.cognixia.jump.advancedjava.projects.Employee;
 import com.congnixia.javafinalproject.ems.models.*;
 
 public class ReadingFiles {
 
-	private static String lastInt = "";
+	private static String employInt = "";
+	private static String departInt = "";
 
 	/**
 	 * this function reads the file "resources/employee.csv"
@@ -24,10 +23,10 @@ public class ReadingFiles {
 	 * @return
 	 * @throws IOException
 	 */
-	public static List<Employee> readEmployee() throws IOException {
+	public static List<Employee> readEmployees() throws IOException {
 
 		List<Employee> allEmployees = new ArrayList<Employee>();
-		File file = new File("resources/employee.csv");
+		File file = new File("resources/employees.csv");
 
 		if (!file.exists()) {
 			file.createNewFile();
@@ -50,32 +49,64 @@ public class ReadingFiles {
 		}
 		return allEmployees;
 	}
+	
+	public static List<Department> readDepartments() throws IOException {
+		
+		List<Department> allDepartments = new ArrayList<Department>();
+		File file = new File("resources/departments.csv");
 
-<<<<<<< HEAD
-=======
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+
+		try (FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr);) {
+
+			String line = "";
+
+			while ((line = br.readLine()) != null) {
+
+				String[] values = line.split(",");
+
+				Department e = new Department(Integer.parseInt(values[0]), values[1], Integer.parseInt(values[2]), Integer.parseInt(values[3]), Double.parseDouble(values[4]));
+				allDepartments.add(e);
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println(e);
+		}
+		return allDepartments;
+	}
+
 	/**
+	 * Iterates through a list of objects. Determines what instanceof the object is. Runs through the writeFileMethod.
 	 * 
 	 * @param objs
 	 * @throws IOException
 	 */
->>>>>>> 0f8d3c90ea26822bf7838b7b20748aebcdb0e1ee
 	public static void writeAllToFile(List<Object> objs) throws IOException {
-		for (int i = 0; i < objs.size(); i++) {
-			System.out.println(objs.get(i));
-			writeToFile(objs.get(i));
+		for(int i = 0; i < objs.size(); i++) {
+			if(objs.get(i) instanceof Employee) {
+				Employee emp = (Employee)objs.get(i);
+				emp.setEmployeeId(emp.getEmployeeId() + i);
+				writeToFile((Employee)objs.get(i));
+			}
+			else if(objs.get(i) instanceof Department) {
+				Department dep = (Department)objs.get(i);
+				dep.setDepartmentId(dep.getDepartmentId() + i);
+				writeToFile((Department)objs.get(i));
+			}
+			else {
+				System.out.println("Fix this!!");
+			}
 		}
 	}
 
-<<<<<<< HEAD
-=======
 
 	/** 
 	 * @return
 	 * @throws IOException
 	 */
->>>>>>> 0f8d3c90ea26822bf7838b7b20748aebcdb0e1ee
 	public static int findLastOfEmployeeId() throws IOException {
-		File file = new File("resources/employee.csv");
+		File file = new File("resources/employees.csv");
 		if (!file.exists()) {
 			file.createNewFile();
 			return 0;
@@ -88,12 +119,40 @@ public class ReadingFiles {
 			while ((line = br.readLine()) != null) {
 
 				String[] values = line.split(",");
-				lastInt = values[0];
+				employInt = values[0];
 			}
-			if (lastInt == "") {
+			if (employInt == "") {
 				return 0;
 			}
-			return Integer.parseInt(lastInt);
+			return Integer.parseInt(employInt);
+
+		} catch (FileNotFoundException e) {
+			System.out.println(e);
+		}
+
+		return 0;
+	}
+	
+	public static int findLastOfDepartmentId() throws IOException {
+		File file = new File("resources/departments.csv");
+		if (!file.exists()) {
+			file.createNewFile();
+			return 0;
+		}
+
+		try (FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr);) {
+
+			String line = "";
+
+			while ((line = br.readLine()) != null) {
+
+				String[] values = line.split(",");
+				departInt = values[0];
+			}
+			if (departInt == "") {
+				return 0;
+			}
+			return Integer.parseInt(departInt);
 
 		} catch (FileNotFoundException e) {
 			System.out.println(e);
@@ -102,29 +161,11 @@ public class ReadingFiles {
 		return 0;
 	}
 
-//	public static boolean writeEmployee(Employee e) throws IOException {
-//
-//		File file = new File("resources/readfile.csv");
-//		if (!file.exists()) {
-//			file.createNewFile();
-//		}
-//
-//		try (FileWriter fr = new FileWriter(file, true); BufferedWriter br = new BufferedWriter(fr);) {
-//			br.append("\n" + e.getName() + "," + e.getId() + "," + e.getSalary());
-//			return true;
-//		} catch (Exception ex) {
-//			// TODO: handle exception
-//			ex.printStackTrace();
-//			return false;
-//		}
-//	}
-
 	public static boolean checkIfObjectExists(File file) throws IOException {
 
 		try (FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr);) {
 
 			String line = br.readLine();
-			System.out.println(line);
 			if (line != null) {
 				return true;
 			}
@@ -143,13 +184,12 @@ public class ReadingFiles {
 
 		if (obj instanceof Employee) {
 			emp = (Employee) obj;
-			file = new File("resources/employee.csv");
-			System.out.println("New Employee");
+			file = new File("resources/employees.csv");
 
 		} else if (obj instanceof Department) {
 
 			dep = (Department) obj;
-			file = new File("resources/department.csv");
+			file = new File("resources/departments.csv");
 
 		} else {
 			System.out.println(obj.toString());
@@ -158,7 +198,7 @@ public class ReadingFiles {
 		}
 
 		try (FileWriter fr = new FileWriter(file, true); BufferedWriter br = new BufferedWriter(fr);) {
-			if (file.getName().equals("employee.csv")) {
+			if (file.getName().equals("employees.csv")) {
 				if (ReadingFiles.checkIfObjectExists(file)) {
 					br.append("\n" + emp.getEmployeeId() + "," + emp.getName() + "," + emp.getEmail() + ","
 							+ emp.getPhoneNumber() + "," + emp.getHireDate() + "," + emp.getSalary() + ","
@@ -168,20 +208,14 @@ public class ReadingFiles {
 							+ emp.getPhoneNumber() + "," + emp.getHireDate() + "," + emp.getSalary() + ","
 							+ emp.isDepartmentHead() + "," + emp.getDepartmentId());
 				}
-				System.out.println("Added new emp");
-			} else if (file.getName().equals("employee.csv")) {
-//				if (ReadingFiles.checkIfObjectExists(file)) {
-//					br.append("\n" + emp.getEmployeeId() + "," + emp.getName() + "," + emp.getEmail() + ","
-//							+ emp.getPhoneNumber() + "," + emp.getHireDate() + "," + emp.getSalary() + ","
-//							+ emp.isDepartmentHead() + "," + emp.getDepartmentId());
-//				} else {
-//					br.append(emp.getEmployeeId() + "," + emp.getName() + "," + emp.getEmail() + ","
-//							+ emp.getPhoneNumber() + "," + emp.getHireDate() + "," + emp.getSalary() + ","
-//							+ emp.isDepartmentHead() + "," + emp.getDepartmentId());
-//				}
-//				System.out.println("Added new emp");
+			} else if (file.getName().equals("departments.csv")) {
+				if (ReadingFiles.checkIfObjectExists(file)) {
+					br.append("\n" + dep.getDepartmentId() + "," + dep.getName() + "," + dep.getEmployeeId() + "," + dep.getPhoneNumberExt() + "," + dep.getBudget());
+				} else {
+					br.append(dep.getDepartmentId() + "," + dep.getName() + "," + dep.getEmployeeId() + "," + dep.getPhoneNumberExt() + "," + dep.getBudget());
+				}
 			} else {
-				System.out.println("No new emp added");
+				System.out.println("Nothing was added.");
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();

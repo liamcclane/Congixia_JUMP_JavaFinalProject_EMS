@@ -1,7 +1,10 @@
 package com.congnixia.javafinalproject.ems.models;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.congnixia.javafinalproject.ems.filemanipulation.ReadingFiles;
 
 public class Department {
 
@@ -21,6 +24,10 @@ public class Department {
 		this.employeeId = employeeId;
 		this.phoneNumberExt = phoneNumberExt;
 		this.budget = budget;
+	}
+	
+	public static int getLastDepartmentId() throws IOException {
+		return ReadingFiles.findLastOfDepartmentId() + 1;
 	}
 
 	public int getDepartmentId() {
@@ -66,6 +73,18 @@ public class Department {
 	public List<Employee> getAllEmployees() {
 		return allEmployees;
 	}
+	
+	public static void listDepartments() throws IOException {
+
+		System.out.println("Here are all the Departments:");
+		System.out.println(ReadingFiles.readDepartments().toString());
+	}
+
+	public static void addDepartment(Department d) throws IOException {
+		 ReadingFiles.writeToFile(d);
+	}
+	
+	
 
 	@Override
 	public String toString() {

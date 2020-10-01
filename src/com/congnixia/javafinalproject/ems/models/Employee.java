@@ -99,14 +99,27 @@ public class Employee {
 	}
 
 	public static void listEmployees() throws IOException {
-
-		System.out.println("Here are all the employees:");
-		 System.out.println(ReadingFiles.readEmployee().toString());
+		System.out.println("Employee List:");
+		System.out.println(ReadingFiles.readEmployees().toString());
 	}
 
-	public static void addEmployee(Employee e) throws IOException {
-		 ReadingFiles.writeToFile(e);
+	public static boolean addEmployee(Employee e) throws IOException {
+		ReadingFiles.writeToFile(e);
+		System.out.println("Employee Added.");
+		return true;
 	}
+	
+	public static boolean updateEmployee() {
+		System.out.println("Employee Updated.");
+		return true;
+	}
+	
+	public static boolean removeEmployee() {
+		System.out.println("Employee Removed.");
+		return true;
+	}
+	
+	
 
 	@Override
 	public String toString() {
