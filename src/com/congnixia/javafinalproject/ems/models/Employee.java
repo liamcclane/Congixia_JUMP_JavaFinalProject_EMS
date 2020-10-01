@@ -1,38 +1,53 @@
 package com.congnixia.javafinalproject.ems.models;
 
+import java.io.IOException;
+
 public class Employee {
-
-	// attributes
-	transient static int idSeed = 101;
-
-	private int id;
+	
+	private int employeeId;
 	private String name;
 	private String email;
 	private String phoneNumber;
-	private String hierDate;
-	private Department department;
+	private String hireDate;
+	private double salary;
 	private boolean isDepartmentHead;
+	private int departmentId;
 
-	// constructor
-	public Employee(String name, String email, String phoneNumber, String hierDate, Department d) {
+	public Employee(int employeeId, String name, String email, String phoneNumber, String hireDate, double salary,
+			boolean isDepartmentHead, int departmentId) {
+		super();
+		this.employeeId = employeeId;
 		this.name = name;
-		this.phoneNumber = phoneNumber;
 		this.email = email;
-		this.hierDate = hierDate;
-		this.id = idSeed;
-		this.department = d;
-		this.isDepartmentHead = false;
-		d.addEmployee(this);
-		idSeed++;
+		this.phoneNumber = phoneNumber;
+		this.hireDate = hireDate;
+		this.salary = salary;
+		this.isDepartmentHead = isDepartmentHead;
+		this.departmentId = departmentId;
 	}
 
-	// getters/setters
+	public int getEmployeeId() {
+		return employeeId;
+	}
+
+	public void setEmployeeId(int employeeId) {
+		this.employeeId = employeeId;
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPhoneNumber() {
@@ -43,46 +58,53 @@ public class Employee {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-	
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
-	public String getHierDate() {
-		return hierDate;
-	}
-	
-	public void setHierDate(String hierDate) {
-		this.hierDate = hierDate;
-	}
-	public Department getDepartment() {
-		return department;
+	public String getHireDate() {
+		return hireDate;
 	}
 
-	public void setDepartment(Department department) {
-		this.department = department;
+	public void setHireDate(String hireDate) {
+		this.hireDate = hireDate;
 	}
 
-	public int getId() {
-		return id;
+	public double getSalary() {
+		return salary;
+	}
+
+	public void setSalary(double salary) {
+		this.salary = salary;
 	}
 
 	public boolean isDepartmentHead() {
 		return isDepartmentHead;
 	}
 
-	public void setIsDepartmentHead(boolean isDepartmentHead) {
+	public void setDepartmentHead(boolean isDepartmentHead) {
 		this.isDepartmentHead = isDepartmentHead;
 	}
 
-	// to string method
+	public int getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(int departmentId) {
+		this.departmentId = departmentId;
+	}
+
+	public static void listEmployees() throws IOException {
+
+		System.out.println("Here are all the employees:");
+		System.out.println(ReadingFiles.readEmployee().toString());
+	}
+
+	public static void addEmployee(Employee e) throws IOException {
+		ReadingFiles.writeToFile(e);
+	}
+
 	@Override
 	public String toString() {
-		return "Employee [name=" + name + ", id=" + id + ", phoneNumber=" + phoneNumber + ", department=" + department
-				+ "]";
+		return "Employee [employeeId=" + employeeId + ", name=" + name + ", email=" + email + ", phoneNumber="
+				+ phoneNumber + ", hireDate=" + hireDate + ", salary=" + salary + ", isDepartmentHead="
+				+ isDepartmentHead + ", departmentId=" + departmentId + "]";
 	}
 
 }
