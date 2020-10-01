@@ -27,7 +27,6 @@ class DepartmentTest {
 	 * 	allEmployees array in the departments object
 	 * 
 	 */
-
 	@Test
 	public void testDepartmentGetter() {
 		Department testDepartment = new Department("HR", 0, 40000);
