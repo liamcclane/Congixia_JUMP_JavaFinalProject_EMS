@@ -1,4 +1,4 @@
-package com.cognixia.javafinalproject.ems.models;
+package com.congnixia.javafinalproject.ems.models;
 
 public class DepartmentHeadCapacityException extends Exception {
 
