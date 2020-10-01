@@ -28,10 +28,6 @@ class DepartmentTest {
 	 * 
 	 */
 	
-	@Test
-	void test() {
-		fail("Not yet implemented");
-	}
 
 	@Test
 	public void testDepartmentGetter() {
