@@ -2,7 +2,7 @@ package com.congnixia.javafinalproject.ems;
 
 import java.util.Scanner;
 
-import com.congnixia.javafinalproject.ems.models.Department;
+import com.congnixia.javafinalproject.ems.models.*;
 
 public class Demo {
 
@@ -75,16 +75,6 @@ public class Demo {
 
 	}
 
-	public static void greet() {
-		System.out.println("******************");
-		System.out.println("Hello, Welcome to the Best Boughts Data Base");
-	}
-
-	public static void parting() {
-		System.out.println("******************");
-		System.out.println("Thanks for visiting the database of Best Boughts");
-	}
-
 	public static void start() {
 		String userInputStr;
 		greet();
@@ -106,7 +96,7 @@ public class Demo {
 
 	public static void areWeReadingOrAdding() {
 		// prompt user
-		System.out.println("Did you want to?");
+		System.out.println("\nDid you want to?");
 		System.out.println("A - Add to the data base?");
 		System.out.println("B - find an existing empoloyee or department head?");
 
@@ -115,7 +105,7 @@ public class Demo {
 	public static void addRoute() {
 
 		// prompt user
-		System.out.println("Are you trying to find?");
+		System.out.println("\nAre you going to add : ");
 		System.out.println("A - an Employee?");
 		System.out.println("B - Department details?");
 
@@ -136,15 +126,64 @@ public class Demo {
 		String email;
 		String phoneNumber;
 		String hierDate;
+		Employee employee;
 		Department department;
-		
-		System.out.println();
-		System.out.println("Creating an a new hire!");
+
+		System.out.println("\nCreating an a new hire!");
 		System.out.println("What department are they going into?");
 		userInput = scanny.nextLine();
 		scanny.nextLine();
-		System.out.println();
 		
+		// find Department By type
+		department = new Department(userInput, 100, 2000d);
+		// need to error if department not found
+		System.out.println("\nWhat is their name?");
+		name = scanny.nextLine();
+		scanny.nextLine();
+		
+		System.out.println("\nWhat is their phone number?");
+		phoneNumber = scanny.nextLine();
+		scanny.nextLine();
+		
+		// regex mabye
+		System.out.println("\nWhat is their email?");
+		email = scanny.nextLine();
+		scanny.nextLine();
+		
+		// could use datetime here!
+		// regex mabye
+		System.out.println("\nWhat is todays date?");
+		hierDate = scanny.nextLine();
+		scanny.nextLine();
+		
+		System.out.println("\nIs this new hier, " + name + " going to be the head of the department? T/F?");
+		hierDate = TorF();
+		scanny.nextLine();
+		
+		// give user preview of what they are adding
+		
+		System.out.println("\n are you sure you want to add ");
+		System.out.println("name : " + name);
+		System.out.println("email : " + email );
+		System.out.println("phone number : " + phoneNumber);
+		System.out.println("to the departmetn: " + department.getType());
+		System.out.println("True or False ");
+		userInput = TorF();
+		
+		if(userInput.equals("t")) {
+			// here we are going to need to read all the employee files
+			// grab the last id and the increment it and pass it in as a field
+			// to create a new employee instance
+			employee = new Employee(name, email, phoneNumber, hierDate, department);
+			
+			// now add them back into the files,
+			// success message
+			System.out.println("\nEmployee :");
+			System.out.println(employee);
+			System.out.println("you have successfully added " + name + " to the employee list");
+			System.out.println("go check them out on the files in resources//allEmployees.csv");
+			return;
+		} 
 	}
 
 	public static void createDepartment() {
@@ -165,5 +204,27 @@ public class Demo {
 			// more logic later
 			return "";
 		}
+	}
+
+	public static String TorF() {
+		String s = scanny.next();
+		scanny.nextLine();
+		if (s.equalsIgnoreCase("f") || s.equalsIgnoreCase("t")) {
+			return s.toLowerCase();
+		} else {
+			// invalid
+			// more logic later
+			return "";
+		}
+	}
+
+	public static void greet() {
+		System.out.println("******************");
+		System.out.println("Hello, Welcome to the Best Boughts Data Base");
+	}
+
+	public static void parting() {
+		System.out.println("******************");
+		System.out.println("Thanks for visiting the database of Best Boughts");
 	}
 }
