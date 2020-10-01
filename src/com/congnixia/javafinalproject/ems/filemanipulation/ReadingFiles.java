@@ -18,6 +18,12 @@ public class ReadingFiles {
 
 	private static String lastInt = "";
 
+	/**
+	 * this function reads the file "resources/employee.csv"
+	 * and returns a List if Employee objects
+	 * @return
+	 * @throws IOException
+	 */
 	public static List<Employee> readEmployee() throws IOException {
 
 		List<Employee> allEmployees = new ArrayList<Employee>();
@@ -45,6 +51,14 @@ public class ReadingFiles {
 		return allEmployees;
 	}
 
+<<<<<<< HEAD
+=======
+	/**
+	 * 
+	 * @param objs
+	 * @throws IOException
+	 */
+>>>>>>> 0f8d3c90ea26822bf7838b7b20748aebcdb0e1ee
 	public static void writeAllToFile(List<Object> objs) throws IOException {
 		for (int i = 0; i < objs.size(); i++) {
 			System.out.println(objs.get(i));
@@ -52,6 +66,14 @@ public class ReadingFiles {
 		}
 	}
 
+<<<<<<< HEAD
+=======
+
+	/** 
+	 * @return
+	 * @throws IOException
+	 */
+>>>>>>> 0f8d3c90ea26822bf7838b7b20748aebcdb0e1ee
 	public static int findLastOfEmployeeId() throws IOException {
 		File file = new File("resources/employee.csv");
 		if (!file.exists()) {
