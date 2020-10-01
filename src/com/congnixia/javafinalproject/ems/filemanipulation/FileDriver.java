@@ -16,15 +16,12 @@ public class FileDriver {
 
 		makeTestData();
 		
-//		System.out.println(ReadingFiles.checkIfObjectExists(new File("resources/employee.csv")));
-
 		Employee emp = new Employee(Employee.getLastEmployeeId(), "Joe", "joe@google.com", "123-555-0000", "1990-08-27", 55000.00d, false, 1);
 		try {
 			Employee.addEmployee(emp);
 			Employee.listEmployees();
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
