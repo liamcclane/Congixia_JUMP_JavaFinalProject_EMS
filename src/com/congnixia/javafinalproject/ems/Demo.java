@@ -9,6 +9,9 @@ public class Demo {
 	// lia's branch
 	static Scanner scanny = new Scanner(System.in);
 
+	static Department dummyDepartment = new Department("ExDep", 111, 3000.00d);
+	static Employee dummyEmployee = new Employee("ExEmp", "dummy@dummy.com", "234-234-2344", "4/3/2020", dummyDepartment);
+	
 	public static void main(String[] args) {
 
 		start();
@@ -86,7 +89,7 @@ public class Demo {
 		if (userInputStr.contentEquals("a")) {
 			addRoute();
 		} else {
-			findRoute();
+			findRoute(); 
 		}
 
 		// end of while loop here
@@ -106,8 +109,8 @@ public class Demo {
 
 		// prompt user
 		System.out.println("\nAre you going to add : ");
-		System.out.println("A - an Employee?");
-		System.out.println("B - Department details?");
+		System.out.println("A - a new Employee?");
+		System.out.println("B - a new Department?");
 
 		String userInput = AorB();
 
@@ -126,98 +129,135 @@ public class Demo {
 		String email;
 		String phoneNumber;
 		String hierDate;
+		boolean isDepartmentHead;
 		Employee employee;
 		Department department;
 
 		System.out.println("\nCreating an a new hire!");
 		System.out.println("What department are they going into?");
 		userInput = scanny.nextLine();
-		scanny.nextLine();
-		
+		// scanny.nextLine();
+
 		// find Department By type
 		department = new Department(userInput, 100, 2000d);
 		// need to error if department not found
 		System.out.println("\nWhat is their name?");
 		name = scanny.nextLine();
-		scanny.nextLine();
-		
+		// scanny.nextLine();
+
 		System.out.println("\nWhat is their phone number?");
 		phoneNumber = scanny.nextLine();
-		scanny.nextLine();
-		
+		// scanny.nextLine();
+
 		// regex mabye
 		System.out.println("\nWhat is their email?");
 		email = scanny.nextLine();
-		scanny.nextLine();
-		
+		// scanny.nextLine();
+
 		// could use datetime here!
 		// regex mabye
 		System.out.println("\nWhat is todays date?");
 		hierDate = scanny.nextLine();
-		scanny.nextLine();
-		
-		System.out.println("\nIs this new hier, " + name + " going to be the head of the department? T/F?");
-		hierDate = TorF();
-		scanny.nextLine();
-		
+		// scanny.nextLine();
+
+		System.out.println("\nIs this new hier, " + name + ", going to be the head of the department? T/F?");
+		userInput = TorF();
+		// scanny.nextLine();
+
 		// give user preview of what they are adding
-		
-		System.out.println("\n are you sure you want to add ");
+
+		System.out.println("\nare you sure you want to add ");
 		System.out.println("name : " + name);
-		System.out.println("email : " + email );
+		System.out.println("email : " + email);
 		System.out.println("phone number : " + phoneNumber);
 		System.out.println("to the departmetn: " + department.getType());
+
+		// possible secondary validation
 		System.out.println("True or False ");
 		userInput = TorF();
-		
-		if(userInput.equals("t")) {
-			// here we are going to need to read all the employee files
-			// grab the last id and the increment it and pass it in as a field
-			// to create a new employee instance
-			employee = new Employee(name, email, phoneNumber, hierDate, department);
-			
-			// now add them back into the files,
-			// success message
-			System.out.println("\nEmployee :");
-			System.out.println(employee);
-			System.out.println("you have successfully added " + name + " to the employee list");
-			System.out.println("go check them out on the files in resources//allEmployees.csv");
-			return;
-		} 
+
+		if (userInput.equals("t")) {
+			isDepartmentHead = true;
+		} else {
+			isDepartmentHead = false;
+		}
+		// to create a new employee instance
+		// and connect them approiatly to the department information
+		employee = new Employee(name, email, phoneNumber, hierDate, department);
+
+		// now add them back into the files,
+		// success message
+		System.out.println("\nEmployee :");
+		System.out.println(employee);
+		System.out.println("you have successfully added " + name + " to the employee list");
+		System.out.println("go check them out on the files in resources//allEmployees.csv");
+		return;
 	}
 
 	public static void createDepartment() {
 
+		String userInput;
+		String type;
+		int phoneNumberExt;
+		int headId;
+		double budget;
+		
+		Employee head;
+		
+		System.out.println("\nCreating a new Department in the company?");
+		System.out.println("What is the title type?");
+		type = scanny.nextLine();
+		
+		System.out.println("What is the phone number extension?");
+		phoneNumberExt = scanny.nextInt();
+		
+
+		System.out.println("What is the budget for " + type + "?");
+		budget = scanny.nextDouble();
+		
+		System.out.println("Who is going to be the departmetn head for " + type +"?");
+		System.out.println("Please input their employee id");
+		
+		headId = scanny.nextInt();
+		// get employee by id
+		head = dummyEmployee;
+		System.out.println("Is this the employee you want to appoint to the head of " + type + "?");
+		
+		
+		
+		
 	}
 
 	public static void findRoute() {
 
+		System.out.println();
+		
 	}
 
-	public static String AorB() {
+	public static String booleanUserLogic(String x, String y) {
+		
 		String s = scanny.next();
 		scanny.nextLine();
-		if (s.equalsIgnoreCase("a") || s.equalsIgnoreCase("b")) {
+		if (s.equalsIgnoreCase(x.toLowerCase()) || s.equalsIgnoreCase(y.toLowerCase())) {
 			return s.toLowerCase();
 		} else {
 			// invalid
 			// more logic later
 			return "";
 		}
+	}
+	public static String AorB() {
+		return booleanUserLogic("A", "B");
 	}
 
 	public static String TorF() {
-		String s = scanny.next();
-		scanny.nextLine();
-		if (s.equalsIgnoreCase("f") || s.equalsIgnoreCase("t")) {
-			return s.toLowerCase();
-		} else {
-			// invalid
-			// more logic later
-			return "";
-		}
+			return booleanUserLogic("T", "F");
+	}
+	public static String YorN() {
+		return booleanUserLogic("Y", "N");
 	}
 
+	
 	public static void greet() {
 		System.out.println("******************");
 		System.out.println("Hello, Welcome to the Best Boughts Data Base");
