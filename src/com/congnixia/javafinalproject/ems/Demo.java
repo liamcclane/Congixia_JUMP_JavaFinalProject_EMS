@@ -1,5 +1,6 @@
 package com.congnixia.javafinalproject.ems;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.congnixia.javafinalproject.ems.models.*;
@@ -10,8 +11,9 @@ public class Demo {
 	static Scanner scanny = new Scanner(System.in);
 
 	static Department dummyDepartment = new Department("ExDep", 111, 3000.00d);
-	static Employee dummyEmployee = new Employee("ExEmp", "dummy@dummy.com", "234-234-2344", "4/3/2020", dummyDepartment);
-	
+	static Employee dummyEmployee = new Employee("ExEmp", "dummy@dummy.com", "234-234-2344", "4/3/2020",
+			dummyDepartment);
+
 	public static void main(String[] args) {
 
 		start();
@@ -89,7 +91,7 @@ public class Demo {
 		if (userInputStr.contentEquals("a")) {
 			addRoute();
 		} else {
-			findRoute(); 
+			findRoute();
 		}
 
 		// end of while loop here
@@ -185,7 +187,7 @@ public class Demo {
 		// and connect them approiatly to the department information
 		employee = new Employee(name, email, phoneNumber, hierDate, department);
 
-		// now add them back into the files,
+		// now add them back into the files, needs file logic form daniel
 		// success message
 		System.out.println("\nEmployee :");
 		System.out.println(employee);
@@ -201,41 +203,95 @@ public class Demo {
 		int phoneNumberExt;
 		int headId;
 		double budget;
-		
+
 		Employee head;
-		
+
 		System.out.println("\nCreating a new Department in the company?");
 		System.out.println("What is the title type?");
 		type = scanny.nextLine();
-		
+
 		System.out.println("What is the phone number extension?");
 		phoneNumberExt = scanny.nextInt();
-		
 
 		System.out.println("What is the budget for " + type + "?");
 		budget = scanny.nextDouble();
-		
-		System.out.println("Who is going to be the departmetn head for " + type +"?");
+
+		System.out.println("Who is going to be the departmetn head for " + type + "?");
 		System.out.println("Please input their employee id");
-		
+
 		headId = scanny.nextInt();
 		// get employee by id
 		head = dummyEmployee;
 		System.out.println("Is this the employee you want to appoint to the head of " + type + "?");
-		
-		
-		
-		
+
 	}
 
 	public static void findRoute() {
 
+		System.out.println("\nAre you looking for a department details or employee details?");
+		System.out.println("A - Department details?");
+		System.out.println("B - Employee details?");
+
+		String userInput = AorB();
+
+		if (userInput.equals("a")) {
+			findDepartmentDetails();
+		} else {
+			findEmployeeDetails();
+		}
+
+	}
+
+	public static void findDepartmentDetails() {
+
+		String title;
+		Department searchedDepartment;
+
+		System.out.println("Which department?");
+		// Make a call to the file class
+		String[] departmentTitles = { "HR", "Products", "Finance" };
+		for (int i = 0; i < departmentTitles.length; i++) {
+			System.out.print(departmentTitles[i]);
+			if (i < departmentTitles.length - 1) {
+				System.out.print("|");
+			}
+		}
 		System.out.println();
+
+		title = scanny.nextLine();
+
+		// Make a call to the file reader
+		searchedDepartment = dummyDepartment;
+		System.out.println("title: " + searchedDepartment.getType());
+		System.out.println("phone number extension: " + searchedDepartment.getPhoneNumberExt());
+		System.out.println("budget: " + searchedDepartment.getBudget());
+		System.out.println("department head: " + searchedDepartment.getDepartmentHead().getName());
+		System.out.println("Would you like to see the list of all the employees in the department?");
+		System.out.println("Y/N");
+
+		String userInput = YorN();
+
+		if (userInput.equals("Y")) {
+
+		}
+
+	}
+
+	public static void listAllEmployeesInDepartment(Department department) {
+		// Read through files, returns list of employees
+		// List<Employee> employees =
 		
+		
+		// This is dummy data
+		ArrayList<Employee> employees = fakeFileCall(department);
+	}
+
+	public static void findEmployeeDetails() {
+
 	}
 
 	public static String booleanUserLogic(String x, String y) {
-		
+
 		String s = scanny.next();
 		scanny.nextLine();
 		if (s.equalsIgnoreCase(x.toLowerCase()) || s.equalsIgnoreCase(y.toLowerCase())) {
@@ -246,18 +302,19 @@ public class Demo {
 			return "";
 		}
 	}
+
 	public static String AorB() {
 		return booleanUserLogic("A", "B");
 	}
 
 	public static String TorF() {
-			return booleanUserLogic("T", "F");
+		return booleanUserLogic("T", "F");
 	}
+
 	public static String YorN() {
 		return booleanUserLogic("Y", "N");
 	}
 
-	
 	public static void greet() {
 		System.out.println("******************");
 		System.out.println("Hello, Welcome to the Best Boughts Data Base");
@@ -266,5 +323,21 @@ public class Demo {
 	public static void parting() {
 		System.out.println("******************");
 		System.out.println("Thanks for visiting the database of Best Boughts");
+	}
+	
+	public static void fakeFileCall(Department department) {
+		ArrayList<Employee> employees = new ArrayList<>();
+		employees.add(new Employee(1, "Joe", "joe@google.com", "123-555-0000", "1990-08-27", 55000.00d, false, 1));
+		employees.add(new Employee(2, "Bob", "bob@google.com", "123-555-0001", "1991-01-05", 15000.00d, false, 1));
+		employees.add(new Employee(3, "Bill", "bill@google.com", "123-555-0002", "1994-04-16", 25000.00d, false, 1));
+		employees.add(new Employee(4, "Ralph", "ralph@google.com", "123-555-0003", "1995-05-08", 10000.00d, false, 1));
+		employees.add(new Employee(5, "James", "james@google.com", "123-555-0004", "1998-05-12", 20000.00d, false, 1));
+		employees.add(new Employee(6, "Jessica", "jessica@google.com", "123-555-0005", "1999-01-09", 100000.00d, true, 1));
+		employees.add(new Employee(7, "Peter", "peter@google.com", "123-555-0006", "2003-12-09", 90000.00d, false, 1));
+		employees.add(new Employee(8, "Penny", "penny@google.com", "123-555-0007", "2005-08-11", 65000.00d, false, 2));
+		employees.add(new Employee(9, "Jenny", "jenny@google.com", "123-555-0008", "2007-14-22", 34000.00d, false, 2));
+		employees.add(new Employee(10, "Ellie", "ellie@google.com", "123-555-0009", "2008-09-21", 76000.00d, true, 2));
+		employees.add(new Employee(11, "Jared", "jared@google.com", "123-555-0010", "2010-02-01", 12000.00d, true, 3));
+		employees.add(new Employee(12, "Jordan", "jordan@google.com", "123-555-0011", "2019-08-16", 0.50d, true, 4));
 	}
 }
