@@ -1,4 +1,4 @@
-package com.congnixia.javafinalproject.ems;
+	package com.congnixia.javafinalproject.ems;
 
 import java.util.ArrayList;
 import java.util.Scanner;
