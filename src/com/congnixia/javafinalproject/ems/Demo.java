@@ -325,7 +325,7 @@ public class Demo {
 		System.out.println("Thanks for visiting the database of Best Boughts");
 	}
 	
-	public static void fakeFileCall(Department department) {
+	public static ArrayList<Employee> fakeFileCall(Department department) {
 		ArrayList<Employee> employees = new ArrayList<>();
 		employees.add(new Employee(1, "Joe", "joe@google.com", "123-555-0000", "1990-08-27", 55000.00d, false, 1));
 		employees.add(new Employee(2, "Bob", "bob@google.com", "123-555-0001", "1991-01-05", 15000.00d, false, 1));
@@ -339,5 +339,6 @@ public class Demo {
 		employees.add(new Employee(10, "Ellie", "ellie@google.com", "123-555-0009", "2008-09-21", 76000.00d, true, 2));
 		employees.add(new Employee(11, "Jared", "jared@google.com", "123-555-0010", "2010-02-01", 12000.00d, true, 3));
 		employees.add(new Employee(12, "Jordan", "jordan@google.com", "123-555-0011", "2019-08-16", 0.50d, true, 4));
+		return employees;
 	}
 }
