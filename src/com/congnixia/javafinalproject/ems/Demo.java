@@ -2,6 +2,7 @@ package com.congnixia.javafinalproject.ems;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -15,13 +16,14 @@ public class Demo {
 
 	// lia's branch
 	static Scanner scanny = new Scanner(System.in);
-	static Department dummyDepartment = new Department(0, "ExDep", 111, 0, 3000.00d);
+	static Department dummyDepartment = new Department(0, "ExDep", 0, "111", 3000.00d);
 	static Employee dummyEmployee = new Employee(-1, "fake", "fake@fake.com", "000-000-000", "1/1/11", 1000d, false,
 			-1);
 	static String userInput;
-	static ArrayList<Employee> employees;
 	static Employee employee;
 	static Department department;
+	static String[] allDepartmentNames = Department.getAllDepartmentNames();
+	static List<Employee> employees = Employee.listEmployees();
 
 	public static void main(String[] args) {
 		start();
@@ -94,48 +96,67 @@ public class Demo {
 		String email;
 		String phoneNumber;
 		String hierDate;
+		double salary = 0.0d;
 		boolean isDepartmentHead;
 
 		System.out.println("\nCreating an a new hire!");
 		System.out.println("What department are they going into?");
 		// list departments
+		printDepartmentNames();
+		String departName;
+		try {
+			departName = getUserTitle();
+		} catch (NotValidDepartmentOption e) {
+			System.out.println(e.getMessage());
+		}
 
-		userInput = scanny.nextLine();
+		Department foundDepartment = Department.findDepartmentByName(departName);
 
-		// find Department By name
-		department = fakeFileCallForDepartment(userInput);
-		// need to error if department not found
 		System.out.println("\nWhat is their name?");
 		name = scanny.nextLine(); // null exeption maybe
 
-		System.out.println("\nWhat is their phone number?");
-		phoneNumber = scanny.nextLine();
-		ReggieValidation rv = new ReggieValidation();
+		do {
+			System.out.println("\nWhat is their phone number?");
+			phoneNumber = scanny.nextLine();
+			ReggieValidation rv = new ReggieValidation();
+			if (!rv.isValidPhoneNumber(phoneNumber)) {
+				System.err.println("Invalid phone number must be (###)###-####");
+				System.err.println("or ###-###-####");
+				scanny.nextLine();
+			} else {
+				break;
+			}
+		} while (true);
 
-		// loop here//
-		if (rv.isValidPhoneNumber(phoneNumber)) {
-			System.out.println("Valid phone number");
-		} else {
-			System.out.println("Invalid phone number");
-		}
-
-		// regex mabye
-		System.out.println("\nWhat is their email?");
-		email = scanny.nextLine();
-
-		if (rv.isValidEmail(email)) {
-			System.out.println("Valid email");
-		} else {
-			System.out.println("Invalid email");
-		}
-		// scanny.nextLine();
+		do {
+			System.out.println("\nWhat is their email?");
+			email = scanny.nextLine();
+			ReggieValidation rv = new ReggieValidation();
+			if (!rv.isValidEmail(email)) {
+				System.err.println("Invalid email");
+				System.err.println("ex example@eample.com");
+				scanny.nextLine();
+			} else {
+				break;
+			}
+		} while (true);
 
 		// could use datetime here!
 		// regex mabye
-		System.out.println("\nWhat is todays date?");
-		hierDate = scanny.nextLine();
+		System.out.println("\nWhat is," + name + ", salary?");
 
-		System.out.println("\nIs this new hier, " + name + ", going to be the head of the department? T/F?");
+		do {
+			try {
+				hierDate = scanny.nextLine();
+				break;
+			} catch (InputMismatchException e) {
+				System.err.println("not an number");
+			}
+
+		} while (true);
+
+		System.out.println("\nIs this new hier, " + name + ", going to be the head of the" + foundDepartment.getName()
+				+ " department? T/F?");
 
 		String whatever;
 		do {
@@ -154,12 +175,12 @@ public class Demo {
 		}
 
 		// give user preview of what they are adding
-
 		System.out.println("\nare you sure you want to add ");
 		System.out.println("name : " + name);
 		System.out.println("email : " + email);
+		System.out.println("salary : " + salary);
 		System.out.println("phone number : " + phoneNumber);
-		System.out.println("to the department: " + department.getName());
+		System.out.println("to the department: " + foundDepartment.getName());
 
 		// possible secondary validation
 		System.out.println("T/F?");
@@ -175,21 +196,21 @@ public class Demo {
 		if (whatever.equals("t")) {
 			// add to the database
 			System.out.println("add to the database");
-		} else {
-			isDepartmentHead = false;
-		}
-		// to create a new employee instance
-		// and connect them approiatly to the department information
-		// employee = new Employee(name, email, phoneNumber, hierDate, department);
+			// to create a new employee instance
+			// and connect them approiatly to the department information
+			Employee newHeir = new Employee(Employee.getLastEmployeeId(), name, email, phoneNumber, "1/1/1", salary,
+					isDepartmentHead, foundDepartment.getDepartmentId());
 
-		// now add them back into the files, needs file logic form daniel
-		// success message
-		// System.out.println(employee);
-		System.out.println("\nEmployee :");
-		System.out.println("you have successfully added " + name + " to the employee list");
-		System.out.println(dummyEmployee.toString());
-		System.out.println("go check them out on the files in resources//allEmployees.csv");
-		return;
+			// now add them back into the files, needs file logic form daniel
+			// success message
+			// System.out.println(employee);
+			System.out.println("\nEmployee :");
+			System.out.println("you have successfully added " + name + " to the employee list");
+			System.out.println(dummyEmployee.toString());
+			System.out.println("go check them out on the files in resources//allEmployees.csv");
+		} else {
+			System.out.println("CANCELING creating an empoyee");
+		}
 	}
 
 	public static void createDepartment() {
@@ -261,7 +282,7 @@ public class Demo {
 			Department newestDepart = null;
 			try {
 				newestDepart = new Department(Department.getLastDepartmentId(), type, dummyEmployee.getEmployeeId(),
-						10000, budget);
+						phoneNumberExt, 10000);
 			} catch (IOException e) {
 				System.out.println("something went wrong line 163");
 			}
@@ -269,6 +290,8 @@ public class Demo {
 			System.out.println("you have created a new department," + newestDepart.getName() + "! with "
 					+ dummyEmployee.getName() + " as the head!");
 			return;
+		} else {
+			System.out.println("CANCELING creating a department");
 		}
 	}
 
@@ -301,18 +324,7 @@ public class Demo {
 		Department searchedDepartment;
 
 		System.out.println("Which department?");
-		// Make a call to the file class
-		
-		
-		
-		
-		for (int i = 0; i < departmentTitles.length; i++) {
-			System.out.print(departmentTitles[i]);
-			if (i < departmentTitles.length - 1) {
-				System.out.print("|");
-			}
-		}
-		System.out.println();
+		printDepartmentNames();
 
 		do {
 			try {
@@ -320,8 +332,8 @@ public class Demo {
 				break;
 			} catch (NotVaildDepartmentOption e) {
 			}
-			
-		} while(true);
+
+		} while (true);
 
 		// Make a call to the file reader
 		searchedDepartment = dummyDepartment;
@@ -434,6 +446,16 @@ public class Demo {
 		return aOrB;
 	}
 
+	public static String getUserTitle() throws NotValidDepartmentOption {
+		String name = scanny.nextLine();
+		for (String dName : allDepartmentNames) {
+			if (name.equals(dName)) {
+				return name;
+			}
+		}
+		throw new NotValidDepartmentOption(name);
+	}
+
 	public static String getValidExtInt() throws NotValidExtensionNumber {
 		String reggie = "[0-9]{3}";
 		String s = scanny.nextLine();
@@ -446,6 +468,16 @@ public class Demo {
 			throw new NotValidExtensionNumber(s);
 		}
 		return s;
+	}
+
+	/**
+	 * prints all the department names on one line
+	 */
+	public static void printDepartmentNames() {
+		for (String dName : allDepartmentNames) {
+			System.out.print(dName + "|");
+		}
+		System.out.println();
 	}
 
 	public static void greet() {
