@@ -3,13 +3,13 @@ package com.congnixia.javafinalproject.ems;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.congnixia.javafinalproject.ems.exceptions.NotAorBException;
 import com.congnixia.javafinalproject.ems.models.*;
 
 public class Demo {
 
 	// lia's branch
 	static Scanner scanny = new Scanner(System.in);
-
 	static Department dummyDepartment = new Department(0, "ExDep", 111, 0, 3000.00d);
 	static Employee dummyEmployee = new Employee(-1, "fake", "fake@fake.com", "000-000-000", "1/1/11", 1000d, false,
 			-1);
@@ -22,31 +22,54 @@ public class Demo {
 		start();
 	}
 
-	public static void start() {
-		String userInputStr;
+	public static void start(){
+		String again;
 		greet();
-
-		// while loop here eventually
-
-		areWeReadingOrAdding();
-		userInputStr = AorB(); // this returns a valid "a" or "b"
-		if (userInputStr.contentEquals("a")) {
-			addRoute();
-		} else {
-			findRoute();
-		}
-
-		// end of while loop here
+		do {
+			intoTheDataBase();
+			System.out.println("Do you want continue making changes? Y/N");
+			again = scanny.nextLine();
+		} while (again.equalsIgnoreCase("yes")|| again.equals("y"));
+		
 		parting();
 
 	}
-
-	public static void areWeReadingOrAdding() {
-		// prompt user
+	
+	public static void intoTheDataBase() {
+		
 		System.out.println("\nDid you want to?");
 		System.out.println("A - Add to the data base?");
 		System.out.println("B - find an existing empoloyee or department head?");
+		String aOrB;
+		do {
+			System.out.println("? top of do");
+			try {
+				aOrB = getAorBAgain();
+				break;
+			} catch (NotAorBException e) {
+				System.err.println(e.getMessage());
+				System.err.println("line 49");
+			}
+		} while (true);
 
+		if(aOrB.equals("a")) {
+			System.out.println("a route");
+		} else {
+			System.out.println("b route");
+		}
+
+	}
+	
+	public static String getAorBAgain() throws NotAorBException {
+		String aOrB;
+		aOrB = scanny.nextLine();
+		aOrB.toLowerCase();
+		
+		if(!(aOrB.equals("a")|| aOrB.equals("b"))) {
+			throw new NotAorBException(aOrB);
+		}
+		
+		return aOrB;
 	}
 
 	public static void addRoute() {
@@ -56,8 +79,13 @@ public class Demo {
 		System.out.println("A - a new Employee?");
 		System.out.println("B - a new Department?");
 
-		String userInput = AorB();
-
+//		scanny.nextLine();
+		do {
+//			scanny.nextLine();
+			userInput = scanny.next();
+		} while (!(userInput.equalsIgnoreCase("a") || userInput.equalsIgnoreCase("b"))) ;
+		
+		
 		if (userInput.equals("a")) {
 			createEmployee();
 		} else {
@@ -68,37 +96,33 @@ public class Demo {
 
 	public static void createEmployee() {
 
-		String userInput;
 		String name;
 		String email;
 		String phoneNumber;
 		String hierDate;
 		boolean isDepartmentHead;
-		Employee employee;
-		Department department;
 
 		System.out.println("\nCreating an a new hire!");
 		System.out.println("What department are they going into?");
-		userInput = scanny.nextLine();
-		// scanny.nextLine();
+		// list departments
 
-		// find Department By type
-		// department = new Department(userInput, 100, 2000d);
+		userInput = scanny.nextLine();
+
+		// find Department By name
+		department = fakeFileCallForDepartment(userInput);
 		// need to error if department not found
 		System.out.println("\nWhat is their name?");
 		name = scanny.nextLine();
-		// scanny.nextLine();
 
 		System.out.println("\nWhat is their phone number?");
 		phoneNumber = scanny.nextLine();
 		ReggieValidation rv = new ReggieValidation();
+
 		if (rv.isValidPhoneNumber(phoneNumber)) {
 			System.out.println("Valid phone number");
 		} else {
 			System.out.println("Invalid phone number");
 		}
-
-		// scanny.nextLine();
 
 		// regex mabye
 		System.out.println("\nWhat is their email?");
@@ -280,18 +304,33 @@ public class Demo {
 	public static String booleanUserLogic(String x, String y) {
 
 		String s = scanny.next();
-		scanny.nextLine();
-		if (s.equalsIgnoreCase(x.toLowerCase()) || s.equalsIgnoreCase(y.toLowerCase())) {
-			return s.toLowerCase();
-		} else {
-			// invalid
-			// more logic later
-			return "";
-		}
+//		scanny.nextLine();
+		while (!(s.equalsIgnoreCase(x.toLowerCase()) || s.equalsIgnoreCase(y.toLowerCase()))) {
+			scanny.nextLine();
+			s = scanny.next();
+			System.err.println("not an option");
+		} 
+		return s.toLowerCase();
 	}
 
 	public static String AorB() {
-		return booleanUserLogic("A", "B");
+		boolean valid = false;
+		do {
+
+			try {
+				userInput = scanny.nextLine();
+				System.out.println("does this run?");
+				valid = true;
+			} catch (Exception e) {
+				System.out.println("not valid");
+			}
+
+		} while (!valid);
+
+		// System.out.println("you valid input was: " + userInt);
+
+		return userInput;
+
 	}
 
 	public static String TorF() {
@@ -336,5 +375,9 @@ public class Demo {
 
 	public static ArrayList<Employee> fakeFileCall(String name) {
 		return fakeFileCall();
+	}
+
+	public static Department fakeFileCallForDepartment(String name) {
+		return dummyDepartment;
 	}
 }
