@@ -10,9 +10,8 @@ public class Demo {
 	// lia's branch
 	static Scanner scanny = new Scanner(System.in);
 
-	// static Department dummyDepartment = new Department("ExDep", 111, 3000.00d);
-	// static Employee dummyEmployee = new Employee("ExEmp", "dummy@dummy.com", "234-234-2344", "4/3/2020",
-	// 		dummyDepartment);
+	 static Department dummyDepartment = new Department(0, "ExDep", 111, 0, 3000.00d);
+	 static Employee dummyEmployee = new Employee(-1, "Bob", "bob@bob", "(000)000-000", "1/11/11", 100000, true , -1);
 
 	public static void main(String[] args) {
 
@@ -149,11 +148,24 @@ public class Demo {
 
 		System.out.println("\nWhat is their phone number?");
 		phoneNumber = scanny.nextLine();
+		ReggieValidation rv = new ReggieValidation();
+		if (rv.isValidPhoneNumber(phoneNumber)) {
+			System.out.println("Valid phone number");
+		} else {
+			System.out.println("Invalid phone number");
+		}
+	
 		// scanny.nextLine();
 
 		// regex mabye
 		System.out.println("\nWhat is their email?");
 		email = scanny.nextLine();
+	
+		if (rv.isValidEmail(email)) {
+			System.out.println("Valid email");
+		} else {
+			System.out.println("Invalid email");
+		}
 		// scanny.nextLine();
 
 		// could use datetime here!
@@ -261,18 +273,18 @@ public class Demo {
 		title = scanny.nextLine();
 
 		// Make a call to the file reader
-		// searchedDepartment = dummyDepartment;
-		// System.out.println("title: " + searchedDepartment.getType());
-		// System.out.println("phone number extension: " + searchedDepartment.getPhoneNumberExt());
-		// System.out.println("budget: " + searchedDepartment.getBudget());
+		 searchedDepartment = dummyDepartment;
+		 System.out.println("title: " + searchedDepartment.getName());
+		 System.out.println("phone number extension: " + searchedDepartment.getPhoneNumberExt());
+		 System.out.println("budget: " + searchedDepartment.getBudget());
 		// System.out.println("department head: " + searchedDepartment.getDepartmentHead().getName());
 		System.out.println("Would you like to see the list of all the employees in the department?");
 		System.out.println("Y/N");
 
 		String userInput = YorN();
 
-		if (userInput.equals("Y")) {
-
+		if (userInput.equals("y")) {
+			listAllEmployeesInDepartment(searchedDepartment);
 		}
 
 	}
@@ -283,11 +295,43 @@ public class Demo {
 		
 		
 		// This is dummy data
-		// ArrayList<Employee> employees = fakeFileCall(department);
+		ArrayList<Employee> employees = fakeFileCall(department);
+		
+		for (int i = 0; i < employees.size(); i++) {
+			System.out.println("Name: " + employees.get(i).getName() + "\tPhone number: "
+					+ employees.get(i).getPhoneNumber() + "\tID: " + employees.get(i).getEmployeeId());
+			
+		}
 	}
 
 	public static void findEmployeeDetails() {
-
+		System.out.println("Who would you like to know more about? Do you know their ID?");
+		String userInput = YorN();
+		
+		if (userInput.equals("y")) {
+			findUserByID();
+		} else {
+			System.out.println("What field are we searching by?");
+			String field = scanny.nextLine();
+			if (field.equals("name") ) {
+				System.out.println("What is their name?");
+				String name = scanny.nextLine();
+				//call to filereader that returns an array of employees w/ the matching name
+				fakeFileCall();
+				System.out.println("name : " + dummyEmployee.getName());
+				System.out.println("email : " + dummyEmployee.getEmail());
+				System.out.println("phone number : " + dummyEmployee.getPhoneNumber());
+			}
+		}
+	}
+	
+	public static void findUserByID() {
+		System.out.println("What is the employee's ID?");
+		int userInput = scanny.nextInt();
+		//call to the filereader class that returns a single employee via ID
+		System.out.println("name : " + dummyEmployee.getName());
+		System.out.println("email : " + dummyEmployee.getEmail());
+		System.out.println("phone number : " + dummyEmployee.getPhoneNumber());
 	}
 
 	public static String booleanUserLogic(String x, String y) {
@@ -326,6 +370,10 @@ public class Demo {
 	}
 	
 	public static ArrayList<Employee> fakeFileCall(Department department) {
+		return fakeFileCall();
+	}
+	
+	public static ArrayList<Employee> fakeFileCall() {
 		ArrayList<Employee> employees = new ArrayList<>();
 		employees.add(new Employee(1, "Joe", "joe@google.com", "123-555-0000", "1990-08-27", 55000.00d, false, 1));
 		employees.add(new Employee(2, "Bob", "bob@google.com", "123-555-0001", "1991-01-05", 15000.00d, false, 1));
@@ -340,5 +388,9 @@ public class Demo {
 		employees.add(new Employee(11, "Jared", "jared@google.com", "123-555-0010", "2010-02-01", 12000.00d, true, 3));
 		employees.add(new Employee(12, "Jordan", "jordan@google.com", "123-555-0011", "2019-08-16", 0.50d, true, 4));
 		return employees;
+	}
+	
+	public static ArrayList<Employee> fakeFileCall(String name) {
+		return fakeFileCall();
 	}
 }
