@@ -6,11 +6,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.congnixia.javafinalproject.ems.filemanipulation.FileMethods;
-import com.congnixia.javafinalproject.ems.filemanipulation.ReadingFiles;
 
 public class Department {
 
-	
 	private int departmentId;
 	private String name;
 	private int employeeId;
@@ -28,8 +26,13 @@ public class Department {
 		this.budget = budget;
 	}
 	
-	public static int getLastDepartmentId() throws IOException {
-		return FileMethods.findLastOfDepartmentId() + 1;
+	public static int getLastDepartmentId() {
+		try {
+			return FileMethods.findLastOfDepartmentId() + 1;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return -1;
+		}
 	}
 
 	public int getDepartmentId() {
@@ -76,23 +79,38 @@ public class Department {
 		return allEmployees;
 	}
 	
-	public static List<Department> listDepartments() throws IOException {
-		return FileMethods.listTheDepartments();
+	public static List<Department> listDepartments() {
+		try {
+			return FileMethods.listTheDepartments();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	public static boolean addDepartment(Department d) throws IOException {
+	public static boolean addDepartment(Department d) {
 		 return FileMethods.AddTheDepartment(d);
 	}
 
-	public static boolean updateDepartment(int index, Department dep) throws IOException {
-		return FileMethods.updateTheDepartment(index, dep);
+	public static boolean updateDepartment(int index, Department dep) {
+		try {
+			return FileMethods.updateTheDepartment(index, dep);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
-	public static boolean removeTheEmployee(int index) throws IOException {
-		return FileMethods.removeTheDepartment(index);
+	public static boolean removeTheEmployee(int index) {
+		try {
+			return FileMethods.removeTheDepartment(index);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
-	public static Department findDepartmentByName(String name) throws IOException {
+	public static Department findDepartmentByName(String name) {
 		return listDepartments().stream().filter(x -> x.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
 	}
 
@@ -100,9 +118,33 @@ public class Department {
 		return Employee.listEmployees().stream().filter(x -> x.getDepartmentId() == dep.getDepartmentId()).collect(Collectors.toList());
 	}
 
+	/**
+	 * Finds the current employee head of the department. Removes them completey. Updates Employee who will take over the department.
+	 * 
+	 * 
+	 * 
+	 * @param emp
+	 * @param dep
+	 * @return
+	 */
 	public static boolean makeEmployeeHeadOfDepartment(Employee emp, Department dep) {
-		// Read in employee find current id
+		// Gets the departments head and removes it
+		int currentHeadId = dep.getEmployeeId();
+		Employee.removeEmployee(currentHeadId);
 		
+		// See if the current 
+		if(emp.getDepartmentHead()) {
+			System.out.println("There is a new department head.!");
+			Employee promoted = Employee.findEmployeeToBeNewHeadBySalary();
+			promoted.setDepartmentHead(true);
+			promoted.setDepartmentId(emp.getDepartmentId());
+		}
+		emp.setDepartmentHead(true);
+		emp.setDepartmentId(dep.getDepartmentId());
+
+		dep.employeeId = emp.getEmployeeId();
+
+		// Employee.
 		return true;
 	}
 
@@ -112,19 +154,9 @@ public class Department {
 
 	// If the department is deleted they are all placed in a department called the untouchables that you cant leave unless you Take a 25%  pay decrease.
 
-	public static String[] getAllDepartmentNames() throws IOException {
+	public static String[] getAllDepartmentNames() {
 		return listDepartments().stream().map(x -> x.getName()).toArray(String[]::new);
-	}
-
-
-	/*
-	findDepartmentByName() returns Department
-findAllEmployeesWorkingInDepartment(Department department) returns ArrayList<Employee>
-makeEmployeeHeadOfDepartment(Employee employee, Department department) return boolean
-getAllDepartmentNemes() returns String[]
-	*/
-	
-	
+	}	
 
 	@Override
 	public String toString() {

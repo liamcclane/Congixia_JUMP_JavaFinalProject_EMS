@@ -1,6 +1,7 @@
 package com.congnixia.javafinalproject.ems.models;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.congnixia.javafinalproject.ems.filemanipulation.FileMethods;
@@ -35,8 +36,13 @@ public class Employee {
 	 * @return int
 	 * @throws IOException
 	 */
-	public static int getLastEmployeeId() throws IOException {
-		return FileMethods.findLastOfEmployeeId() + 1;
+	public static int getLastEmployeeId() {
+		try {
+			return FileMethods.findLastOfEmployeeId() + 1;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 
 	public int getEmployeeId() {
@@ -95,6 +101,10 @@ public class Employee {
 		this.isDepartmentHead = isDepartmentHead;
 	}
 
+	public boolean getDepartmentHead() {
+		return this.isDepartmentHead;
+	}
+
 	public int getDepartmentId() {
 		return departmentId;
 	}
@@ -110,20 +120,35 @@ public class Employee {
 	 * @return List<Employee>
 	 * @throws IOException
 	 */
-	public static List<Employee> listEmployees() throws IOException {
-		return FileMethods.listTheEmployees();
+	public static List<Employee> listEmployees() {
+		try {
+			return FileMethods.listTheEmployees();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	public static boolean addEmployee(Employee e) throws IOException {
+	public static boolean addEmployee(Employee e) {
 		return FileMethods.addTheEmployee(e);
 	}
 	
-	public static boolean updateEmployee(int index, Employee emp) throws IOException {
-		return FileMethods.updateTheEmployee(index, emp);
+	public static boolean updateEmployee(int index, Employee emp) {
+		try {
+			return FileMethods.updateTheEmployee(index, emp);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
-	public static boolean removeEmployee(int index) throws IOException {
-		return FileMethods.removeTheEmployee(index);
+	public static boolean removeEmployee(int index) {
+		try {
+			return FileMethods.removeTheEmployee(index);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	/**
@@ -138,28 +163,28 @@ public class Employee {
 		return this;
 	}
 	
-	public static List<Employee> findAllEmployeesByName(String searchName) throws IOException {
-		return listEmployees().stream()
-				.filter(x -> x.getName().equalsIgnoreCase(searchName))
+	public static List<Employee> findAllEmployeesByName(String searchName) {
+		return listEmployees().stream().filter(x -> x.getName().equalsIgnoreCase(searchName))
 				.collect(Collectors.toList());
 	}
 	
-	public static List<Employee> findAllEmployeesByDepartment(Department department) throws IOException {
-		return listEmployees().stream()
-				.filter(x -> x.departmentId == department.getDepartmentId())
+	public static List<Employee> findAllEmployeesByDepartment(Department department) {
+		return listEmployees().stream().filter(x -> x.departmentId == department.getDepartmentId())
 				.collect(Collectors.toList());
 	}
 	
-	public static Employee findEmployeeByPhoneNumber(String searchNumber) throws IOException {
-		return listEmployees().stream()
-				.filter(x -> x.getPhoneNumber() == searchNumber)
-				.findFirst().orElse(null);
+	public static Employee findEmployeeByPhoneNumber(String searchNumber)  {
+		return listEmployees().stream().filter(x -> x.getPhoneNumber() == searchNumber).findFirst().orElse(null);
 	}
 			
 	public static Employee findEmployeeById(int id) throws IOException {
 		return listEmployees().stream()
 				.filter(x -> x.getEmployeeId() == id)
 				.findFirst().orElse(null);
+	}
+
+	public static Employee findEmployeeToBeNewHeadBySalary() {
+		return listEmployees().stream().max(Comparator.comparing(Employee::getSalary)).orElse(null);	
 	}
 
 	@Override
