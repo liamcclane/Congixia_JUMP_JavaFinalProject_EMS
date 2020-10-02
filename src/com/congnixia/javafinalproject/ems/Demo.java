@@ -3,7 +3,7 @@ package com.congnixia.javafinalproject.ems;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.congnixia.javafinalproject.ems.exceptions.NotAorBException;
+import com.congnixia.javafinalproject.ems.exceptions.*;
 import com.congnixia.javafinalproject.ems.models.*;
 
 public class Demo {
@@ -42,50 +42,40 @@ public class Demo {
 		System.out.println("B - find an existing empoloyee or department head?");
 		String aOrB;
 		do {
-			System.out.println("? top of do");
 			try {
 				aOrB = getAorBAgain();
 				break;
 			} catch (NotAorBException e) {
 				System.err.println(e.getMessage());
-				System.err.println("line 49");
 			}
 		} while (true);
 
 		if(aOrB.equals("a")) {
-			System.out.println("a route");
+			addRoute();
 		} else {
-			System.out.println("b route");
+			findRoute();
 		}
 
 	}
 	
-	public static String getAorBAgain() throws NotAorBException {
+	
+	public static void addRoute()  {
+
 		String aOrB;
-		aOrB = scanny.nextLine();
-		aOrB.toLowerCase();
-		
-		if(!(aOrB.equals("a")|| aOrB.equals("b"))) {
-			throw new NotAorBException(aOrB);
-		}
-		
-		return aOrB;
-	}
-
-	public static void addRoute() {
-
 		// prompt user
 		System.out.println("\nAre you going to add : ");
 		System.out.println("A - a new Employee?");
 		System.out.println("B - a new Department?");
-
-//		scanny.nextLine();
 		do {
-//			scanny.nextLine();
-			userInput = scanny.next();
-		} while (!(userInput.equalsIgnoreCase("a") || userInput.equalsIgnoreCase("b"))) ;
-		
-		
+			try {
+				aOrB = getAorBAgain();
+				break;
+			} catch (NotAorBException e) {
+				System.err.println(e.getMessage());
+			}
+		} while (true);
+
+
 		if (userInput.equals("a")) {
 			createEmployee();
 		} else {
@@ -94,7 +84,7 @@ public class Demo {
 
 	}
 
-	public static void createEmployee() {
+	public static void createEmployee(){
 
 		String name;
 		String email;
@@ -112,7 +102,7 @@ public class Demo {
 		department = fakeFileCallForDepartment(userInput);
 		// need to error if department not found
 		System.out.println("\nWhat is their name?");
-		name = scanny.nextLine();
+		name = scanny.nextLine(); // null exeption maybe
 
 		System.out.println("\nWhat is their phone number?");
 		phoneNumber = scanny.nextLine();
@@ -139,11 +129,18 @@ public class Demo {
 		// regex mabye
 		System.out.println("\nWhat is todays date?");
 		hierDate = scanny.nextLine();
-		// scanny.nextLine();
 
 		System.out.println("\nIs this new hier, " + name + ", going to be the head of the department? T/F?");
-		userInput = TorF();
-		// scanny.nextLine();
+		
+		String whatever;
+		do {
+			try {
+				whatever = YorN();
+				break;
+			} catch (NotYesOrNoException e) {
+				System.err.println(e.getMessage());
+			}
+		} while (true);
 
 		// give user preview of what they are adding
 
@@ -151,10 +148,10 @@ public class Demo {
 		System.out.println("name : " + name);
 		System.out.println("email : " + email);
 		System.out.println("phone number : " + phoneNumber);
-		// System.out.println("to the departmetn: " + department.getType());
+		// System.out.println("to the department: " + department.getType());
 
 		// possible secondary validation
-		System.out.println("True or False ");
+		System.out.println("T/F?");
 		userInput = TorF();
 
 		if (userInput.equals("t")) {
@@ -210,8 +207,15 @@ public class Demo {
 		System.out.println("\nAre you looking for a department details or employee details?");
 		System.out.println("A - Department details?");
 		System.out.println("B - Employee details?");
-
-		String userInput = AorB();
+		String aOrB;
+		do {
+			try {
+				aOrB = getAorBAgain();
+				break;
+			} catch (NotAorBException e) {
+				System.err.println(e.getMessage());
+			}
+		} while (true);
 
 		if (userInput.equals("a")) {
 			findDepartmentDetails();
@@ -248,8 +252,15 @@ public class Demo {
 		// searchedDepartment.getDepartmentHead().getName());
 		System.out.println("Would you like to see the list of all the employees in the department?");
 		System.out.println("Y/N");
-
-		String userInput = YorN();
+		String aOrB;
+		do {
+			try {
+				aOrB = YorN();
+				break;
+			} catch (NotYesOrNoException e) {
+				System.err.println(e.getMessage());
+			}
+		} while (true);
 
 		if (userInput.equals("y")) {
 			listAllEmployeesInDepartment(searchedDepartment);
@@ -273,7 +284,15 @@ public class Demo {
 
 	public static void findEmployeeDetails() {
 		System.out.println("Who would you like to know more about? Do you know their ID?");
-		String userInput = YorN();
+		String whatever;
+		do {
+			try {
+				whatever = YorN();
+				break;
+			} catch (NotYesOrNoException e) {
+				System.err.println(e.getMessage());
+			}
+		} while (true);
 
 		if (userInput.equals("y")) {
 			findUserByID();
@@ -296,49 +315,42 @@ public class Demo {
 		System.out.println("What is the employee's ID?");
 		int userInput = scanny.nextInt();
 		// call to the filereader class that returns a single employee via ID
-		System.out.println("name : " + dummyEmployee.getName());
-		System.out.println("email : " + dummyEmployee.getEmail());
-		System.out.println("phone number : " + dummyEmployee.getPhoneNumber());
+		dummyEmployee.prettyPrintln();
 	}
-
-	public static String booleanUserLogic(String x, String y) {
-
-		String s = scanny.next();
-//		scanny.nextLine();
-		while (!(s.equalsIgnoreCase(x.toLowerCase()) || s.equalsIgnoreCase(y.toLowerCase()))) {
-			scanny.nextLine();
-			s = scanny.next();
-			System.err.println("not an option");
-		} 
-		return s.toLowerCase();
-	}
-
-	public static String AorB() {
-		boolean valid = false;
-		do {
-
-			try {
-				userInput = scanny.nextLine();
-				System.out.println("does this run?");
-				valid = true;
-			} catch (Exception e) {
-				System.out.println("not valid");
-			}
-
-		} while (!valid);
-
-		// System.out.println("you valid input was: " + userInt);
-
-		return userInput;
-
+	public static String getAorBAgain() throws NotAorBException {
+		String aOrB;
+		aOrB = scanny.nextLine();
+		aOrB.toLowerCase();
+		
+		if(!(aOrB.equals("a")|| aOrB.equals("b"))) {
+			throw new NotAorBException(aOrB);
+		}
+		
+		return aOrB;
 	}
 
 	public static String TorF() {
-		return booleanUserLogic("T", "F");
+		String aOrB;
+		aOrB = scanny.nextLine();
+		aOrB.toLowerCase();
+		
+		if(!(aOrB.equals("a")|| aOrB.equals("b"))) {
+			throw new NotTOrFException(aOrB);
+		}
+		
+		return aOrB;
 	}
 
-	public static String YorN() {
-		return booleanUserLogic("Y", "N");
+	public static String YorN() throws NotYesOrNoException {
+		String aOrB;
+		aOrB = scanny.nextLine();
+		aOrB.toLowerCase();
+		
+		if(!(aOrB.equals("a")|| aOrB.equals("b"))) {
+			throw new NotYesOrNoException(aOrB);
+		}
+		
+		return aOrB;
 	}
 
 	public static void greet() {
