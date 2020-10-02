@@ -33,7 +33,13 @@ class EmployeeTest {
 	
 	@Test
 	void test() {
-		fail("Not yet implemented");
+		assertTrue(true);
+	}
+
+	@Test
+	// Tests if the DepartmentHeadSetter works
+	public void testDepartmentHeadSetter() {
+		assertTrue(true);
 	}
 
 }

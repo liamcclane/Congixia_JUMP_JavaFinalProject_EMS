@@ -3,108 +3,73 @@ package com.congnixia.javafinalproject.ems;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.congnixia.javafinalproject.ems.exceptions.NotAorBException;
 import com.congnixia.javafinalproject.ems.models.*;
 
 public class Demo {
 
 	// lia's branch
 	static Scanner scanny = new Scanner(System.in);
-
-	// static Department dummyDepartment = new Department("ExDep", 111, 3000.00d);
-	// static Employee dummyEmployee = new Employee("ExEmp", "dummy@dummy.com", "234-234-2344", "4/3/2020",
-	// 		dummyDepartment);
+	static Department dummyDepartment = new Department(0, "ExDep", 111, 0, 3000.00d);
+	static Employee dummyEmployee = new Employee(-1, "fake", "fake@fake.com", "000-000-000", "1/1/11", 1000d, false,
+			-1);
+	static String userInput;
+	static ArrayList<Employee> employees;
+	static Employee employee;
+	static Department department;
 
 	public static void main(String[] args) {
-
 		start();
-		/**
-		 * 
-		 * goal is to demo our EMS for Best Boughts Store
-		 * 
-		 * when we run this file,
-		 * 
-		 * greet user, ask what are we doing if we are adding DB (Either Employee or
-		 * Department) looking for some information that is already stored
-		 * 
-		 * partting
-		 * 
-		 */
-
-		/**
-		 * 
-		 * if we are adding prompt user, what are we adding? Employee, or opening a new
-		 * department
-		 * 
-		 * If employee, prompt for information name Department they are going into
-		 * output the newly made employee back to the user
-		 * 
-		 * then loop back to the top
-		 * 
-		 * 
-		 * 
-		 */
-
-		/**
-		 * 
-		 * if we are looking some one up
-		 * 
-		 * output to user the filds they can search by
-		 * 
-		 * id, name, department,
-		 * 
-		 * user will type in "name" or "id" if name "who are we looking for" if id "2"
-		 * // if extra time maybe take "10 (though) 20" as valid
-		 * 
-		 * output either the single use they are looking for or the list of people
-		 * 
-		 * if it was a list a people, ask for a number from the user for which person
-		 * was the correct one. output that Employee to the user
-		 * 
-		 * if only one person matches what they are looking for output the Employee to
-		 * the user
-		 * 
-		 * 
-		 * Prompt yes or no if they would like to update them
-		 * 
-		 */
-
-		/**
-		 * 
-		 * if the user wants to update the Employee ask them which field they want to
-		 * change name, department "you are changing {{Employee}}'s {{field}}
-		 * information" "what would you like to change it to?"
-		 * 
-		 * "confirmation message" {{updated employees info}}
-		 * 
-		 */
-
 	}
 
-	public static void start() {
-		String userInputStr;
+	public static void start(){
+		String again;
 		greet();
-
-		// while loop here eventually
-
-		areWeReadingOrAdding();
-		userInputStr = AorB(); // this returns a valid "a" or "b"
-		if (userInputStr.contentEquals("a")) {
-			addRoute();
-		} else {
-			findRoute();
-		}
-
-		// end of while loop here
+		do {
+			intoTheDataBase();
+			System.out.println("Do you want continue making changes? Y/N");
+			again = scanny.nextLine();
+		} while (again.equalsIgnoreCase("yes")|| again.equals("y"));
+		
 		parting();
 
 	}
-
-	public static void areWeReadingOrAdding() {
-		// prompt user
+	
+	public static void intoTheDataBase() {
+		
 		System.out.println("\nDid you want to?");
 		System.out.println("A - Add to the data base?");
 		System.out.println("B - find an existing empoloyee or department head?");
+		String aOrB;
+		do {
+			System.out.println("? top of do");
+			try {
+				aOrB = getAorBAgain();
+				break;
+			} catch (NotAorBException e) {
+				System.err.println(e.getMessage());
+				System.err.println("line 49");
+			}
+		} while (true);
 
+		if(aOrB.equals("a")) {
+			System.out.println("a route");
+		} else {
+			System.out.println("b route");
+		}
+
+	}
+	
+	public static String getAorBAgain() throws NotAorBException {
+		String aOrB;
+		aOrB = scanny.nextLine();
+		aOrB.toLowerCase();
+		
+		if(!(aOrB.equals("a")|| aOrB.equals("b"))) {
+			throw new NotAorBException(aOrB);
+		}
+		
+		return aOrB;
 	}
 
 	public static void addRoute() {
@@ -114,8 +79,13 @@ public class Demo {
 		System.out.println("A - a new Employee?");
 		System.out.println("B - a new Department?");
 
-		String userInput = AorB();
-
+//		scanny.nextLine();
+		do {
+//			scanny.nextLine();
+			userInput = scanny.next();
+		} while (!(userInput.equalsIgnoreCase("a") || userInput.equalsIgnoreCase("b"))) ;
+		
+		
 		if (userInput.equals("a")) {
 			createEmployee();
 		} else {
@@ -126,34 +96,43 @@ public class Demo {
 
 	public static void createEmployee() {
 
-		String userInput;
 		String name;
 		String email;
 		String phoneNumber;
 		String hierDate;
 		boolean isDepartmentHead;
-		Employee employee;
-		Department department;
 
 		System.out.println("\nCreating an a new hire!");
 		System.out.println("What department are they going into?");
-		userInput = scanny.nextLine();
-		// scanny.nextLine();
+		// list departments
 
-		// find Department By type
-		// department = new Department(userInput, 100, 2000d);
+		userInput = scanny.nextLine();
+
+		// find Department By name
+		department = fakeFileCallForDepartment(userInput);
 		// need to error if department not found
 		System.out.println("\nWhat is their name?");
 		name = scanny.nextLine();
-		// scanny.nextLine();
 
 		System.out.println("\nWhat is their phone number?");
 		phoneNumber = scanny.nextLine();
-		// scanny.nextLine();
+		ReggieValidation rv = new ReggieValidation();
+
+		if (rv.isValidPhoneNumber(phoneNumber)) {
+			System.out.println("Valid phone number");
+		} else {
+			System.out.println("Invalid phone number");
+		}
 
 		// regex mabye
 		System.out.println("\nWhat is their email?");
 		email = scanny.nextLine();
+
+		if (rv.isValidEmail(email)) {
+			System.out.println("Valid email");
+		} else {
+			System.out.println("Invalid email");
+		}
 		// scanny.nextLine();
 
 		// could use datetime here!
@@ -261,18 +240,19 @@ public class Demo {
 		title = scanny.nextLine();
 
 		// Make a call to the file reader
-		// searchedDepartment = dummyDepartment;
-		// System.out.println("title: " + searchedDepartment.getType());
-		// System.out.println("phone number extension: " + searchedDepartment.getPhoneNumberExt());
-		// System.out.println("budget: " + searchedDepartment.getBudget());
-		// System.out.println("department head: " + searchedDepartment.getDepartmentHead().getName());
+		searchedDepartment = dummyDepartment;
+		System.out.println("title: " + searchedDepartment.getName());
+		System.out.println("phone number extension: " + searchedDepartment.getPhoneNumberExt());
+		System.out.println("budget: " + searchedDepartment.getBudget());
+		// System.out.println("department head: " +
+		// searchedDepartment.getDepartmentHead().getName());
 		System.out.println("Would you like to see the list of all the employees in the department?");
 		System.out.println("Y/N");
 
 		String userInput = YorN();
 
-		if (userInput.equals("Y")) {
-
+		if (userInput.equals("y")) {
+			listAllEmployeesInDepartment(searchedDepartment);
 		}
 
 	}
@@ -280,31 +260,77 @@ public class Demo {
 	public static void listAllEmployeesInDepartment(Department department) {
 		// Read through files, returns list of employees
 		// List<Employee> employees =
-		
-		
+
 		// This is dummy data
-		// ArrayList<Employee> employees = fakeFileCall(department);
+		ArrayList<Employee> employees = fakeFileCall(department);
+
+		for (int i = 0; i < employees.size(); i++) {
+			System.out.println("Name: " + employees.get(i).getName() + "\tPhone number: "
+					+ employees.get(i).getPhoneNumber() + "\tID: " + employees.get(i).getEmployeeId());
+
+		}
 	}
 
 	public static void findEmployeeDetails() {
+		System.out.println("Who would you like to know more about? Do you know their ID?");
+		String userInput = YorN();
 
+		if (userInput.equals("y")) {
+			findUserByID();
+		} else {
+			System.out.println("What field are we searching by?");
+			String field = scanny.nextLine();
+			if (field.equals("name")) {
+				System.out.println("What is their name?");
+				String name = scanny.nextLine();
+				// call to filereader that returns an array of employees w/ the matching name
+				fakeFileCall();
+				System.out.println("name : " + dummyEmployee.getName());
+				System.out.println("email : " + dummyEmployee.getEmail());
+				System.out.println("phone number : " + dummyEmployee.getPhoneNumber());
+			}
+		}
+	}
+
+	public static void findUserByID() {
+		System.out.println("What is the employee's ID?");
+		int userInput = scanny.nextInt();
+		// call to the filereader class that returns a single employee via ID
+		System.out.println("name : " + dummyEmployee.getName());
+		System.out.println("email : " + dummyEmployee.getEmail());
+		System.out.println("phone number : " + dummyEmployee.getPhoneNumber());
 	}
 
 	public static String booleanUserLogic(String x, String y) {
 
 		String s = scanny.next();
-		scanny.nextLine();
-		if (s.equalsIgnoreCase(x.toLowerCase()) || s.equalsIgnoreCase(y.toLowerCase())) {
-			return s.toLowerCase();
-		} else {
-			// invalid
-			// more logic later
-			return "";
-		}
+//		scanny.nextLine();
+		while (!(s.equalsIgnoreCase(x.toLowerCase()) || s.equalsIgnoreCase(y.toLowerCase()))) {
+			scanny.nextLine();
+			s = scanny.next();
+			System.err.println("not an option");
+		} 
+		return s.toLowerCase();
 	}
 
 	public static String AorB() {
-		return booleanUserLogic("A", "B");
+		boolean valid = false;
+		do {
+
+			try {
+				userInput = scanny.nextLine();
+				System.out.println("does this run?");
+				valid = true;
+			} catch (Exception e) {
+				System.out.println("not valid");
+			}
+
+		} while (!valid);
+
+		// System.out.println("you valid input was: " + userInt);
+
+		return userInput;
+
 	}
 
 	public static String TorF() {
@@ -324,20 +350,34 @@ public class Demo {
 		System.out.println("******************");
 		System.out.println("Thanks for visiting the database of Best Boughts");
 	}
-	
-	public static void fakeFileCall(Department department) {
+
+	public static ArrayList<Employee> fakeFileCall(Department department) {
+		return fakeFileCall();
+	}
+
+	public static ArrayList<Employee> fakeFileCall() {
 		ArrayList<Employee> employees = new ArrayList<>();
 		employees.add(new Employee(1, "Joe", "joe@google.com", "123-555-0000", "1990-08-27", 55000.00d, false, 1));
 		employees.add(new Employee(2, "Bob", "bob@google.com", "123-555-0001", "1991-01-05", 15000.00d, false, 1));
 		employees.add(new Employee(3, "Bill", "bill@google.com", "123-555-0002", "1994-04-16", 25000.00d, false, 1));
 		employees.add(new Employee(4, "Ralph", "ralph@google.com", "123-555-0003", "1995-05-08", 10000.00d, false, 1));
 		employees.add(new Employee(5, "James", "james@google.com", "123-555-0004", "1998-05-12", 20000.00d, false, 1));
-		employees.add(new Employee(6, "Jessica", "jessica@google.com", "123-555-0005", "1999-01-09", 100000.00d, true, 1));
+		employees.add(
+				new Employee(6, "Jessica", "jessica@google.com", "123-555-0005", "1999-01-09", 100000.00d, true, 1));
 		employees.add(new Employee(7, "Peter", "peter@google.com", "123-555-0006", "2003-12-09", 90000.00d, false, 1));
 		employees.add(new Employee(8, "Penny", "penny@google.com", "123-555-0007", "2005-08-11", 65000.00d, false, 2));
 		employees.add(new Employee(9, "Jenny", "jenny@google.com", "123-555-0008", "2007-14-22", 34000.00d, false, 2));
 		employees.add(new Employee(10, "Ellie", "ellie@google.com", "123-555-0009", "2008-09-21", 76000.00d, true, 2));
 		employees.add(new Employee(11, "Jared", "jared@google.com", "123-555-0010", "2010-02-01", 12000.00d, true, 3));
 		employees.add(new Employee(12, "Jordan", "jordan@google.com", "123-555-0011", "2019-08-16", 0.50d, true, 4));
+		return employees;
+	}
+
+	public static ArrayList<Employee> fakeFileCall(String name) {
+		return fakeFileCall();
+	}
+
+	public static Department fakeFileCallForDepartment(String name) {
+		return dummyDepartment;
 	}
 }

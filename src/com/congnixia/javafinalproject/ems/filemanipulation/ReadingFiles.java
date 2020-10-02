@@ -18,8 +18,9 @@ public class ReadingFiles {
 	private static String departInt = "";
 
 	/**
-	 * this function reads the file "resources/employee.csv"
-	 * and returns a List if Employee objects
+	 * this function reads the file "resources/employee.csv" and returns a List if
+	 * Employee objects
+	 * 
 	 * @return
 	 * @throws IOException
 	 */
@@ -50,9 +51,9 @@ public class ReadingFiles {
 		System.out.println(allEmployees);
 		return allEmployees;
 	}
-	
+
 	public static List<Department> readDepartments() throws IOException {
-		
+
 		List<Department> allDepartments = new ArrayList<Department>();
 		File file = new File("resources/departments.csv");
 
@@ -68,7 +69,8 @@ public class ReadingFiles {
 
 				String[] values = line.split(",");
 
-				Department e = new Department(Integer.parseInt(values[0]), values[1], Integer.parseInt(values[2]), Integer.parseInt(values[3]), Double.parseDouble(values[4]));
+				Department e = new Department(Integer.parseInt(values[0]), values[1], Integer.parseInt(values[2]),
+						Integer.parseInt(values[3]), Double.parseDouble(values[4]));
 				allDepartments.add(e);
 			}
 		} catch (FileNotFoundException e) {
@@ -78,31 +80,29 @@ public class ReadingFiles {
 	}
 
 	/**
-	 * Iterates through a list of objects. Determines what instanceof the object is. Runs through the writeFileMethod.
+	 * Iterates through a list of objects. Determines what instanceof the object is.
+	 * Runs through the writeFileMethod.
 	 * 
 	 * @param objs
 	 * @throws IOException
 	 */
 	public static void writeAllToFile(List<Object> objs) throws IOException {
-		for(int i = 0; i < objs.size(); i++) {
-			if(objs.get(i) instanceof Employee) {
-				Employee emp = (Employee)objs.get(i);
+		for (int i = 0; i < objs.size(); i++) {
+			if (objs.get(i) instanceof Employee) {
+				Employee emp = (Employee) objs.get(i);
 				emp.setEmployeeId(emp.getEmployeeId() + i);
-				writeToFile((Employee)objs.get(i));
-			}
-			else if(objs.get(i) instanceof Department) {
-				Department dep = (Department)objs.get(i);
+				writeToFile((Employee) objs.get(i));
+			} else if (objs.get(i) instanceof Department) {
+				Department dep = (Department) objs.get(i);
 				dep.setDepartmentId(dep.getDepartmentId() + i);
-				writeToFile((Department)objs.get(i));
-			}
-			else {
+				writeToFile((Department) objs.get(i));
+			} else {
 				System.out.println("Fix this!!");
 			}
 		}
 	}
 
-
-	/** 
+	/**
 	 * @return
 	 * @throws IOException
 	 */
@@ -133,7 +133,7 @@ public class ReadingFiles {
 
 		return 0;
 	}
-	
+
 	public static int findLastOfDepartmentId() throws IOException {
 		File file = new File("resources/departments.csv");
 		if (!file.exists()) {
@@ -211,9 +211,11 @@ public class ReadingFiles {
 				}
 			} else if (file.getName().equals("departments.csv")) {
 				if (ReadingFiles.checkIfObjectExists(file)) {
-					br.append("\n" + dep.getDepartmentId() + "," + dep.getName() + "," + dep.getEmployeeId() + "," + dep.getPhoneNumberExt() + "," + dep.getBudget());
+					br.append("\n" + dep.getDepartmentId() + "," + dep.getName() + "," + dep.getEmployeeId() + ","
+							+ dep.getPhoneNumberExt() + "," + dep.getBudget());
 				} else {
-					br.append(dep.getDepartmentId() + "," + dep.getName() + "," + dep.getEmployeeId() + "," + dep.getPhoneNumberExt() + "," + dep.getBudget());
+					br.append(dep.getDepartmentId() + "," + dep.getName() + "," + dep.getEmployeeId() + ","
+							+ dep.getPhoneNumberExt() + "," + dep.getBudget());
 				}
 			} else {
 				System.out.println("Nothing was added.");
