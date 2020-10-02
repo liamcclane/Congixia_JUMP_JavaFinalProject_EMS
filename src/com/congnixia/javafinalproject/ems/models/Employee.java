@@ -1,7 +1,10 @@
 package com.congnixia.javafinalproject.ems.models;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.congnixia.javafinalproject.ems.filemanipulation.FileMethods;
 import com.congnixia.javafinalproject.ems.filemanipulation.ReadingFiles;
 
 //import com.cognixia.jump.advancedjava.projects.ReadingFiles;
@@ -31,7 +34,7 @@ public class Employee {
 	}
 	
 	public static int getLastEmployeeId() throws IOException {
-		return ReadingFiles.findLastOfEmployeeId() + 1;
+		return FileMethods.findLastOfEmployeeId() + 1;
 	}
 
 	public int getEmployeeId() {
@@ -98,34 +101,33 @@ public class Employee {
 		this.departmentId = departmentId;
 	}
 
-	public static void listEmployees() throws IOException {
-		System.out.println("Employee List:");
-		System.out.println(ReadingFiles.readEmployees().toString());
+	public static List<Employee> listEmployees() throws IOException {
+		List<Employee> employeeList = new ArrayList<Employee>();
+		List<Object> objs = FileMethods.listObjects('e');
+		for(int i = 0; i < objs.size(); i++) {
+			Employee emp = (Employee) objs.get(i);
+			employeeList.add(emp);
+		}
+		return employeeList;
 	}
 
 	public static boolean addEmployee(Employee e) throws IOException {
-		ReadingFiles.writeToFile(e);
-		System.out.println("Employee Added.");
-		return true;
+		return FileMethods.addObject(e);
 	}
 	
-	public static boolean updateEmployee() {
-		System.out.println("Employee Updated.");
-		return true;
+	public static boolean updateEmployee(int index, Object obj) throws IOException {
+		return FileMethods.updateObject(index, 'e', obj);
 	}
 	
-	public static boolean removeEmployee() {
-		System.out.println("Employee Removed.");
-		return true;
+	public static boolean removeEmployee(int index) throws IOException {
+		return FileMethods.removeObject(index, 'e');
 	}
-	
-	
 
 	@Override
 	public String toString() {
-		return "Employee [employeeId=" + employeeId + ", name=" + name + ", email=" + email + ", phoneNumber="
-				+ phoneNumber + ", hireDate=" + hireDate + ", salary=" + salary + ", isDepartmentHead="
-				+ isDepartmentHead + ", departmentId=" + departmentId + "]";
+		return "\n[employeeId=" + employeeId + ",\tname=" + name + ",\temail=" + email + ",    \tphoneNumber="
+				+ phoneNumber + ", hireDate=" + hireDate + ", salary=" + salary + ",\tisDepartmentHead="
+				+ isDepartmentHead + ",\tdepartmentId=" + departmentId + "]";
 	}
 
 }

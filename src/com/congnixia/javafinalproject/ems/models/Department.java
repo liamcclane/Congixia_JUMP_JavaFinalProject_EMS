@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.congnixia.javafinalproject.ems.filemanipulation.FileMethods;
 import com.congnixia.javafinalproject.ems.filemanipulation.ReadingFiles;
 
 public class Department {
@@ -27,7 +28,7 @@ public class Department {
 	}
 	
 	public static int getLastDepartmentId() throws IOException {
-		return ReadingFiles.findLastOfDepartmentId() + 1;
+		return FileMethods.findLastOfDepartmentId() + 1;
 	}
 
 	public int getDepartmentId() {
