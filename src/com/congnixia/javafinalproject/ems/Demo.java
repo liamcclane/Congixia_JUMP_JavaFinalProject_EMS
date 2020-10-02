@@ -10,9 +10,9 @@ public class Demo {
 	// lia's branch
 	static Scanner scanny = new Scanner(System.in);
 
-	static Department dummyDepartment = new Department("ExDep", 111, 3000.00d);
-	static Employee dummyEmployee = new Employee("ExEmp", "dummy@dummy.com", "234-234-2344", "4/3/2020",
-			dummyDepartment);
+	// static Department dummyDepartment = new Department("ExDep", 111, 3000.00d);
+	// static Employee dummyEmployee = new Employee("ExEmp", "dummy@dummy.com", "234-234-2344", "4/3/2020",
+	// 		dummyDepartment);
 
 	public static void main(String[] args) {
 
@@ -141,7 +141,7 @@ public class Demo {
 		// scanny.nextLine();
 
 		// find Department By type
-		department = new Department(userInput, 100, 2000d);
+		// department = new Department(userInput, 100, 2000d);
 		// need to error if department not found
 		System.out.println("\nWhat is their name?");
 		name = scanny.nextLine();
@@ -172,7 +172,7 @@ public class Demo {
 		System.out.println("name : " + name);
 		System.out.println("email : " + email);
 		System.out.println("phone number : " + phoneNumber);
-		System.out.println("to the departmetn: " + department.getType());
+		// System.out.println("to the departmetn: " + department.getType());
 
 		// possible secondary validation
 		System.out.println("True or False ");
@@ -185,12 +185,12 @@ public class Demo {
 		}
 		// to create a new employee instance
 		// and connect them approiatly to the department information
-		employee = new Employee(name, email, phoneNumber, hierDate, department);
+		// employee = new Employee(name, email, phoneNumber, hierDate, department);
 
 		// now add them back into the files, needs file logic form daniel
 		// success message
 		System.out.println("\nEmployee :");
-		System.out.println(employee);
+		// System.out.println(employee);
 		System.out.println("you have successfully added " + name + " to the employee list");
 		System.out.println("go check them out on the files in resources//allEmployees.csv");
 		return;
@@ -221,7 +221,7 @@ public class Demo {
 
 		headId = scanny.nextInt();
 		// get employee by id
-		head = dummyEmployee;
+		// head = dummyEmployee;
 		System.out.println("Is this the employee you want to appoint to the head of " + type + "?");
 
 	}
@@ -261,11 +261,11 @@ public class Demo {
 		title = scanny.nextLine();
 
 		// Make a call to the file reader
-		searchedDepartment = dummyDepartment;
-		System.out.println("title: " + searchedDepartment.getType());
-		System.out.println("phone number extension: " + searchedDepartment.getPhoneNumberExt());
-		System.out.println("budget: " + searchedDepartment.getBudget());
-		System.out.println("department head: " + searchedDepartment.getDepartmentHead().getName());
+		// searchedDepartment = dummyDepartment;
+		// System.out.println("title: " + searchedDepartment.getType());
+		// System.out.println("phone number extension: " + searchedDepartment.getPhoneNumberExt());
+		// System.out.println("budget: " + searchedDepartment.getBudget());
+		// System.out.println("department head: " + searchedDepartment.getDepartmentHead().getName());
 		System.out.println("Would you like to see the list of all the employees in the department?");
 		System.out.println("Y/N");
 
@@ -283,7 +283,7 @@ public class Demo {
 		
 		
 		// This is dummy data
-		ArrayList<Employee> employees = fakeFileCall(department);
+		// ArrayList<Employee> employees = fakeFileCall(department);
 	}
 
 	public static void findEmployeeDetails() {
