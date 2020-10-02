@@ -11,7 +11,7 @@ public class NotTorFException extends Exception {
 	
 	public NotTorFException(String str) {
 		
-		super("Input was neither T or Y");
+		super("Input was neither T or F");
 		
 		this.s = str;
 	}
