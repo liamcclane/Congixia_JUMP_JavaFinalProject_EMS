@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import com.congnixia.javafinalproject.ems.models.Department;
 import com.congnixia.javafinalproject.ems.models.Employee;
 
@@ -49,7 +50,7 @@ public class FileMethods {
 			FileMethods.addEmployeeList(FileDriver.makeTestDataEmployee());
 		}
 		if(fileDepartment.length() == 0) {
-//			FileMethods.addObjectList(FileDriver.makeTestDataDepartment());			
+			FileMethods.addDepartmentList(FileDriver.makeTestDataDepartment());			
 		}
 		listTheEmployees();
 	}
@@ -103,6 +104,22 @@ public class FileMethods {
 		}
 		return true;
 	}
+
+	public static boolean addDepartmentList(List<Department> dep) {
+		for (int i = 0; i < dep.size(); i++) {
+			if (dep.get(i) instanceof Department) {
+				boolean check = false;
+				Department depCast = (Department) dep.get(i);
+				depCast.setDepartmentId(depCast.getDepartmentId() + i);
+				check = AddTheDepartment(dep.get(i));
+				if(check == false) {
+					System.out.println("AddDepartmentList Check this out.");
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 	
 	public static List<Employee> listTheEmployees() throws IOException {
 		theEmployeeList.clear();
@@ -122,14 +139,40 @@ public class FileMethods {
 		}
 		return theEmployeeList;
 	}
+
+	public static List<Department> listTheDepartments() throws IOException {
+		theDepartmentList.clear();
+		try (FileReader fr = new FileReader(fileDepartment); BufferedReader br = new BufferedReader(fr);) {
+			String line = "";
+			while ((line = br.readLine()) != null) {
+				if(!line.equals("")) {
+					String[] values = line.split(",");
+					Department d = new Department(Integer.parseInt(values[0]), values[1], Integer.parseInt(values[2]), values[3], Double.parseDouble(values[4]));
+					theDepartmentList.add(d);
+				}
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println(e);
+		}
+		return theDepartmentList;
+	}
 	
 
 	public static boolean addTheEmployee(Employee emp) {
 		try (FileWriter fr = new FileWriter(fileEmployee, true); BufferedWriter br = new BufferedWriter(fr);) {
-			System.out.println("addTheEmployee loop 2");
 			br.append(emp.getEmployeeId() + "," + emp.getName() + "," + emp.getEmail() + ","
 					+ emp.getPhoneNumber() + "," + emp.getHireDate() + "," + emp.getSalary() + ","
-					+ emp.isDepartmentHead() + "," + emp.getDepartmentId());
+					+ emp.isDepartmentHead() + "," + emp.getDepartmentId() + "\n");
+			return true;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
+	public static boolean AddTheDepartment(Department dep) {
+		try (FileWriter fr = new FileWriter(fileDepartment, true); BufferedWriter br = new BufferedWriter(fr);) {
+			br.append(dep.getDepartmentId() + "," + dep.getName() + "," + dep.getEmployeeId() + "," + dep.getPhoneNumberExt() + "," + dep.getBudget() + "\n");
 			return true;
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -154,6 +197,32 @@ public class FileMethods {
 						br.append(listOfEmployees.get(i).getEmployeeId() + "," + listOfEmployees.get(i).getName() + "," + listOfEmployees.get(i).getEmail() + ","
 								+ listOfEmployees.get(i).getPhoneNumber() + "," + listOfEmployees.get(i).getHireDate() + "," + listOfEmployees.get(i).getSalary() + ","
 								+ listOfEmployees.get(i).isDepartmentHead() + "," + listOfEmployees.get(i).getDepartmentId() + "\n");
+					}
+				}
+			}
+			if(count != 1) {
+				return false;
+			}
+			return true;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
+	public static boolean removeTheDepartment(int index) throws IOException {
+		List<Department> listOfDepartments = listTheDepartments();
+		try (FileWriter fr = new FileWriter(fileDepartment, false); BufferedWriter br = new BufferedWriter(fr);) {
+			int count = 0;
+			for (int i = 0; i < listOfDepartments.size(); i++) {
+				if(listOfDepartments.get(i).getDepartmentId() == index) {
+					count++;
+				}
+				if (listOfDepartments.get(i).getEmployeeId() != index) {
+					if (fileEmployee.length() != 0) {
+						br.append("\n" +  listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "/n");
+					} else {
+						br.append(listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "/n");
 					}
 				}
 			}
@@ -215,6 +284,41 @@ public class FileMethods {
 		return false;
 	}
 	
-	
+	public static boolean updateTheDepartment(int index, Department dep) throws IOException {
+		List<Department> listOfDepartments = listTheDepartments();
+		int count = 0;
+
+		for (int x = 0; x < listOfDepartments.size(); x++) {
+			if(index == listOfDepartments.get(x).getDepartmentId() && dep.getDepartmentId() == listOfDepartments.get(x).getDepartmentId()) {
+				count++;
+			}
+		}
+		if(count == 0) {
+			return false;
+		}
+		try (FileWriter fr = new FileWriter(fileDepartment, false); BufferedWriter br = new BufferedWriter(fr);) {
+			for (int i = 0; i < listOfDepartments.size(); i++) {
+				
+				if (listOfDepartments.get(i).getDepartmentId() != dep.getDepartmentId()) {
+					if (fileDepartment.length() != 0) {
+						br.append("\n" +  listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "/n");
+					} else {
+						br.append(listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "/n");
+					}
+				}
+				else {
+					if (fileDepartment.length() != 0) {
+						br.append("\n" + index + "," + dep.getName() + "," + dep.getEmployeeId() + "," + dep.getPhoneNumberExt() + "," + dep.getBudget());
+					} else {
+						br.append(index + "," + dep.getName() + "," + dep.getEmployeeId() + "," + dep.getPhoneNumberExt() + "," + dep.getBudget());
+					}
+				}
+			}
+			return true;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
 	
 }
