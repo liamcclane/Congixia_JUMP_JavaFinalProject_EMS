@@ -1,5 +1,6 @@
 package com.congnixia.javafinalproject.ems;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -8,6 +9,7 @@ import java.util.regex.Pattern;
 
 import com.congnixia.javafinalproject.ems.exceptions.*;
 import com.congnixia.javafinalproject.ems.models.*;
+import com.congnixia.javafinalproject.ems.filemanipulation.*;
 
 public class Demo {
 
@@ -215,7 +217,7 @@ public class Demo {
 		} while (true);
 
 		System.out.println("What is the budget for " + type + "?");
-		
+
 		do {
 			try {
 				budget = scanny.nextDouble();
@@ -224,9 +226,8 @@ public class Demo {
 				System.err.println("not an number");
 			}
 		} while (true);
-		
 
-		System.out.println("Who is going to be the departmetn head for " + type + "?");
+		System.out.println("Who is going to be the department head for " + type + "?");
 		System.out.println("Please input their employee id");
 
 		do {
@@ -238,9 +239,37 @@ public class Demo {
 			}
 		} while (true);
 		// get employee by id
+		// check if user has input deleted id, or an id outside of your list of
+		// employees
 		// head = dummyEmployee;
 		System.out.println("Is this the employee you want to appoint to the head of " + type + "?");
+		dummyEmployee.prettyPrintln();
+		System.out.println("Y/N?");
+		String whatever;
+		do {
+			try {
+				whatever = YorN();
+				break;
+			} catch (NotYesOrNoException e) {
+				System.err.println(e.getMessage());
+			}
+		} while (true);
 
+		if (whatever.equals("y")) {
+			// other function
+			// logic
+			Department newestDepart = null;
+			try {
+				newestDepart = new Department(Department.getLastDepartmentId(), type, dummyEmployee.getEmployeeId(),
+						10000, budget);
+			} catch (IOException e) {
+				System.out.println("something went wrong line 163");
+			}
+			// success message
+			System.out.println("you have created a new department," + newestDepart.getName() + "! with "
+					+ dummyEmployee.getName() + " as the head!");
+			return;
+		}
 	}
 
 	public static void findRoute() {
@@ -273,7 +302,10 @@ public class Demo {
 
 		System.out.println("Which department?");
 		// Make a call to the file class
-		String[] departmentTitles = { "HR", "Products", "Finance" };
+		
+		
+		
+		
 		for (int i = 0; i < departmentTitles.length; i++) {
 			System.out.print(departmentTitles[i]);
 			if (i < departmentTitles.length - 1) {
@@ -282,7 +314,14 @@ public class Demo {
 		}
 		System.out.println();
 
-		title = scanny.nextLine();
+		do {
+			try {
+				title = getUserTitle();
+				break;
+			} catch (NotVaildDepartmentOption e) {
+			}
+			
+		} while(true);
 
 		// Make a call to the file reader
 		searchedDepartment = dummyDepartment;
@@ -395,20 +434,20 @@ public class Demo {
 		return aOrB;
 	}
 
-	public static String getValidExtInt() throws NotValidExtensionNumber{
+	public static String getValidExtInt() throws NotValidExtensionNumber {
 		String reggie = "[0-9]{3}";
 		String s = scanny.nextLine();
-		if(s.length() != 3) {
+		if (s.length() != 3) {
 			throw new NotValidExtensionNumber(s);
 		}
 		Pattern patty = Pattern.compile(reggie);
 		Matcher m = patty.matcher(s);
-		if(!m.matches()) {
+		if (!m.matches()) {
 			throw new NotValidExtensionNumber(s);
 		}
 		return s;
 	}
-	
+
 	public static void greet() {
 		System.out.println("******************");
 		System.out.println("Hello, Welcome to the Best Boughts Data Base");
