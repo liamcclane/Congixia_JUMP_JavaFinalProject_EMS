@@ -1,7 +1,10 @@
 package com.congnixia.javafinalproject.ems;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.congnixia.javafinalproject.ems.exceptions.*;
 import com.congnixia.javafinalproject.ems.models.*;
@@ -22,21 +25,22 @@ public class Demo {
 		start();
 	}
 
-	public static void start(){
+	public static void start() {
 		String again;
 		greet();
 		do {
 			intoTheDataBase();
 			System.out.println("Do you want continue making changes? Y/N");
+
 			again = scanny.nextLine();
-		} while (again.equalsIgnoreCase("yes")|| again.equals("y"));
-		
+		} while (again.equalsIgnoreCase("yes") || again.equals("y"));
+
 		parting();
 
 	}
-	
+
 	public static void intoTheDataBase() {
-		
+
 		System.out.println("\nDid you want to?");
 		System.out.println("A - Add to the data base?");
 		System.out.println("B - find an existing empoloyee or department head?");
@@ -50,22 +54,21 @@ public class Demo {
 			}
 		} while (true);
 
-		if(aOrB.equals("a")) {
+		if (aOrB.equals("a")) {
 			addRoute();
 		} else {
 			findRoute();
 		}
 
 	}
-	
-	
-	public static void addRoute()  {
 
-		String aOrB;
+	public static void addRoute() {
+
 		// prompt user
 		System.out.println("\nAre you going to add : ");
 		System.out.println("A - a new Employee?");
 		System.out.println("B - a new Department?");
+		String aOrB;
 		do {
 			try {
 				aOrB = getAorBAgain();
@@ -75,8 +78,7 @@ public class Demo {
 			}
 		} while (true);
 
-
-		if (userInput.equals("a")) {
+		if (aOrB.equals("a")) {
 			createEmployee();
 		} else {
 			createDepartment();
@@ -84,7 +86,7 @@ public class Demo {
 
 	}
 
-	public static void createEmployee(){
+	public static void createEmployee() {
 
 		String name;
 		String email;
@@ -108,6 +110,7 @@ public class Demo {
 		phoneNumber = scanny.nextLine();
 		ReggieValidation rv = new ReggieValidation();
 
+		// loop here//
 		if (rv.isValidPhoneNumber(phoneNumber)) {
 			System.out.println("Valid phone number");
 		} else {
@@ -131,16 +134,22 @@ public class Demo {
 		hierDate = scanny.nextLine();
 
 		System.out.println("\nIs this new hier, " + name + ", going to be the head of the department? T/F?");
-		
+
 		String whatever;
 		do {
 			try {
-				whatever = YorN();
+				whatever = TorF();
 				break;
-			} catch (NotYesOrNoException e) {
+			} catch (NotTorFException e) {
 				System.err.println(e.getMessage());
 			}
 		} while (true);
+
+		if (whatever.equals("t")) {
+			isDepartmentHead = true;
+		} else {
+			isDepartmentHead = false;
+		}
 
 		// give user preview of what they are adding
 
@@ -148,14 +157,22 @@ public class Demo {
 		System.out.println("name : " + name);
 		System.out.println("email : " + email);
 		System.out.println("phone number : " + phoneNumber);
-		// System.out.println("to the department: " + department.getType());
+		System.out.println("to the department: " + department.getName());
 
 		// possible secondary validation
 		System.out.println("T/F?");
-		userInput = TorF();
+		do {
+			try {
+				whatever = TorF();
+				break;
+			} catch (NotTorFException e) {
+				System.err.println(e.getMessage());
+			}
+		} while (true);
 
-		if (userInput.equals("t")) {
-			isDepartmentHead = true;
+		if (whatever.equals("t")) {
+			// add to the database
+			System.out.println("add to the database");
 		} else {
 			isDepartmentHead = false;
 		}
@@ -165,9 +182,10 @@ public class Demo {
 
 		// now add them back into the files, needs file logic form daniel
 		// success message
-		System.out.println("\nEmployee :");
 		// System.out.println(employee);
+		System.out.println("\nEmployee :");
 		System.out.println("you have successfully added " + name + " to the employee list");
+		System.out.println(dummyEmployee.toString());
 		System.out.println("go check them out on the files in resources//allEmployees.csv");
 		return;
 	}
@@ -176,7 +194,7 @@ public class Demo {
 
 		String userInput;
 		String type;
-		int phoneNumberExt;
+		String phoneNumberExt;
 		int headId;
 		double budget;
 
@@ -187,15 +205,38 @@ public class Demo {
 		type = scanny.nextLine();
 
 		System.out.println("What is the phone number extension?");
-		phoneNumberExt = scanny.nextInt();
+		do {
+			try {
+				phoneNumberExt = getValidExtInt();
+				break;
+			} catch (NotValidExtensionNumber e) {
+				System.err.println(e.getMessage());
+			}
+		} while (true);
 
 		System.out.println("What is the budget for " + type + "?");
-		budget = scanny.nextDouble();
+		
+		do {
+			try {
+				budget = scanny.nextDouble();
+				break;
+			} catch (InputMismatchException e) {
+				System.err.println("not an number");
+			}
+		} while (true);
+		
 
 		System.out.println("Who is going to be the departmetn head for " + type + "?");
 		System.out.println("Please input their employee id");
 
-		headId = scanny.nextInt();
+		do {
+			try {
+				headId = scanny.nextInt();
+				break;
+			} catch (InputMismatchException e) {
+				System.err.println("not an number");
+			}
+		} while (true);
 		// get employee by id
 		// head = dummyEmployee;
 		System.out.println("Is this the employee you want to appoint to the head of " + type + "?");
@@ -217,7 +258,7 @@ public class Demo {
 			}
 		} while (true);
 
-		if (userInput.equals("a")) {
+		if (aOrB.equals("a")) {
 			findDepartmentDetails();
 		} else {
 			findEmployeeDetails();
@@ -317,27 +358,28 @@ public class Demo {
 		// call to the filereader class that returns a single employee via ID
 		dummyEmployee.prettyPrintln();
 	}
+
 	public static String getAorBAgain() throws NotAorBException {
 		String aOrB;
 		aOrB = scanny.nextLine();
 		aOrB.toLowerCase();
-		
-		if(!(aOrB.equals("a")|| aOrB.equals("b"))) {
+
+		if (!(aOrB.equals("a") || aOrB.equals("b"))) {
 			throw new NotAorBException(aOrB);
 		}
-		
+
 		return aOrB;
 	}
 
-	public static String TorF() {
+	public static String TorF() throws NotTorFException {
 		String aOrB;
 		aOrB = scanny.nextLine();
 		aOrB.toLowerCase();
-		
-		if(!(aOrB.equals("a")|| aOrB.equals("b"))) {
-			throw new NotTOrFException(aOrB);
+
+		if (!(aOrB.equals("t") || aOrB.equals("f"))) {
+			throw new NotTorFException(aOrB);
 		}
-		
+
 		return aOrB;
 	}
 
@@ -345,14 +387,28 @@ public class Demo {
 		String aOrB;
 		aOrB = scanny.nextLine();
 		aOrB.toLowerCase();
-		
-		if(!(aOrB.equals("a")|| aOrB.equals("b"))) {
+
+		if (!(aOrB.equals("y") || aOrB.equals("n"))) {
 			throw new NotYesOrNoException(aOrB);
 		}
-		
+
 		return aOrB;
 	}
 
+	public static String getValidExtInt() throws NotValidExtensionNumber{
+		String reggie = "[0-9]{3}";
+		String s = scanny.nextLine();
+		if(s.length() != 3) {
+			throw new NotValidExtensionNumber(s);
+		}
+		Pattern patty = Pattern.compile(reggie);
+		Matcher m = patty.matcher(s);
+		if(!m.matches()) {
+			throw new NotValidExtensionNumber(s);
+		}
+		return s;
+	}
+	
 	public static void greet() {
 		System.out.println("******************");
 		System.out.println("Hello, Welcome to the Best Boughts Data Base");
