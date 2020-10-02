@@ -14,16 +14,25 @@ public class FileDriver {
 	public static void main(String[] args) throws IOException {
 		FileMethods.runOnce();
 		
+		for(String s: Department.getAllDepartmentNames()) {
+			System.out.println(s);
+		}
+		
+		System.out.println(Department.findAllEmployeesWorkingInDepartment(new Department(1, "Sales", 6, "111", 1000000.00d)));
+		
+		System.out.println(Department.findDepartmentByName("HQ"));
+		
+		
 		// LIST: 
-		System.out.println("This will list all of the employees: " + Employee.listEmployees());
+//		System.out.println("This will list all of the employees: " + Employee.listEmployees());
 		// UPDATE:
 //		System.out.println("This will return true if an Employee was updated." + Employee.updateEmployee(10, new Employee(10, "Not Man MAN", "Note Bobman@google.com", "324-234-1233", "2029-01-05", 105000.50d, false, 2)));
 		// REMOVE:
-		System.out.println("This will return true if an Employee was removed." + Employee.removeEmployee(600));
+//		System.out.println("This will return true if an Employee was removed." + Employee.removeEmployee(600));
 		// ADD:
 //		System.out.println("This will return true if an Employee was added." + Employee.addEmployee(new Employee(Employee.getLastEmployeeId(), "LOL", "LOL@google.com", "324-234-1113", "3029-01-05", 1050200.50d, false, 2)));
 		// LIST: 
-		System.out.println("This will list all of the employees: " + Employee.listEmployees());
+//		System.out.println("This will list all of the employees: " + Employee.listEmployees());
 		// FINDEmployeeById
 //		System.out.println("This will return the Employee with the ID of 11: " + Employee.findEmployeeById(11));
 //		// LIST ALL EMPLOYEES BY NAME
@@ -33,10 +42,10 @@ public class FileDriver {
 	}
 
 	public static List<Department> makeTestDataDepartment() throws IOException {
-		departments.add(new Department(Department.getLastDepartmentId(), "Sales", 6, 111, 1000000.00d));
-		departments.add(new Department(Department.getLastDepartmentId(), "Electronics", 10, 222, 125000.00d));
-		departments.add(new Department(Department.getLastDepartmentId(), "HQ", 11, 333, 1500000.00));
-		departments.add(new Department(Department.getLastDepartmentId(), "IT", 12, 444, 375000.00));
+		departments.add(new Department(Department.getLastDepartmentId(), "Sales", 6, "111", 1000000.00d));
+		departments.add(new Department(Department.getLastDepartmentId(), "Electronics", 10, "222", 125000.00d));
+		departments.add(new Department(Department.getLastDepartmentId(), "HQ", 11, "333", 1500000.00));
+		departments.add(new Department(Department.getLastDepartmentId(), "IT", 12, "444", 375000.00));
 	
 		return departments;
 	}
