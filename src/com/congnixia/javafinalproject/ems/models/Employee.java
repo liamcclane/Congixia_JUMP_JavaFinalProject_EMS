@@ -112,30 +112,24 @@ public class Employee {
 	 * @throws IOException
 	 */
 	public static List<Employee> listEmployees() throws IOException {
-		List<Employee> employeeList = new ArrayList<Employee>();
-		List<Object> objs = FileMethods.listObjects('e');
-		for(int i = 0; i < objs.size(); i++) {
-			Employee emp = (Employee) objs.get(i);
-			employeeList.add(emp);
-		}
-		return employeeList;
+		return FileMethods.listTheEmployees();
 	}
 
 	public static boolean addEmployee(Employee e) throws IOException {
-		return FileMethods.addObject(e);
+		return FileMethods.addTheEmployee(e);
 	}
 	
-	public static boolean updateEmployee(int index, Object obj) throws IOException {
-		return FileMethods.updateObject(index, 'e', obj);
+	public static boolean updateEmployee(int index, Employee emp) throws IOException {
+		return FileMethods.updateTheEmployee(index, emp);
 	}
 	
 	public static boolean removeEmployee(int index) throws IOException {
-		return FileMethods.removeObject(index, 'e');
+		return FileMethods.removeTheEmployee(index);
 	}
 	
 	public static List<Employee> findAllEmployeesByName(String searchName) throws IOException {
 		return listEmployees().stream()
-				.filter(x -> x.getName().equals(searchName))
+				.filter(x -> x.getName().equalsIgnoreCase(searchName))
 				.collect(Collectors.toList());
 	}
 	
@@ -148,13 +142,13 @@ public class Employee {
 	public static Employee findEmployeeByPhoneNumber(String searchNumber) throws IOException {
 		return listEmployees().stream()
 				.filter(x -> x.getPhoneNumber() == searchNumber)
-				.findFirst().get();
+				.findFirst().orElse(null);
 	}
 			
 	public static Employee findEmployeeById(int id) throws IOException {
 		return listEmployees().stream()
 				.filter(x -> x.getEmployeeId() == id)
-				.findFirst().get();
+				.findFirst().orElse(null);
 	}
 
 	@Override
