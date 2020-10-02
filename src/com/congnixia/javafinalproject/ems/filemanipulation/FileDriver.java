@@ -17,28 +17,28 @@ public class FileDriver {
 		FileMethods.runOnce();
 		
 		// LIST: 
-//		System.out.println(Employee.listEmployees());
+		System.out.println("This will list all of the employees: " + Employee.listEmployees());
 
 		// UPDATE:
-//		Employee.updateEmployee(2, new Employee(2, "Toad", "Toad@google.com", "324-234-1233", "2029-01-05", 105000.50d, false, 2));
+		System.out.println("This will return true if an Employee was updated." + Employee.updateEmployee(2, new Employee(2, "Toad", "Toad@google.com", "324-234-1233", "2029-01-05", 105000.50d, false, 2)));
 		
 		// REMOVE:
-//		System.out.println(Employee.removeEmployee(15));
+		System.out.println("This will return true if an Employee was removed." + Employee.removeEmployee(4));
 		
 		// ADD:
-//		Employee.addEmployee(new Employee(Employee.getLastEmployeeId(), "LOL", "LOL@google.com", "324-234-1113", "3029-01-05", 1050200.50d, false, 2));
+		System.out.println("This will return true if an Employee was added." + Employee.addEmployee(new Employee(Employee.getLastEmployeeId(), "LOL", "LOL@google.com", "324-234-1113", "3029-01-05", 1050200.50d, false, 2)));
 		
 		// LIST: 
-//		System.out.println(Employee.listEmployees());
+		System.out.println("This will list all of the employees: " + Employee.listEmployees());
 		
 		// FINDEmployeeById
-//		System.out.println(Employee.findEmployeeById(10));
+		System.out.println("This will return the Employee with the ID of 10: " + Employee.findEmployeeById(10));
 		
 		// LIST ALL EMPLOYEES BY NAME
-//		System.out.println(Employee.findAllEmployeesByName("LOL"));
+		System.out.println("This will list all the employees with the name LOL: " + Employee.findAllEmployeesByName("LOL"));
 		
 		/// List All Employees in a department.
-//		System.out.println(Employee.findAllEmployeesByDepartment(new Department(1, "Sales", 6, 111, 1000000.00d)));
+		System.out.println("This will list all of the employees in the department: " + Employee.findAllEmployeesByDepartment(new Department(1, "Sales", 6, 111, 1000000.00d)));
 	}
 
 	public static List<Object> makeTestDataDepartment() throws IOException {

@@ -3,14 +3,8 @@ package com.congnixia.javafinalproject.ems.models;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.congnixia.javafinalproject.ems.filemanipulation.FileMethods;
-import com.congnixia.javafinalproject.ems.filemanipulation.ReadingFiles;
-
-//import com.cognixia.jump.advancedjava.projects.ReadingFiles;
 
 public class Employee {
 	
@@ -36,6 +30,12 @@ public class Employee {
 		this.departmentId = departmentId;
 	}
 	
+	/**
+	 * This uses the FileMethod's findLastOfEmployeeId which looks through the file and finds the highest id and adds 1.
+	 * 
+	 * @return int
+	 * @throws IOException
+	 */
 	public static int getLastEmployeeId() throws IOException {
 		return FileMethods.findLastOfEmployeeId() + 1;
 	}
@@ -104,6 +104,13 @@ public class Employee {
 		this.departmentId = departmentId;
 	}
 
+	/**
+	 * Returns a List<Employee> because all the FileMethod Classes methods returns a List<Object>
+	 * 
+	 * 
+	 * @return List<Employee>
+	 * @throws IOException
+	 */
 	public static List<Employee> listEmployees() throws IOException {
 		List<Employee> employeeList = new ArrayList<Employee>();
 		List<Object> objs = FileMethods.listObjects('e');
@@ -126,43 +133,26 @@ public class Employee {
 		return FileMethods.removeObject(index, 'e');
 	}
 	
-	/**
-	 * Returns a List<Employee> because all the FileMethod Classes methods returns a List<Object>
-	 * 
-	 * 
-	 * @return List<Employee>
-	 * @throws IOException
-	 */
-	private static List<Employee> loadEmployeeList() throws IOException {
-		List<Employee> employeeList = new ArrayList<Employee>();
-		List<Object> objs = FileMethods.listObjects('e');
-		for(int i = 0; i < objs.size(); i++) {
-			Employee emp = (Employee) objs.get(i);
-			employeeList.add(emp);
-		}
-		return employeeList;
-	}
-	
 	public static List<Employee> findAllEmployeesByName(String searchName) throws IOException {
-		return loadEmployeeList().stream()
+		return listEmployees().stream()
 				.filter(x -> x.getName().equals(searchName))
 				.collect(Collectors.toList());
 	}
 	
 	public static List<Employee> findAllEmployeesByDepartment(Department department) throws IOException {
-		return loadEmployeeList().stream()
+		return listEmployees().stream()
 				.filter(x -> x.departmentId == department.getDepartmentId())
 				.collect(Collectors.toList());
 	}
 	
 	public static Employee findEmployeeByPhoneNumber(String searchNumber) throws IOException {
-		return loadEmployeeList().stream()
+		return listEmployees().stream()
 				.filter(x -> x.getPhoneNumber() == searchNumber)
 				.findFirst().get();
 	}
 			
 	public static Employee findEmployeeById(int id) throws IOException {
-		return loadEmployeeList().stream()
+		return listEmployees().stream()
 				.filter(x -> x.getEmployeeId() == id)
 				.findFirst().get();
 	}
