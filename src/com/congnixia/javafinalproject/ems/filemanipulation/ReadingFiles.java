@@ -47,6 +47,7 @@ public class ReadingFiles {
 		} catch (FileNotFoundException e) {
 			System.out.println(e);
 		}
+		System.out.println(allEmployees);
 		return allEmployees;
 	}
 	
@@ -220,5 +221,74 @@ public class ReadingFiles {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	public static List<Object> listObjects(char obj) throws IOException {
+		if(obj == 'e') {
+
+			List<Object> allEmployees = new ArrayList<Object>();
+			File file = new File("resources/employees.csv");
+
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+
+			try (FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr);) {
+
+				String line = "";
+
+				while ((line = br.readLine()) != null) {
+
+					String[] values = line.split(",");
+
+					Employee e = new Employee(Integer.parseInt(values[0]), values[1], values[2], values[3], values[4],
+							Double.parseDouble(values[5]), Boolean.parseBoolean(values[6]), Integer.parseInt(values[7]));
+					allEmployees.add(e);
+				}
+			} catch (FileNotFoundException e) {
+				System.out.println(e);
+			}
+			return allEmployees;
+
+		} else if(obj == 'd') {
+
+			List<Object> allDepartments = new ArrayList<Object>();
+			File file = new File("resources/departments.csv");
+
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+
+			try (FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr);) {
+
+				String line = "";
+
+				while ((line = br.readLine()) != null) {
+
+					String[] values = line.split(",");
+
+					Department e = new Department(Integer.parseInt(values[0]), values[1], Integer.parseInt(values[2]), Integer.parseInt(values[3]), Double.parseDouble(values[4]));
+					allDepartments.add(e);
+				}
+			} catch (FileNotFoundException e) {
+				System.out.println(e);
+			}
+			return allDepartments;
+
+		} else {
+			return null;
+		}
+	}
+
+	public static void addObject() {
+
+	}
+
+	public static void removeObject() {
+
+	}
+
+	public static void updateObject() {
+
 	}
 }

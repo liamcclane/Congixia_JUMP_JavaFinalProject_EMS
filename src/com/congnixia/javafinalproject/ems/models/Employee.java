@@ -1,10 +1,9 @@
 package com.congnixia.javafinalproject.ems.models;
 
 import java.io.IOException;
-
-import com.congnixia.javafinalproject.ems.filemanipulation.ReadingFiles;
-
-//import com.cognixia.jump.advancedjava.projects.ReadingFiles;
+import java.util.List;
+import java.util.stream.Collectors;
+import com.congnixia.javafinalproject.ems.filemanipulation.FileMethods;
 
 public class Employee {
 
@@ -29,9 +28,15 @@ public class Employee {
 		this.isDepartmentHead = isDepartmentHead;
 		this.departmentId = departmentId;
 	}
-
+	
+	/**
+	 * This uses the FileMethod's findLastOfEmployeeId which looks through the file and finds the highest id and adds 1.
+	 * 
+	 * @return int
+	 * @throws IOException
+	 */
 	public static int getLastEmployeeId() throws IOException {
-		return ReadingFiles.findLastOfEmployeeId() + 1;
+		return FileMethods.findLastOfEmployeeId() + 1;
 	}
 
 	public int getEmployeeId() {
@@ -98,25 +103,27 @@ public class Employee {
 		this.departmentId = departmentId;
 	}
 
-	public static void listEmployees() throws IOException {
-		System.out.println("Employee List:");
-		System.out.println(ReadingFiles.readEmployees().toString());
+	/**
+	 * Returns a List<Employee> because all the FileMethod Classes methods returns a List<Object>
+	 * 
+	 * 
+	 * @return List<Employee>
+	 * @throws IOException
+	 */
+	public static List<Employee> listEmployees() throws IOException {
+		return FileMethods.listTheEmployees();
 	}
 
 	public static boolean addEmployee(Employee e) throws IOException {
-		ReadingFiles.writeToFile(e);
-		System.out.println("Employee Added.");
-		return true;
+		return FileMethods.addTheEmployee(e);
 	}
-
-	public static boolean updateEmployee() {
-		System.out.println("Employee Updated.");
-		return true;
+	
+	public static boolean updateEmployee(int index, Employee emp) throws IOException {
+		return FileMethods.updateTheEmployee(index, emp);
 	}
-
-	public static boolean removeEmployee() {
-		System.out.println("Employee Removed.");
-		return true;
+	
+	public static boolean removeEmployee(int index) throws IOException {
+		return FileMethods.removeTheEmployee(index);
 	}
 
 	/**
@@ -131,22 +138,35 @@ public class Employee {
 		return this;
 	}
 	
-	/**
-	 * call this method when you want a single line print
-	 * @return
-	 */
-	public Employee prettyPrint() {
-		System.out.println("Name : " + this.name + " \t" + this.employeeId + " : id" + "\tEmail: " + this.email
-				+ "\tPhone Number : " + this.phoneNumber);
-
-		return this;
+	public static List<Employee> findAllEmployeesByName(String searchName) throws IOException {
+		return listEmployees().stream()
+				.filter(x -> x.getName().equalsIgnoreCase(searchName))
+				.collect(Collectors.toList());
+	}
+	
+	public static List<Employee> findAllEmployeesByDepartment(Department department) throws IOException {
+		return listEmployees().stream()
+				.filter(x -> x.departmentId == department.getDepartmentId())
+				.collect(Collectors.toList());
+	}
+	
+	public static Employee findEmployeeByPhoneNumber(String searchNumber) throws IOException {
+		return listEmployees().stream()
+				.filter(x -> x.getPhoneNumber() == searchNumber)
+				.findFirst().orElse(null);
+	}
+			
+	public static Employee findEmployeeById(int id) throws IOException {
+		return listEmployees().stream()
+				.filter(x -> x.getEmployeeId() == id)
+				.findFirst().orElse(null);
 	}
 
 	@Override
 	public String toString() {
-		return "Employee [employeeId=" + employeeId + ", name=" + name + ", email=" + email + ", phoneNumber="
-				+ phoneNumber + ", hireDate=" + hireDate + ", salary=" + salary + ", isDepartmentHead="
-				+ isDepartmentHead + ", departmentId=" + departmentId + "]";
+		return "\n[employeeId=" + employeeId + ",\tname=" + name + ",\temail=" + email + ",    \tphoneNumber="
+				+ phoneNumber + ", hireDate=" + hireDate + ", salary=" + salary + ",\tisDepartmentHead="
+				+ isDepartmentHead + ",\tdepartmentId=" + departmentId + "]";
 	}
 
 }
