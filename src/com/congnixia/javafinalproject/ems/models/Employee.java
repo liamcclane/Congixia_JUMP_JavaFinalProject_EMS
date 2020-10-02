@@ -7,7 +7,7 @@ import com.congnixia.javafinalproject.ems.filemanipulation.ReadingFiles;
 //import com.cognixia.jump.advancedjava.projects.ReadingFiles;
 
 public class Employee {
-	
+
 	private int employeeId;
 	private String name;
 	private String email;
@@ -29,7 +29,7 @@ public class Employee {
 		this.isDepartmentHead = isDepartmentHead;
 		this.departmentId = departmentId;
 	}
-	
+
 	public static int getLastEmployeeId() throws IOException {
 		return ReadingFiles.findLastOfEmployeeId() + 1;
 	}
@@ -108,18 +108,39 @@ public class Employee {
 		System.out.println("Employee Added.");
 		return true;
 	}
-	
+
 	public static boolean updateEmployee() {
 		System.out.println("Employee Updated.");
 		return true;
 	}
-	
+
 	public static boolean removeEmployee() {
 		System.out.println("Employee Removed.");
 		return true;
 	}
+
+	/**
+	 * call this method if you want a pretty multi line print
+	 * 
+	 * @return
+	 */
+	public Employee prettyPrintln() {
+		System.out.println("Name : " + this.name + " \t" + this.employeeId + " : id" + "\nEmail: " + this.email
+				+ "\nPhone Number : " + this.phoneNumber);
+
+		return this;
+	}
 	
-	
+	/**
+	 * call this method when you want a single line print
+	 * @return
+	 */
+	public Employee prettyPrint() {
+		System.out.println("Name : " + this.name + " \t" + this.employeeId + " : id" + "\tEmail: " + this.email
+				+ "\tPhone Number : " + this.phoneNumber);
+
+		return this;
+	}
 
 	@Override
 	public String toString() {
