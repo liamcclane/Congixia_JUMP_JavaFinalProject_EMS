@@ -27,10 +27,23 @@ class DepartmentTest {
 	 * 	allEmployees array in the departments object
 	 * 
 	 */
+	@Test
+	public void testDepartmentGetters() {
+		Department testDepartment = new Department(0, "HR", 0, 40000, 0);
+		assertEquals("HR", testDepartment.getName());
+		assertEquals(0, testDepartment.getPhoneNumberExt());
+		assertEquals(40000, testDepartment.getBudget());
+	}
 	
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	public void testDepartmentSetters() {
+		Department testDepartment = new Department(0, "HR", 0, 40000, 0);
+		testDepartment.setName("Sales");
+		testDepartment.setPhoneNumberExt(1);
+		testDepartment.setBudget(30000);
+		assertEquals("Sales", testDepartment.getName());
+		assertEquals(1, testDepartment.getPhoneNumberExt());
+		assertEquals(30000, testDepartment.getBudget());
 	}
 
 }
