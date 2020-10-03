@@ -138,12 +138,15 @@ public class Department {
 			Employee promoted = Employee.findEmployeeToBeNewHeadBySalary();
 			promoted.setDepartmentHead(true);
 			promoted.setDepartmentId(emp.getDepartmentId());
+			Employee.updateEmployee(promoted.getEmployeeId(), promoted);
 		}
 		emp.setDepartmentHead(true);
 		emp.setDepartmentId(dep.getDepartmentId());
+		Employee.updateEmployee(emp.getEmployeeId(), emp);
 
 		dep.employeeId = emp.getEmployeeId();
-
+		Department.updateDepartment(dep.getDepartmentId(), dep);
+		
 		// Employee.
 		return true;
 	}

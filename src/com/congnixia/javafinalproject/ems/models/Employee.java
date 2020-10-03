@@ -183,8 +183,13 @@ public class Employee {
 				.findFirst().orElse(null);
 	}
 
+	/**
+	 * This method returns the highest paid salary person that also is not the head of any department.
+	 * 
+	 * @return Employee
+	 */
 	public static Employee findEmployeeToBeNewHeadBySalary() {
-		return listEmployees().stream().max(Comparator.comparing(Employee::getSalary)).orElse(null);	
+		return listEmployees().stream().filter(x -> x.getDepartmentHead() == false).max(Comparator.comparing(Employee::getSalary)).orElse(null);	
 	}
 
 	@Override
