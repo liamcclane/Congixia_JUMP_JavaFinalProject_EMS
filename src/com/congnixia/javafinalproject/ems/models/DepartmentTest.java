@@ -29,7 +29,7 @@ class DepartmentTest {
 	 */
 	@Test
 	public void testDepartmentGetters() {
-		Department testDepartment = new Department(0, "HR", 0, 40000, 0);
+		Department testDepartment = new Department(0, "HR", 40000, "333", 0);
 		assertEquals("HR", testDepartment.getName());
 		assertEquals(0, testDepartment.getPhoneNumberExt());
 		assertEquals(40000, testDepartment.getBudget());
@@ -37,9 +37,9 @@ class DepartmentTest {
 	
 	@Test
 	public void testDepartmentSetters() {
-		Department testDepartment = new Department(0, "HR", 0, 40000, 0);
+		Department testDepartment = new Department(0, "HR", 40000, "777", 0);
 		testDepartment.setName("Sales");
-		testDepartment.setPhoneNumberExt(1);
+		testDepartment.setPhoneNumberExt("345");
 		testDepartment.setBudget(30000);
 		assertEquals("Sales", testDepartment.getName());
 		assertEquals(1, testDepartment.getPhoneNumberExt());

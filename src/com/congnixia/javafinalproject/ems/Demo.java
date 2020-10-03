@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 import com.congnixia.javafinalproject.ems.exceptions.*;
 import com.congnixia.javafinalproject.ems.models.*;
-import com.congnixia.javafinalproject.ems.filemanipulation.*;
 
 public class Demo {
 
@@ -38,100 +37,73 @@ public class Demo {
 
 			again = scanny.nextLine();
 		} while (again.equalsIgnoreCase("yes") || again.equals("y"));
-
 		parting();
-
 	}
 
 	public static void intoTheDataBase() {
-
 		System.out.println("\nDid you want to?");
 		System.out.println("A - Add to the data base?");
-		System.out.println("B - find an existing empoloyee or department head?");
-		String aOrB;
-		do {
-			try {
-				aOrB = getAorBAgain();
-				break;
-			} catch (NotAorBException e) {
-				System.err.println(e.getMessage());
-			}
-		} while (true);
-
+		System.out.println("B - find an existing empoloyee details or department details?");
+		String aOrB = AorBLoop();
 		if (aOrB.equals("a")) {
 			addRoute();
 		} else {
 			findRoute();
 		}
-
 	}
 
 	public static void addRoute() {
-
 		// prompt user
 		System.out.println("\nAre you going to add : ");
 		System.out.println("A - a new Employee?");
 		System.out.println("B - a new Department?");
-		String aOrB;
-		do {
-			try {
-				aOrB = getAorBAgain();
-				break;
-			} catch (NotAorBException e) {
-				System.err.println(e.getMessage());
-			}
-		} while (true);
-
+		String aOrB = AorBLoop();
 		if (aOrB.equals("a")) {
 			createEmployee();
 		} else {
 			createDepartment();
 		}
-
 	}
 
 	public static void createEmployee() {
-
 		String name;
 		String email;
 		String phoneNumber;
 		String hierDate;
 		double salary = 0.0d;
 		boolean isDepartmentHead;
-
 		System.out.println("\nCreating an a new hire!");
 		System.out.println("What department are they going into?");
 		// list departments
 		printDepartmentNames();
-		String departName;
-		try {
-			departName = getUserTitle();
-		} catch (NotValidDepartmentOption e) {
-			System.out.println(e.getMessage());
-		}
+		String departName = "";
+		do {
+			try {
+				departName = getUserTitle();
+				break;
+			} catch (NotValidDepartmentOption e) {
+				System.out.println(e.getMessage());
+			}
 
+		} while (true);
 		Department foundDepartment = Department.findDepartmentByName(departName);
-
+		// want to find current head
 		System.out.println("\nWhat is their name?");
 		name = scanny.nextLine(); // null exeption maybe
 
-		do {
-			System.out.println("\nWhat is their phone number?");
+		ReggieValidation rv = new ReggieValidation();
+		System.out.println("\nWhat is their phone number?");
+		phoneNumber = scanny.nextLine();
+		while (!rv.isValidPhoneNumber(phoneNumber)) {
+			System.err.println("Invalid phone number must be (###)###-####");
+			System.err.println("or ###-###-####");
+			scanny.nextLine();
 			phoneNumber = scanny.nextLine();
-			ReggieValidation rv = new ReggieValidation();
-			if (!rv.isValidPhoneNumber(phoneNumber)) {
-				System.err.println("Invalid phone number must be (###)###-####");
-				System.err.println("or ###-###-####");
-				scanny.nextLine();
-			} else {
-				break;
-			}
-		} while (true);
+		}
 
 		do {
 			System.out.println("\nWhat is their email?");
 			email = scanny.nextLine();
-			ReggieValidation rv = new ReggieValidation();
 			if (!rv.isValidEmail(email)) {
 				System.err.println("Invalid email");
 				System.err.println("ex example@eample.com");
@@ -147,28 +119,20 @@ public class Demo {
 
 		do {
 			try {
-				hierDate = scanny.nextLine();
+				salary = scanny.nextDouble();
 				break;
 			} catch (InputMismatchException e) {
 				System.err.println("not an number");
+				scanny.nextLine();
 			}
 
 		} while (true);
 
-		System.out.println("\nIs this new hier, " + name + ", going to be the head of the" + foundDepartment.getName()
-				+ " department? T/F?");
-
-		String whatever;
-		do {
-			try {
-				whatever = TorF();
-				break;
-			} catch (NotTorFException e) {
-				System.err.println(e.getMessage());
-			}
-		} while (true);
-
-		if (whatever.equals("t")) {
+		System.out.println(
+				"\nThe current head of " + foundDepartment.getName() + ", is " + foundDepartment.getEmployeeId() + ".");
+		System.out.println("would you like to appoint the new heir, " + name + ", to be the head?" + "\nY/N?");
+		String whatever = YorNLoop();
+		if (whatever.equals("y")) {
 			isDepartmentHead = true;
 		} else {
 			isDepartmentHead = false;
@@ -180,18 +144,17 @@ public class Demo {
 		System.out.println("email : " + email);
 		System.out.println("salary : " + salary);
 		System.out.println("phone number : " + phoneNumber);
-		System.out.println("to the department: " + foundDepartment.getName());
+		if (whatever.equals("y")) {
+			System.out.println("and appoint the new comer department head over, " + foundDepartment.getEmployeeId());
+		} else {
+			System.out.println(
+					"to the department: " + foundDepartment.getName() + " under " + foundDepartment.getEmployeeId());
+		}
 
 		// possible secondary validation
+		
 		System.out.println("T/F?");
-		do {
-			try {
-				whatever = TorF();
-				break;
-			} catch (NotTorFException e) {
-				System.err.println(e.getMessage());
-			}
-		} while (true);
+		whatever = TorFLoop();
 
 		if (whatever.equals("t")) {
 			// add to the database
@@ -225,7 +188,17 @@ public class Demo {
 
 		System.out.println("\nCreating a new Department in the company?");
 		System.out.println("What is the title type?");
-		type = scanny.nextLine();
+		
+		do {
+			try {
+				type = getUserDepatType();
+				break;
+			} catch (DepartmentAlreadyExistsException e) {
+				System.err.println(e.getMessage());
+				printDepartmentNames();
+			}
+		} while (true);
+
 
 		System.out.println("What is the phone number extension?");
 		do {
@@ -264,7 +237,13 @@ public class Demo {
 		// employees
 		// head = dummyEmployee;
 		System.out.println("Is this the employee you want to appoint to the head of " + type + "?");
-		dummyEmployee.prettyPrintln();
+		Employee empToAppoint;
+		try {
+			empToAppoint = Employee.findEmployeeById(headId);
+			empToAppoint.prettyPrintln();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		System.out.println("Y/N?");
 		String whatever;
 		do {
@@ -280,12 +259,8 @@ public class Demo {
 			// other function
 			// logic
 			Department newestDepart = null;
-			try {
-				newestDepart = new Department(Department.getLastDepartmentId(), type, dummyEmployee.getEmployeeId(),
-						phoneNumberExt, 10000);
-			} catch (IOException e) {
-				System.out.println("something went wrong line 163");
-			}
+			newestDepart = new Department(Department.getLastDepartmentId(), type, dummyEmployee.getEmployeeId(),
+					phoneNumberExt, 10000);
 			// success message
 			System.out.println("you have created a new department," + newestDepart.getName() + "! with "
 					+ dummyEmployee.getName() + " as the head!");
@@ -300,16 +275,7 @@ public class Demo {
 		System.out.println("\nAre you looking for a department details or employee details?");
 		System.out.println("A - Department details?");
 		System.out.println("B - Employee details?");
-		String aOrB;
-		do {
-			try {
-				aOrB = getAorBAgain();
-				break;
-			} catch (NotAorBException e) {
-				System.err.println(e.getMessage());
-			}
-		} while (true);
-
+		String aOrB = AorBLoop();
 		if (aOrB.equals("a")) {
 			findDepartmentDetails();
 		} else {
@@ -322,21 +288,19 @@ public class Demo {
 
 		String title;
 		Department searchedDepartment;
-
 		System.out.println("Which department?");
 		printDepartmentNames();
-
 		do {
 			try {
 				title = getUserTitle();
 				break;
-			} catch (NotVaildDepartmentOption e) {
+			} catch (NotValidDepartmentOption e) {
+				System.err.println(e.getMessage());
 			}
-
 		} while (true);
 
 		// Make a call to the file reader
-		searchedDepartment = dummyDepartment;
+		searchedDepartment = Department.findDepartmentByName(title);
 		System.out.println("title: " + searchedDepartment.getName());
 		System.out.println("phone number extension: " + searchedDepartment.getPhoneNumberExt());
 		System.out.println("budget: " + searchedDepartment.getBudget());
@@ -344,34 +308,58 @@ public class Demo {
 		// searchedDepartment.getDepartmentHead().getName());
 		System.out.println("Would you like to see the list of all the employees in the department?");
 		System.out.println("Y/N");
-		String aOrB;
-		do {
+		String aOrB = YorNLoop();
+		if (aOrB.equals("y")) {
+			List<Employee> employees;
 			try {
-				aOrB = YorN();
-				break;
-			} catch (NotYesOrNoException e) {
-				System.err.println(e.getMessage());
+				employees = Department.findAllEmployeesWorkingInDepartment(searchedDepartment);
+				for (int i = 0; i < employees.size(); i++) {
+					System.out.println("Name: " + employees.get(i).getName() + "\tPhone number: "
+							+ employees.get(i).getPhoneNumber() + "\tID: " + employees.get(i).getEmployeeId());
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} while (true);
-
-		if (userInput.equals("y")) {
-			listAllEmployeesInDepartment(searchedDepartment);
 		}
+		
+		System.out.println("Would you like to make edits to this Department? \nY/N");
+		aOrB = YorNLoop();
+		if (aOrB.equals("y")) {
+			editDepartmentRoute(searchedDepartment);
+		}
+		
 
 	}
 
+	public static void editDepartmentRoute(Department oldDepartment) {
+		System.out.println(oldDepartment);
+		System.out.println("what should the new name be?");
+		String name = scanny.nextLine();
+		System.out.println("what should the new ext. Number be?");
+		String extNum = scanny.nextLine();
+		System.out.println("what should the new budget be?");
+		double budget = scanny.nextDouble();
+		System.out.println("keep the same department head? Y/N");
+		Employee currHead = dummyEmployee;
+		try {
+			currHead = Employee.findEmployeeById(oldDepartment.getEmployeeId());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("");
+		String yOrN = YorNLoop();
+		
+		
+		
+		
+	}
+	
+	
 	public static void listAllEmployeesInDepartment(Department department) {
 		// Read through files, returns list of employees
 		// List<Employee> employees =
 
 		// This is dummy data
-		ArrayList<Employee> employees = fakeFileCall(department);
-
-		for (int i = 0; i < employees.size(); i++) {
-			System.out.println("Name: " + employees.get(i).getName() + "\tPhone number: "
-					+ employees.get(i).getPhoneNumber() + "\tID: " + employees.get(i).getEmployeeId());
-
-		}
 	}
 
 	public static void findEmployeeDetails() {
@@ -413,43 +401,79 @@ public class Demo {
 	public static String getAorBAgain() throws NotAorBException {
 		String aOrB;
 		aOrB = scanny.nextLine();
-		aOrB.toLowerCase();
 
-		if (!(aOrB.equals("a") || aOrB.equals("b"))) {
+		if (!(aOrB.toLowerCase().equals("a") || aOrB.toLowerCase().equals("b"))) {
 			throw new NotAorBException(aOrB);
 		}
 
-		return aOrB;
+		return aOrB.toLowerCase();
 	}
 
+	public static String YorNLoop() {
+		String whatever;
+		do {
+			try {
+				whatever = YorN();
+				break;
+			} catch (NotYesOrNoException e) {
+				System.err.println(e.getMessage());
+			}
+		} while (true);
+		return whatever.toLowerCase();
+	}
+	
+	public static String TorFLoop() {
+		String whatever;
+		do {
+			try {
+				whatever = TorF();
+				break;
+			} catch (NotTorFException e) {
+				System.err.println(e.getMessage());
+			}
+		} while (true);
+		return whatever.toLowerCase();
+	}
+	
+	public static String AorBLoop() {
+		String result = "";
+		do {
+			try {
+				result = getAorBAgain();
+				break;
+			} catch (NotAorBException e) {
+				System.err.println(e.getMessage());
+			}
+		} while (true);
+		return result.toLowerCase();
+	}
+	
 	public static String TorF() throws NotTorFException {
 		String aOrB;
 		aOrB = scanny.nextLine();
-		aOrB.toLowerCase();
 
-		if (!(aOrB.equals("t") || aOrB.equals("f"))) {
+		if (!(aOrB.toLowerCase().equals("t") || aOrB.toLowerCase().equals("f"))) {
 			throw new NotTorFException(aOrB);
 		}
 
-		return aOrB;
+		return aOrB.toLowerCase();
 	}
 
 	public static String YorN() throws NotYesOrNoException {
 		String aOrB;
 		aOrB = scanny.nextLine();
-		aOrB.toLowerCase();
 
-		if (!(aOrB.equals("y") || aOrB.equals("n"))) {
+		if (!(aOrB.toLowerCase().equals("y") || aOrB.toLowerCase().equals("n"))) {
 			throw new NotYesOrNoException(aOrB);
 		}
 
-		return aOrB;
+		return aOrB.toLowerCase();
 	}
 
 	public static String getUserTitle() throws NotValidDepartmentOption {
 		String name = scanny.nextLine();
 		for (String dName : allDepartmentNames) {
-			if (name.equals(dName)) {
+			if (name.toLowerCase().equalsIgnoreCase(dName)) {
 				return name;
 			}
 		}
@@ -478,6 +502,15 @@ public class Demo {
 			System.out.print(dName + "|");
 		}
 		System.out.println();
+	}
+	public static String getUserDepatType() throws DepartmentAlreadyExistsException {
+		String tryType = scanny.nextLine();
+		for (String dName : allDepartmentNames) {
+			if(tryType.toLowerCase().equalsIgnoreCase(dName)) {
+				throw new DepartmentAlreadyExistsException(tryType);
+			}
+		}
+		return tryType;
 	}
 
 	public static void greet() {
