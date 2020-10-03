@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import com.congnixia.javafinalproject.ems.exceptions.*;
 import com.congnixia.javafinalproject.ems.models.*;
+import com.sun.org.apache.xpath.internal.FoundIndex;
 
 public class Demo {
 
@@ -285,7 +286,6 @@ public class Demo {
 	}
 
 	public static void findDepartmentDetails() {
-
 		String title;
 		Department searchedDepartment;
 		System.out.println("Which department?");
@@ -298,7 +298,6 @@ public class Demo {
 				System.err.println(e.getMessage());
 			}
 		} while (true);
-
 		// Make a call to the file reader
 		searchedDepartment = Department.findDepartmentByName(title);
 		System.out.println("title: " + searchedDepartment.getName());
@@ -326,6 +325,14 @@ public class Demo {
 		aOrB = YorNLoop();
 		if (aOrB.equals("y")) {
 			editDepartmentRoute(searchedDepartment);
+		} else {
+			System.out.println("do you want to delete this department " + searchedDepartment.getName());
+			aOrB = YorNLoop();
+			if(aOrB.equals("y")) {
+				System.out.println("deleting department successfully " ); // DELETE
+			} else {
+				System.out.println("end line 336");
+			}
 		}
 		
 
@@ -333,9 +340,9 @@ public class Demo {
 
 	public static void editDepartmentRoute(Department oldDepartment) {
 		System.out.println(oldDepartment);
-		System.out.println("what should the new name be?");
+		System.out.println("what should the new name be for" + oldDepartment.getName() +"?" );
 		String name = scanny.nextLine();
-		System.out.println("what should the new ext. Number be?");
+		System.out.println("what should the new ext. Number be? currently" + oldDepartment.getPhoneNumberExt());
 		String extNum = scanny.nextLine();
 		System.out.println("what should the new budget be?");
 		double budget = scanny.nextDouble();
