@@ -14,14 +14,19 @@ public class FileDriver {
 	public static void main(String[] args) throws IOException {
 		FileMethods.runOnce();
 		
-		for(String s: Department.getAllDepartmentNames()) {
-			System.out.println(s);
-		}
+		// for(String s: Department.getAllDepartmentNames()) {
+		// 	System.out.println(s);
+		// }
 		
-		System.out.println(Department.findAllEmployeesWorkingInDepartment(new Department(1, "Sales", 6, "111", 1000000.00d)));
+		// System.out.println(Department.findAllEmployeesWorkingInDepartment(new Department(1, "Sales", 6, "111", 1000000.00d)));
 		
-		System.out.println(Department.findDepartmentByName("HQ"));
+		// System.out.println(Department.findDepartmentByName("HQ"));
 		
+//		System.out.println(Employee.findEmployeeToBeNewHeadBySalary());
+		
+		Employee emp1 = Employee.findEmployeeById(10);
+		Department dep1 = Department.findDepartmentByName("Sales");
+		Department.makeEmployeeHeadOfDepartment(emp1, dep1);
 		
 		// LIST: 
 //		System.out.println("This will list all of the employees: " + Employee.listEmployees());

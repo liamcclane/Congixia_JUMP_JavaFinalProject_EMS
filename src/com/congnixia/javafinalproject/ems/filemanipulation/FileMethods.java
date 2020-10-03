@@ -220,9 +220,9 @@ public class FileMethods {
 				}
 				if (listOfDepartments.get(i).getEmployeeId() != index) {
 					if (fileEmployee.length() != 0) {
-						br.append("\n" +  listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "/n");
+						br.append("\n" +  listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "\n");
 					} else {
-						br.append(listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "/n");
+						br.append(listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "\n");
 					}
 				}
 			}
@@ -301,16 +301,16 @@ public class FileMethods {
 				
 				if (listOfDepartments.get(i).getDepartmentId() != dep.getDepartmentId()) {
 					if (fileDepartment.length() != 0) {
-						br.append("\n" +  listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "/n");
+						br.append("\n" +  listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "\n");
 					} else {
-						br.append(listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "/n");
+						br.append(listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "\n");
 					}
 				}
 				else {
 					if (fileDepartment.length() != 0) {
-						br.append("\n" + index + "," + dep.getName() + "," + dep.getEmployeeId() + "," + dep.getPhoneNumberExt() + "," + dep.getBudget());
+						br.append("\n" + index + "," + dep.getName() + "," + dep.getEmployeeId() + "," + dep.getPhoneNumberExt() + "," + dep.getBudget() + "\n");
 					} else {
-						br.append(index + "," + dep.getName() + "," + dep.getEmployeeId() + "," + dep.getPhoneNumberExt() + "," + dep.getBudget());
+						br.append(index + "," + dep.getName() + "," + dep.getEmployeeId() + "," + dep.getPhoneNumberExt() + "," + dep.getBudget() + "\n");
 					}
 				}
 			}
