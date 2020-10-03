@@ -37,9 +37,8 @@ public class Demo {
 		do {
 			intoTheDataBase();
 			System.out.println("Do you want continue making changes? Y/N");
-
 			again = scanny.nextLine();
-		} while (again.equalsIgnoreCase("yes") || again.equals("y"));
+		} while (again.equalsIgnoreCase("yes") || again.equalsIgnoreCase("y"));
 		parting();
 	}
 
