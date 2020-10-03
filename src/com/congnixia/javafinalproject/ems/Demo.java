@@ -1,7 +1,6 @@
 package com.congnixia.javafinalproject.ems;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -10,8 +9,11 @@ import java.util.regex.Pattern;
 
 import com.congnixia.javafinalproject.ems.exceptions.*;
 import com.congnixia.javafinalproject.ems.models.*;
-import com.sun.org.apache.xpath.internal.FoundIndex;
-
+/**
+ * 
+ * @author lia_m, josh_t, daniel_i
+ * delete route line 
+ */
 public class Demo {
 
 	// lia's branch
@@ -70,7 +72,6 @@ public class Demo {
 		String name;
 		String email;
 		String phoneNumber;
-		String hierDate;
 		double salary = 0.0d;
 		boolean isDepartmentHead;
 		System.out.println("\nCreating an a new hire!");
@@ -92,32 +93,11 @@ public class Demo {
 		System.out.println("\nWhat is their name?");
 		name = scanny.nextLine(); // null exeption maybe
 
-		ReggieValidation rv = new ReggieValidation();
 		System.out.println("\nWhat is their phone number?");
-		phoneNumber = scanny.nextLine();
-		while (!rv.isValidPhoneNumber(phoneNumber)) {
-			System.err.println("Invalid phone number must be (###)###-####");
-			System.err.println("or ###-###-####");
-			scanny.nextLine();
-			phoneNumber = scanny.nextLine();
-		}
-
-		do {
-			System.out.println("\nWhat is their email?");
-			email = scanny.nextLine();
-			if (!rv.isValidEmail(email)) {
-				System.err.println("Invalid email");
-				System.err.println("ex example@eample.com");
-				scanny.nextLine();
-			} else {
-				break;
-			}
-		} while (true);
-
-		// could use datetime here!
-		// regex mabye
-		System.out.println("\nWhat is," + name + ", salary?");
-
+		phoneNumber = getUserPhoneNumber();
+		System.out.println("\nWhat is their email?");
+		email = getUserEmail();
+		System.out.println("\nWhat is the new employee," + name + " , salary going to be?");
 		do {
 			try {
 				salary = scanny.nextDouble();
@@ -126,7 +106,6 @@ public class Demo {
 				System.err.println("not an number");
 				scanny.nextLine();
 			}
-
 		} while (true);
 
 		System.out.println(
@@ -149,28 +128,26 @@ public class Demo {
 			System.out.println("and appoint the new comer department head over, " + foundDepartment.getEmployeeId());
 		} else {
 			System.out.println(
+
 					"to the department: " + foundDepartment.getName() + " under " + foundDepartment.getEmployeeId());
 		}
-
-		// possible secondary validation
-		
-		System.out.println("T/F?");
-		whatever = TorFLoop();
-
-		if (whatever.equals("t")) {
+		System.out.println("Y/N?");
+		whatever = YorNLoop();
+		System.out.println("whatever => " + whatever);
+		if (whatever.equals("y")) {
 			// add to the database
 			System.out.println("add to the database");
 			// to create a new employee instance
 			// and connect them approiatly to the department information
 			Employee newHeir = new Employee(Employee.getLastEmployeeId(), name, email, phoneNumber, "1/1/1", salary,
 					isDepartmentHead, foundDepartment.getDepartmentId());
-
+			Employee.addEmployee(newHeir);
 			// now add them back into the files, needs file logic form daniel
 			// success message
 			// System.out.println(employee);
 			System.out.println("\nEmployee :");
 			System.out.println("you have successfully added " + name + " to the employee list");
-			System.out.println(dummyEmployee.toString());
+			System.out.println(newHeir.toString());
 			System.out.println("go check them out on the files in resources//allEmployees.csv");
 		} else {
 			System.out.println("CANCELING creating an empoyee");
@@ -179,17 +156,15 @@ public class Demo {
 
 	public static void createDepartment() {
 
-		String userInput;
 		String type;
 		String phoneNumberExt;
 		int headId;
 		double budget;
-
-		Employee head;
+		Employee empToAppoint = dummyEmployee;
 
 		System.out.println("\nCreating a new Department in the company?");
 		System.out.println("What is the title type?");
-		
+
 		do {
 			try {
 				type = getUserDepatType();
@@ -199,7 +174,6 @@ public class Demo {
 				printDepartmentNames();
 			}
 		} while (true);
-
 
 		System.out.println("What is the phone number extension?");
 		do {
@@ -223,48 +197,52 @@ public class Demo {
 		} while (true);
 
 		System.out.println("Who is going to be the department head for " + type + "?");
-		System.out.println("Please input their employee id");
 
 		do {
 			try {
+				System.out.println("Please input their employee id");
 				headId = scanny.nextInt();
+				if (headId > Employee.getLastEmployeeId()) {
+					System.out.println("id " + headId + " not found");
+					throw new NotValidDepartmentOption("blah");
+				}
+				empToAppoint = Employee.findEmployeeById(headId);
+				if (empToAppoint == null) {
+					System.out.println("id " + headId + " not found");
+					throw new NotValidDepartmentOption("s");
+				}
+				empToAppoint.prettyPrintln();
 				break;
 			} catch (InputMismatchException e) {
 				System.err.println("not an number");
+			} catch (NotValidDepartmentOption e) {
+				System.err.println(e.getMessage());
+			} catch (IOException e1) {
+				e1.printStackTrace();
 			}
 		} while (true);
 		// get employee by id
 		// check if user has input deleted id, or an id outside of your list of
 		// employees
 		// head = dummyEmployee;
+
 		System.out.println("Is this the employee you want to appoint to the head of " + type + "?");
-		Employee empToAppoint;
-		try {
-			empToAppoint = Employee.findEmployeeById(headId);
-			empToAppoint.prettyPrintln();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
 		System.out.println("Y/N?");
 		String whatever;
-		do {
-			try {
-				whatever = YorN();
-				break;
-			} catch (NotYesOrNoException e) {
-				System.err.println(e.getMessage());
-			}
-		} while (true);
+		whatever = YorNLoop();
 
 		if (whatever.equals("y")) {
 			// other function
 			// logic
 			Department newestDepart = null;
-			newestDepart = new Department(Department.getLastDepartmentId(), type, dummyEmployee.getEmployeeId(),
-					phoneNumberExt, 10000);
+			newestDepart = new Department(Department.getLastDepartmentId(), type, empToAppoint.getEmployeeId(),
+					phoneNumberExt, budget);
 			// success message
-			System.out.println("you have created a new department," + newestDepart.getName() + "! with "
-					+ dummyEmployee.getName() + " as the head!");
+			boolean b = Department.addDepartment(newestDepart);
+			if(b) {
+				System.out.println("you have created a new department," + newestDepart.getName() + "! with "
+						+ empToAppoint.getName() + " as the head!");
+			}
 			return;
 		} else {
 			System.out.println("CANCELING creating a department");
@@ -296,15 +274,21 @@ public class Demo {
 				break;
 			} catch (NotValidDepartmentOption e) {
 				System.err.println(e.getMessage());
+				printDepartmentNames();
 			}
 		} while (true);
 		// Make a call to the file reader
 		searchedDepartment = Department.findDepartmentByName(title);
+		Employee currHead = dummyEmployee;
+		try {
+			currHead = Employee.findEmployeeById(searchedDepartment.getEmployeeId());
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		System.out.println("title: " + searchedDepartment.getName());
 		System.out.println("phone number extension: " + searchedDepartment.getPhoneNumberExt());
 		System.out.println("budget: " + searchedDepartment.getBudget());
-		// System.out.println("department head: " +
-		// searchedDepartment.getDepartmentHead().getName());
+		System.out.println("department head: " + currHead.getName());
 		System.out.println("Would you like to see the list of all the employees in the department?");
 		System.out.println("Y/N");
 		String aOrB = YorNLoop();
@@ -320,89 +304,220 @@ public class Demo {
 				e.printStackTrace();
 			}
 		}
-		
+
 		System.out.println("Would you like to make edits to this Department? \nY/N");
 		aOrB = YorNLoop();
 		if (aOrB.equals("y")) {
-			editDepartmentRoute(searchedDepartment);
+			editDepartmentRoute(searchedDepartment, currHead);
 		} else {
 			System.out.println("do you want to delete this department " + searchedDepartment.getName());
 			aOrB = YorNLoop();
-			if(aOrB.equals("y")) {
-				System.out.println("deleting department successfully " ); // DELETE
-			} else {
-				System.out.println("end line 336");
+			if (aOrB.equals("y")) {
+				System.out.println("deleting department successfully "); // DELETE Department.delete();
 			}
 		}
-		
 
 	}
 
-	public static void editDepartmentRoute(Department oldDepartment) {
+	public static void editDepartmentRoute(Department oldDepartment, Employee currHead) {
 		System.out.println(oldDepartment);
-		System.out.println("what should the new name be for" + oldDepartment.getName() +"?" );
-		String name = scanny.nextLine();
-		System.out.println("what should the new ext. Number be? currently" + oldDepartment.getPhoneNumberExt());
-		String extNum = scanny.nextLine();
-		System.out.println("what should the new budget be?");
-		double budget = scanny.nextDouble();
-		System.out.println("keep the same department head? Y/N");
-		Employee currHead = dummyEmployee;
-		try {
-			currHead = Employee.findEmployeeById(oldDepartment.getEmployeeId());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		System.out.println("");
-		String yOrN = YorNLoop();
-		
-		
-		
-		
-	}
-	
-	
-	public static void listAllEmployeesInDepartment(Department department) {
-		// Read through files, returns list of employees
-		// List<Employee> employees =
-
-		// This is dummy data
-	}
-
-	public static void findEmployeeDetails() {
-		System.out.println("Who would you like to know more about? Do you know their ID?");
-		String whatever;
+		System.out.println("what should the new name be for" + oldDepartment.getName() + "?");
+		String type;
 		do {
 			try {
-				whatever = YorN();
+				type = getUserDepatType();
 				break;
-			} catch (NotYesOrNoException e) {
+			} catch (DepartmentAlreadyExistsException e) {
+				System.err.println(e.getMessage());
+				printDepartmentNames();
+			}
+		} while (true);
+
+		System.out.println("what should the new ext. Number be? currently" + oldDepartment.getPhoneNumberExt());
+		String extNum;
+		do {
+			try {
+				extNum = getValidExtInt();
+				break;
+			} catch (NotValidExtensionNumber e) {
 				System.err.println(e.getMessage());
 			}
 		} while (true);
 
-		if (userInput.equals("y")) {
-			findUserByID();
-		} else {
-			System.out.println("What field are we searching by?");
-			String field = scanny.nextLine();
-			if (field.equals("name")) {
-				System.out.println("What is their name?");
-				String name = scanny.nextLine();
-				// call to filereader that returns an array of employees w/ the matching name
-				fakeFileCall();
-				System.out.println("name : " + dummyEmployee.getName());
-				System.out.println("email : " + dummyEmployee.getEmail());
-				System.out.println("phone number : " + dummyEmployee.getPhoneNumber());
+		System.out.println("what should the new budget be?");
+		double budget;
+		do {
+			try {
+				budget = scanny.nextDouble();
+				break;
+			} catch (InputMismatchException e) {
+				System.err.println("not an number");
 			}
+		} while (true);
+
+		System.out.println("keep the same department head, " + currHead.getName() + "? Y/N");
+		String yOrN = YorNLoop();
+		Employee empToAppoint = currHead;
+		int headId = currHead.getEmployeeId();
+		if (yOrN.equals("y")) {
+			do {
+				try {
+					System.out.println("Please input their employee id");
+					headId = scanny.nextInt();
+					if (headId > Employee.getLastEmployeeId()) {
+						System.out.println("id " + headId + " not found");
+						throw new NotValidDepartmentOption("blah");
+					}
+					empToAppoint = Employee.findEmployeeById(headId);
+					if (empToAppoint == null) {
+						System.out.println("id " + headId + " not found");
+						throw new NotValidDepartmentOption("s");
+					}
+					empToAppoint.prettyPrintln();
+					oldDepartment.setEmployeeId(headId);
+					Department.makeEmployeeHeadOfDepartment(currHead, oldDepartment);
+					break;
+				} catch (InputMismatchException e) {
+					System.err.println("not an number");
+				} catch (NotValidDepartmentOption e) {
+					System.err.println(e.getMessage());
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			} while (true);
+		}
+
+		System.out.println("updating old department to the new information");
+		oldDepartment.setName(type);
+		oldDepartment.setBudget(budget);
+		oldDepartment.setPhoneNumberExt(extNum);
+		boolean b = Department.updateDepartment(oldDepartment.getDepartmentId(), oldDepartment);
+		if (b) {
+			System.out.println("Successfully changed department, " + type + ", to new information ");
 		}
 	}
 
-	public static void findUserByID() {
-		System.out.println("What is the employee's ID?");
-		int userInput = scanny.nextInt();
-		// call to the filereader class that returns a single employee via ID
-		dummyEmployee.prettyPrintln();
+	public static void findEmployeeDetails() {
+		String whatever;
+		Employee employee = dummyEmployee;
+		List<Employee> potentialEmployees;
+		System.out.println("Who would you like to know more about? Do you know their ID?");
+		whatever = YorNLoop();
+		if (whatever.equals("y")) {
+			employee = findUserByID();
+		} else {
+			potentialEmployees = findEmpByName();
+			for (Employee employee2 : potentialEmployees) {
+				employee2.prettyPrint();
+			}
+			employee = findUserByID();
+		}
+		employee.prettyPrintln();
+		System.out.println("Would you like to edit " + employee.getName() + "\nY/N?");
+		whatever = YorNLoop();
+		if(whatever.equals("y")) {
+			editEmployee(employee);
+			return;
+		}
+		System.out.println("Would you like to delete" + employee.getName() + "\nY/N?");
+		whatever = YorNLoop();
+		if(whatever.equals("y")) {
+			// DELETE
+		}
+	}
+
+	public static void editEmployee(Employee employee) {
+		Department department = dummyDepartment;
+		System.out.println("What do you want change this employee's phone number?");
+		System.out.println(employee.getName() + " current Number " + employee.getPhoneNumber());
+		employee.setPhoneNumber(getUserPhoneNumber());
+		System.out.println("What do you want change this employee's email?");
+		System.out.println(employee.getName() + " current Number " + employee.getEmail());
+		employee.setPhoneNumber(getUserEmail());
+		System.out.println("What do you want change this employee's salary?");
+		System.out.println(employee.getName() + " current Number " + employee.getSalary());
+		double salary = 0.0d;
+		do {
+			try {
+				salary = scanny.nextDouble();
+				break;
+			} catch (Exception e) {
+				System.err.println("not a number");
+				scanny.nextLine();
+			}
+		} while (true);
+		employee.setSalary(salary);
+		System.out.println("Is this employee changing Departments?\nY/N");
+		String whatever = YorNLoop();
+		if (whatever.equals("y")) {
+			department = Department.findDepartmentById(employee.getDepartmentId());
+			if (employee.isDepartmentHead()) {
+				System.out.println("It looks like this employee" + employee.getName()
+						+ " is already the head of thier department in " + department.getName());
+			} else {
+				System.out.println("Okay we are appointing " + employee.getName() + " to the head of " + department.getName());
+				try {
+					Employee oldHead;
+					oldHead = Employee.findEmployeeById(department.getEmployeeId());
+					System.out.println("over throwing " + oldHead.getName());
+					boolean b = Department.makeEmployeeHeadOfDepartment(employee, department);
+					if(!b) {
+						System.out.println("couldn't appoint " + employee.getName() + "as the head of " + department.getName());
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		boolean b = Employee.updateEmployee(employee.getEmployeeId(), employee);
+		if (b) {
+			System.out.println("update complete check employee.csv");
+		}
+	}
+
+	public static List<Employee> findEmpByName() {
+		do {
+			try {
+				System.out.println("What is their name?");
+				String name = scanny.nextLine();
+				if (Employee.findAllEmployeesByName(name) == null) {
+					System.out.println(name + " does not match any employee");
+					throw new NotValidDepartmentOption("blah");
+				}
+				return Employee.findAllEmployeesByName(name);
+			} catch (NotValidDepartmentOption e) {
+				e.printStackTrace();
+			}
+		} while (true);
+	}
+
+	public static Employee findUserByID() {
+		int headId = dummyEmployee.getEmployeeId();
+		Employee empToAppoint = dummyEmployee;
+		do {
+			try {
+				System.out.println("Please input their employee id");
+				headId = scanny.nextInt();
+				if (headId > Employee.getLastEmployeeId()) {
+					System.out.println("id " + headId + " not found");
+					throw new NotValidDepartmentOption("blah");
+				}
+				empToAppoint = Employee.findEmployeeById(headId);
+				if (empToAppoint == null) {
+					System.out.println("id " + headId + " not found");
+					throw new NotValidDepartmentOption("s");
+				}
+				empToAppoint.prettyPrintln();
+				return empToAppoint;
+			} catch (InputMismatchException e) {
+				System.err.println("not an number");
+			} catch (NotValidDepartmentOption e) {
+				System.err.println(e.getMessage());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		} while (true);
 	}
 
 	public static String getAorBAgain() throws NotAorBException {
@@ -428,7 +543,7 @@ public class Demo {
 		} while (true);
 		return whatever.toLowerCase();
 	}
-	
+
 	public static String TorFLoop() {
 		String whatever;
 		do {
@@ -441,7 +556,7 @@ public class Demo {
 		} while (true);
 		return whatever.toLowerCase();
 	}
-	
+
 	public static String AorBLoop() {
 		String result = "";
 		do {
@@ -454,7 +569,7 @@ public class Demo {
 		} while (true);
 		return result.toLowerCase();
 	}
-	
+
 	public static String TorF() throws NotTorFException {
 		String aOrB;
 		aOrB = scanny.nextLine();
@@ -475,6 +590,55 @@ public class Demo {
 		}
 
 		return aOrB.toLowerCase();
+	}
+
+	public static String getUserPhoneNumber() {
+		String phNum;
+		do {
+			try {
+				phNum = userPhoneNumberEx();
+				break;
+			} catch (NotValidDepartmentOption e) {
+				System.out.println(e.getMessage());
+			}
+		} while (true);
+		return phNum;
+	}
+
+	public static String getUserEmail() {
+		String phNum;
+		do {
+			try {
+				phNum = userEmailEx();
+				break;
+			} catch (NotValidDepartmentOption e) {
+				System.out.println(e.getMessage());
+			}
+		} while (true);
+		return phNum;
+	}
+
+	public static String userPhoneNumberEx() throws NotValidDepartmentOption {
+		String s = scanny.nextLine();
+		ReggieValidation rv = new ReggieValidation();
+		if (rv.isValidPhoneNumber(s)) {
+			return s;
+		} else {
+			System.err.println("Invalid phone number must be (###)###-####");
+			System.err.println("or ###-###-####");
+			throw new NotValidDepartmentOption(s);
+		}
+	}
+
+	public static String userEmailEx() throws NotValidDepartmentOption {
+		String s = scanny.nextLine();
+		ReggieValidation rv = new ReggieValidation();
+		if (rv.isValidEmail(s)) {
+			return s;
+		} else {
+			System.err.println("example@eample.com");
+			throw new NotValidDepartmentOption(s);
+		}
 	}
 
 	public static String getUserTitle() throws NotValidDepartmentOption {
@@ -510,10 +674,11 @@ public class Demo {
 		}
 		System.out.println();
 	}
+
 	public static String getUserDepatType() throws DepartmentAlreadyExistsException {
 		String tryType = scanny.nextLine();
 		for (String dName : allDepartmentNames) {
-			if(tryType.toLowerCase().equalsIgnoreCase(dName)) {
+			if (tryType.toLowerCase().equalsIgnoreCase(dName)) {
 				throw new DepartmentAlreadyExistsException(tryType);
 			}
 		}
@@ -528,35 +693,5 @@ public class Demo {
 	public static void parting() {
 		System.out.println("******************");
 		System.out.println("Thanks for visiting the database of Best Boughts");
-	}
-
-	public static ArrayList<Employee> fakeFileCall(Department department) {
-		return fakeFileCall();
-	}
-
-	public static ArrayList<Employee> fakeFileCall() {
-		ArrayList<Employee> employees = new ArrayList<>();
-		employees.add(new Employee(1, "Joe", "joe@google.com", "123-555-0000", "1990-08-27", 55000.00d, false, 1));
-		employees.add(new Employee(2, "Bob", "bob@google.com", "123-555-0001", "1991-01-05", 15000.00d, false, 1));
-		employees.add(new Employee(3, "Bill", "bill@google.com", "123-555-0002", "1994-04-16", 25000.00d, false, 1));
-		employees.add(new Employee(4, "Ralph", "ralph@google.com", "123-555-0003", "1995-05-08", 10000.00d, false, 1));
-		employees.add(new Employee(5, "James", "james@google.com", "123-555-0004", "1998-05-12", 20000.00d, false, 1));
-		employees.add(
-				new Employee(6, "Jessica", "jessica@google.com", "123-555-0005", "1999-01-09", 100000.00d, true, 1));
-		employees.add(new Employee(7, "Peter", "peter@google.com", "123-555-0006", "2003-12-09", 90000.00d, false, 1));
-		employees.add(new Employee(8, "Penny", "penny@google.com", "123-555-0007", "2005-08-11", 65000.00d, false, 2));
-		employees.add(new Employee(9, "Jenny", "jenny@google.com", "123-555-0008", "2007-14-22", 34000.00d, false, 2));
-		employees.add(new Employee(10, "Ellie", "ellie@google.com", "123-555-0009", "2008-09-21", 76000.00d, true, 2));
-		employees.add(new Employee(11, "Jared", "jared@google.com", "123-555-0010", "2010-02-01", 12000.00d, true, 3));
-		employees.add(new Employee(12, "Jordan", "jordan@google.com", "123-555-0011", "2019-08-16", 0.50d, true, 4));
-		return employees;
-	}
-
-	public static ArrayList<Employee> fakeFileCall(String name) {
-		return fakeFileCall();
-	}
-
-	public static Department fakeFileCallForDepartment(String name) {
-		return dummyDepartment;
 	}
 }

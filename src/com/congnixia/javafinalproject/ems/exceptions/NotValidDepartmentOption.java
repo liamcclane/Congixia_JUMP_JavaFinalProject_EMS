@@ -9,7 +9,7 @@ public class NotValidDepartmentOption extends Exception {
 	
 	public NotValidDepartmentOption(String str) {
 		
-		super("Input was a valid department");
+		super("Input was not vaild");
 		
 		this.s = str;
 	}

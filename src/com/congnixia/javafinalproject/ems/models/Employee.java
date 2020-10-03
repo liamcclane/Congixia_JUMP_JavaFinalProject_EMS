@@ -159,7 +159,11 @@ public class Employee {
 	public Employee prettyPrintln() {
 		System.out.println("Name : " + this.name + " \t" + this.employeeId + " : id" + "\nEmail: " + this.email
 				+ "\nPhone Number : " + this.phoneNumber);
-
+		return this;
+	}
+	public Employee prettyPrint() {
+		System.out.println("Name : " + this.name + " \t" + this.employeeId + "\t: Email: " + this.email
+				+ "\nPhone Number : " + this.phoneNumber);
 		return this;
 	}
 	

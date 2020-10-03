@@ -113,6 +113,9 @@ public class Department {
 	public static Department findDepartmentByName(String name) {
 		return listDepartments().stream().filter(x -> x.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
 	}
+	public static Department findDepartmentById(int id) {
+		return listDepartments().stream().filter(x -> x.getDepartmentId() == id).findFirst().orElse(null);
+	}
 
 	public static List<Employee> findAllEmployeesWorkingInDepartment(Department dep) throws IOException {
 		return Employee.listEmployees().stream().filter(x -> x.getDepartmentId() == dep.getDepartmentId()).collect(Collectors.toList());
