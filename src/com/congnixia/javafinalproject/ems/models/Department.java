@@ -114,8 +114,12 @@ public class Department {
 		return listDepartments().stream().filter(x -> x.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
 	}
 
-	public static List<Employee> findAllEmployeesWorkingInDepartment(Department dep) throws IOException {
+	public static List<Employee> findAllEmployeesWorkingInDepartment(Department dep) {
 		return Employee.listEmployees().stream().filter(x -> x.getDepartmentId() == dep.getDepartmentId()).collect(Collectors.toList());
+	}
+	
+	public static Department findDepartmentById(int id) {
+		return listDepartments().stream().filter(x -> x.getDepartmentId() == id).findFirst().orElse(null);
 	}
 
 	/**
