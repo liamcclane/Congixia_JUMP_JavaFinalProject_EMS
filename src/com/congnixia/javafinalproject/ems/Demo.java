@@ -437,7 +437,6 @@ public class Demo {
 		System.out.println("Would you like to delete" + employee.getName() + "\nY/N?");
 		whatever = YorNLoop();
 		if(whatever.equals("y")) {
-			// DELETE
 			boolean  b = Employee.removeEmployee(employee.getEmployeeId());
 			if(b) {
 				System.out.println("\nEmployee was deleted!\n");
