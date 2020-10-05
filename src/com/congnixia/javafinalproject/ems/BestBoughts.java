@@ -377,19 +377,20 @@ public class BestBoughts {
 		printDepartmentBannerLine();
 		System.out.println();
 		
-		System.out.println("Pick an option (A, B, C, D, or E):");
+		System.out.println("Pick an option (A, B, C, D, E, or F):");
 		System.out.println("-------------------------------------------");
 		System.out.println("A - Edit Name.");
 		System.out.println("B - Edit Phone Number Extension.");
 		System.out.println("C - Edit Budget");
-		System.out.println("D - Return to Department List");
-		System.out.println("E - Return to Main Menu.");
+		System.out.println("D - List all employees in the department.");
+		System.out.println("E - Return to Department List");
+		System.out.println("F - Return to Main Menu.");
 		System.out.println("NOTE: Only employees can set there id in the department.");
 		
 		String newStr = scan.nextLine();
 		
-		while(!(newStr.equalsIgnoreCase("A") || newStr.equalsIgnoreCase("B") || newStr.equalsIgnoreCase("C") || newStr.equalsIgnoreCase("D") || newStr.equalsIgnoreCase("E"))) {
-			System.out.println("You have entered in: " + newStr + "\nPlease enter in either A, B, C, D, or E:");
+		while(!(newStr.equalsIgnoreCase("A") || newStr.equalsIgnoreCase("B") || newStr.equalsIgnoreCase("C") || newStr.equalsIgnoreCase("D") || newStr.equalsIgnoreCase("E") || newStr.equalsIgnoreCase("F"))) {
+			System.out.println("You have entered in: " + newStr + "\nPlease enter in either A, B, C, D, E, or F:");
 			newStr = scan.nextLine();
 		}
 
@@ -425,6 +426,8 @@ public class BestBoughts {
 				break;
 			}
 		} else if(newStr.equalsIgnoreCase("D")) {
+			System.out.println(Employee.findAllEmployeesByDepartment(dept));
+		} else if(newStr.equalsIgnoreCase("E")) {
 			viewDepartments();
 		} else if(newStr.equalsIgnoreCase("E")) {
 			mainMenu();

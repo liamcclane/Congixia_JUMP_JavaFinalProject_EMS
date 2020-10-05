@@ -103,6 +103,11 @@ public class Department {
 
 	public static boolean removeTheDepartment(int index) {
 		try {
+			for(Employee emp: Employee.listEmployees()) {
+				if(emp.getDepartmentId() == index) {
+					FileMethods.removeTheEmployee(emp.getEmployeeId());					
+				}
+			}
 			return FileMethods.removeTheDepartment(index);
 		} catch (IOException e) {
 			e.printStackTrace();
