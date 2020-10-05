@@ -34,14 +34,9 @@ class EmployeeTest {
 	public void findEmployeeByFirstName() {
 		String name = "Joe";
 		List<Employee> emps = Employee.findAllEmployeesByFirstName(name);
-		if(emps.size() == 0) {
-			assertEquals(emps.size(), 0);
-		} else {
-			for (Employee employee : emps) {
-				assertEquals(name, employee.getFirstName());
-			}
+		for (Employee employee : emps) {
+			assertEquals(name, employee.getFirstName());
 		}
-		
 	}
 
 }
