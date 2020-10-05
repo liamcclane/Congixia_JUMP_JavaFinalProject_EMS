@@ -109,6 +109,11 @@ public class Department {
 	 */
 	public static boolean removeDepartment(int index) {
 		try {
+			for(Employee emp: Employee.listEmployees()) {
+				if(emp.getDepartmentId() == index) {
+					FileMethods.removeTheEmployee(emp.getEmployeeId());					
+				}
+			}
 			return FileMethods.removeTheDepartment(index);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -123,8 +128,12 @@ public class Department {
 		return listDepartments().stream().filter(x -> x.getDepartmentId() == id).findFirst().orElse(null);
 	}
 
-	public static List<Employee> findAllEmployeesWorkingInDepartment(Department dep) throws IOException {
+	public static List<Employee> findAllEmployeesWorkingInDepartment(Department dep) {
 		return Employee.listEmployees().stream().filter(x -> x.getDepartmentId() == dep.getDepartmentId()).collect(Collectors.toList());
+	}
+	
+	public static Department findDepartmentById(int id) {
+		return listDepartments().stream().filter(x -> x.getDepartmentId() == id).findFirst().orElse(null);
 	}
 
 	/**

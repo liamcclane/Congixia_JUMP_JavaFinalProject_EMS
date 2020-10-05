@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import com.congnixia.javafinalproject.ems.filemanipulation.FileMethods;
 
 public class Employee {
 
 	private int employeeId;
-	private String name;
+	private String firstName;
+	private String lastName;
 	private String email;
 	private String phoneNumber;
 	private String hireDate;
@@ -17,18 +19,40 @@ public class Employee {
 	private boolean isDepartmentHead;
 	private int departmentId;
 
-	public Employee(int employeeId, String name, String email, String phoneNumber, String hireDate, double salary,
+	/**
+	 * int employeeId - Use the getLastEmployeeId() to set this.
+	 * String name - Asked for in user input.
+	 * String email - Use the getNewValidEmail()
+	 * String phoneNumber - This should look at the department inorder to set the extension.
+	 * double salary - Asked for in user input.
+	 * boolean isDepartmentHead - Asked for by the user. This will use the makeEmployeeHeadOfDepartment() method if there is already a head.
+	 * int departmentId - Asked for by user.
+	 */
+//	public Employee(int employeeId, String name, String phoneNumber, double salary,
+//			boolean isDepartmentHead, int departmentId) {
+//		super();
+//		this.employeeId = employeeId;
+//		this.firstName = name;
+//		this.email = setNewValidEmail(name);
+//		this.phoneNumber = phoneNumber;
+//		this.salary = salary;
+//		this.isDepartmentHead = isDepartmentHead;
+//		this.departmentId = departmentId;
+//	}
+	
+	public Employee(int employeeId, String firstName, String lastName, String email, String phoneNumber, double salary,
 			boolean isDepartmentHead, int departmentId) {
 		super();
 		this.employeeId = employeeId;
-		this.name = name;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
-		this.hireDate = hireDate;
 		this.salary = salary;
 		this.isDepartmentHead = isDepartmentHead;
 		this.departmentId = departmentId;
 	}
+	
 	
 	/**
 	 * This uses the FileMethod's findLastOfEmployeeId which looks through the file and finds the highest id and adds 1.
@@ -45,6 +69,18 @@ public class Employee {
 		return -1;
 	}
 
+	public static String setNewValidEmail(String name) {
+		int count = 0;
+		String newEmail = name + count + "@google.com";
+//		while(findEmployeeByEmail(newEmail) == null) {
+//			newEmail = name + count + "@google.com";
+//			count++;
+//			System.out.println(newEmail);
+//		}
+//		
+		return newEmail;
+	}
+
 	public int getEmployeeId() {
 		return employeeId;
 	}
@@ -53,12 +89,20 @@ public class Employee {
 		this.employeeId = employeeId;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getEmail() {
@@ -157,7 +201,7 @@ public class Employee {
 	 * @return
 	 */
 	public Employee prettyPrintln() {
-		System.out.println("Name : " + this.name + " \t" + this.employeeId + " : id" + "\nEmail: " + this.email
+		System.out.println("Name : " + this.firstName + " " + this.lastName + " \t" + this.employeeId + " : id" + "\nEmail: " + this.email
 				+ "\nPhone Number : " + this.phoneNumber);
 		return this;
 	}
@@ -167,10 +211,12 @@ public class Employee {
 		return this;
 	}
 	
-	public static List<Employee> findAllEmployeesByName(String searchName) {
-		return listEmployees().stream().filter(x -> x.getName().equalsIgnoreCase(searchName))
+	public static List<Employee> findAllEmployeesByFirstName(String searchName) {
+		return listEmployees().stream().filter(x -> x.getFirstName().equalsIgnoreCase(searchName))
 				.collect(Collectors.toList());
 	}
+	
+	
 	
 	public static List<Employee> findAllEmployeesByDepartment(Department department) {
 		return listEmployees().stream().filter(x -> x.departmentId == department.getDepartmentId())
@@ -181,10 +227,16 @@ public class Employee {
 		return listEmployees().stream().filter(x -> x.getPhoneNumber() == searchNumber).findFirst().orElse(null);
 	}
 			
-	public static Employee findEmployeeById(int id) throws IOException {
+	public static Employee findEmployeeById(int id) {
 		return listEmployees().stream()
 				.filter(x -> x.getEmployeeId() == id)
 				.findFirst().orElse(null);
+	}
+
+
+	public static Employee findEmployeeByEmail(String email) {
+		System.out.println(email);
+		return listEmployees().stream().filter(x -> x.getEmail() == email).findFirst().orElse(null);
 	}
 
 	/**
@@ -198,7 +250,7 @@ public class Employee {
 
 	@Override
 	public String toString() {
-		return "\n[employeeId=" + employeeId + ",\tname=" + name + ",\temail=" + email + ",    \tphoneNumber="
+		return "\n[employeeId=" + employeeId + ",\tname=" + firstName + " " + lastName + ",\temail=" + email + ",    \tphoneNumber="
 				+ phoneNumber + ", hireDate=" + hireDate + ", salary=" + salary + ",\tisDepartmentHead="
 				+ isDepartmentHead + ",\tdepartmentId=" + departmentId + "]";
 	}

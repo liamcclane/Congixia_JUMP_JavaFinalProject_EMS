@@ -18,7 +18,11 @@ public class Demo {
 
 	// lia's branch
 	static Scanner scanny = new Scanner(System.in);
+<<<<<<< HEAD
 //	static Department dummyDepartment = new Department(0, "ExDep", 111, 0, 3000.00d);
+=======
+	static Department dummyDepartment = new Department(0, "ExDep", 0, "111", 3000.00d);
+>>>>>>> daniel-edits
 	static Employee dummyEmployee = new Employee(-1, "fake", "fake@fake.com", "000-000-000", "1/1/11", 1000d, false,
 			-1);
 	static String userInput;
@@ -367,6 +371,7 @@ public class Demo {
 			}
 		} while (true);
 
+<<<<<<< HEAD
 		System.out.println("What should the new budget be?");
 		double budget;
 		do {
@@ -412,6 +417,11 @@ public class Demo {
 				}
 			} while (true);
 		}
+=======
+		for (int i = 0; i < employees.size(); i++) {
+			System.out.println("Name: " + employees.get(i).getFirstName() + "\tPhone number: "
+					+ employees.get(i).getPhoneNumber() + "\tID: " + employees.get(i).getEmployeeId());
+>>>>>>> daniel-edits
 
 		System.out.println("updating old department to the new information");
 		oldDepartment.setName(type);
@@ -528,6 +538,7 @@ public class Demo {
 			try {
 				System.out.println("What is their name?");
 				String name = scanny.nextLine();
+<<<<<<< HEAD
 				if (Employee.findAllEmployeesByName(name) == null) {
 					System.out.println(name + " does not match any employee");
 					throw new NotValidDepartmentOption("blah");
@@ -535,10 +546,18 @@ public class Demo {
 				return Employee.findAllEmployeesByName(name);
 			} catch (NotValidDepartmentOption e) {
 				e.printStackTrace();
+=======
+				// call to filereader that returns an array of employees w/ the matching name
+				fakeFileCall();
+				System.out.println("name : " + dummyEmployee.getFirstName());
+				System.out.println("email : " + dummyEmployee.getEmail());
+				System.out.println("phone number : " + dummyEmployee.getPhoneNumber());
+>>>>>>> daniel-edits
 			}
 		} while (true);
 	}
 
+<<<<<<< HEAD
 	public static Employee findUserByID() {
 		int headId = dummyEmployee.getEmployeeId();
 		Employee empToAppoint = dummyEmployee;
@@ -564,6 +583,15 @@ public class Demo {
 				e1.printStackTrace();
 			}
 		} while (true);
+=======
+	public static void findUserByID() {
+		System.out.println("What is the employee's ID?");
+		int userInput = scanny.nextInt();
+		// call to the filereader class that returns a single employee via ID
+		System.out.println("name : " + dummyEmployee.getFirstName());
+		System.out.println("email : " + dummyEmployee.getEmail());
+		System.out.println("phone number : " + dummyEmployee.getPhoneNumber());
+>>>>>>> daniel-edits
 	}
 
 	public static String getAorBAgain() throws NotAorBException {
