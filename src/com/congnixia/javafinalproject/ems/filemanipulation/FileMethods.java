@@ -212,11 +212,7 @@ public class FileMethods {
 				}
 				else{// (listOfDepartments.get(i).getEmployeeId() != index) {
 					if (fileEmployee.length() != 0) {
-<<<<<<< HEAD
-						br.append("\n" +  listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "\n");
-=======
 						br.append(listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "\n");
->>>>>>> daniel-edits
 					} else {
 						br.append(listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "\n");
 					}

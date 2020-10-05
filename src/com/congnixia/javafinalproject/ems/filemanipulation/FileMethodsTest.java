@@ -1,11 +1,5 @@
 package com.congnixia.javafinalproject.ems.filemanipulation;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.congnixia.javafinalproject.ems.models.Employee;
 
 import org.junit.jupiter.api.Test;
 

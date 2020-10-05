@@ -14,7 +14,6 @@ public class FileDriver {
 	public static void main(String[] args) throws IOException {
 		FileMethods.runOnce();
 		
-<<<<<<< HEAD
 		// for(String s: Department.getAllDepartmentNames()) {
 		// 	System.out.println(s);
 		// }
@@ -28,7 +27,6 @@ public class FileDriver {
 //		Employee emp1 = Employee.findEmployeeById(10);
 //		Department dep1 = Department.findDepartmentByName("Sales");
 //		Department.makeEmployeeHeadOfDepartment(emp1, dep1);
-=======
 //		for(String s: Department.getAllDepartmentNames()) {
 //			System.out.println(s);
 //		}
@@ -66,7 +64,6 @@ public class FileDriver {
 //		System.out.println(employeeList);
 //		System.out.println("TEST");
 
->>>>>>> daniel-edits
 		
 		// LIST: 
 //		System.out.println("This will list all of the employees: " + Employee.listEmployees());

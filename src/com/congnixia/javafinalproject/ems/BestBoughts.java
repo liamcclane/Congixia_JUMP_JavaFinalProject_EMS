@@ -656,7 +656,7 @@ public class BestBoughts {
 			dept = Department.findDepartmentById(validInt);
 			if(dept != null) {
 				System.out.println("Successfully Removed the department with the name: " + dept.getName());
-				Department.removeTheDepartment(validInt);
+				Department.removeDepartment(validInt);
 				viewDepartments();
 				break;
 			}

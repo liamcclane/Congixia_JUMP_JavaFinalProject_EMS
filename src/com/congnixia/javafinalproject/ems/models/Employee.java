@@ -206,7 +206,7 @@ public class Employee {
 		return this;
 	}
 	public Employee prettyPrint() {
-		System.out.println("Name : " + this.name + " \tId : " + this.employeeId + "\t: Email: " + this.email
+		System.out.println("Name : " + this.firstName + " \tId : " + this.employeeId + "\t: Email: " + this.email
 				+ "\nPhone Number : " + this.phoneNumber);
 		return this;
 	}
