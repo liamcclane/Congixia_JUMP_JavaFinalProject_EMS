@@ -36,7 +36,7 @@ public class Demo {
 		greet();
 		do {
 			intoTheDataBase();
-			System.out.println("Do you want continue making changes? Y/N");
+			System.out.println("\n\nKeep editing the files? Y/N");
 			again = scanny.nextLine();
 		} while (again.equalsIgnoreCase("yes") || again.equalsIgnoreCase("y"));
 		parting();
@@ -133,7 +133,13 @@ public class Demo {
 		System.out.println("salary : " + salary);
 		System.out.println("phone number : " + phoneNumber);
 		if (whatever.equals("y")) {
-			System.out.println("and appoint the new comer department head over, " + foundDepartment.getEmployeeId());
+			try {
+				System.out.println("and appoint the new comer department head over, " + Employee.findEmployeeById(foundDepartment.getEmployeeId()).getName());
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
 			try {
 				System.out.println(
@@ -153,10 +159,13 @@ public class Demo {
 			Employee newHeir = new Employee(Employee.getLastEmployeeId(), name, email, phoneNumber, "1/1/1", salary,
 					isDepartmentHead, foundDepartment.getDepartmentId());
 			Employee.addEmployee(newHeir);
+			if(isDepartmentHead) {
+				Department.makeEmployeeHeadOfDepartment(newHeir, foundDepartment);
+				System.out.println("fired the old head, and made " + name + " the new head");
+			}
 			// now add them back into the files, needs file logic form daniel
 			// success message
 			// System.out.println(employee);
-			System.out.println("add to the database");
 			System.out.println("\nEmployee :");
 			System.out.println(newHeir.toString());
 			System.out.println("you have successfully added " + name + " to the employee list");
@@ -256,7 +265,6 @@ public class Demo {
 				System.out.println("you have created a new department, " + newestDepart.getName() + "! with "
 						+ empToAppoint.getName() + " as the head!");
 			}
-			return;
 		} else {
 			System.out.println("CANCELING creating a department");
 		}
@@ -326,15 +334,17 @@ public class Demo {
 			System.out.println("do you want to delete this department " + searchedDepartment.getName());
 			aOrB = YorNLoop();
 			if (aOrB.equals("y")) {
-				System.out.println("deleting department successfully "); // DELETE Department.delete();
+				boolean b = Department.removeDepartment(searchedDepartment.getDepartmentId());
+				if(b) {
+					System.out.println("deleting department successfully "); // DELETE Department.delete();
+				}
 			}
 		}
-
 	}
 
 	public static void editDepartmentRoute(Department oldDepartment, Employee currHead) {
 		System.out.println(oldDepartment);
-		System.out.println("what should the new name be for " + oldDepartment.getName() + "?");
+		System.out.println("What should the new name be for " + oldDepartment.getName() + "?");
 		String type;
 		do {
 			try {
@@ -346,7 +356,7 @@ public class Demo {
 			}
 		} while (true);
 
-		System.out.println("what should the new ext. Number be? currently " + oldDepartment.getPhoneNumberExt());
+		System.out.println("What should the new ext. Number be? currently " + oldDepartment.getPhoneNumberExt());
 		String extNum;
 		do {
 			try {
@@ -357,7 +367,7 @@ public class Demo {
 			}
 		} while (true);
 
-		System.out.println("what should the new budget be?");
+		System.out.println("What should the new budget be?");
 		double budget;
 		do {
 			try {
@@ -369,7 +379,7 @@ public class Demo {
 		} while (true);
 
 		System.out.println(
-				"Do you want to keep " + currHead.getName() + " as the head of " + department.getName() + "? Y/N");
+				"Do you want to keep " + currHead.getName() + " as the head of " + department.getName() + "?");
 		System.out.println("If you change department heads " + currHead.getName()
 				+ " will be fired and deleted from the database.\nY/N?");
 		String yOrN = YorNLoop();
@@ -426,6 +436,9 @@ public class Demo {
 			System.out.println("There are " + potentialEmployees.size() + " many employee with the name searched name");
 			if (potentialEmployees.size() == 1) {
 				employee = potentialEmployees.get(0);
+			} else if (potentialEmployees.size() == 0){
+				System.out.println("No Employees matched your name search");
+				return;
 			} else {
 				for (Employee employee2 : potentialEmployees) {
 					employee2.prettyPrint();
@@ -476,7 +489,7 @@ public class Demo {
 			}
 		} while (true);
 		employee.setSalary(salary);
-		System.out.println("Is this employee changing Departments?\nY/N");
+		System.out.println("Is this employee getting premoted to the head of their Department?\nY/N");
 		String whatever = YorNLoop();
 		if (whatever.equals("y")) {
 			department = Department.findDepartmentById(employee.getDepartmentId());
@@ -486,22 +499,24 @@ public class Demo {
 			} else {
 				System.out.println(
 						"Okay we are appointing " + employee.getName() + " to the head of " + department.getName());
-				System.out.println("And the old head will be deleted!");
-				try {
-					Employee oldHead;
-					oldHead = Employee.findEmployeeById(department.getEmployeeId());
-					System.out.println("deleting " + oldHead.getName());
-					boolean b = Department.makeEmployeeHeadOfDepartment(employee, department);
-					if (!b) {
-						System.out.println(
-								"couldn't appoint " + employee.getName() + "as the head of " + department.getName());
-					} 
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				System.out.println("And the old head will be deleted! \nY/N?");
+				whatever = YorNLoop();
+				if(whatever.equals("y")) {
+					try {
+						Employee oldHead;
+						oldHead = Employee.findEmployeeById(department.getEmployeeId());
+						System.out.println("deleting " + oldHead.getName());
+						boolean b = Department.makeEmployeeHeadOfDepartment(employee, department);
+						if (!b) {
+							System.out.println(
+									"couldn't appoint " + employee.getName() + "as the head of " + department.getName());
+						} 
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} 
 			}
 		}
-
 		boolean b = Employee.updateEmployee(employee.getEmployeeId(), employee);
 		if (b) {
 			System.out.println("update complete check employee.csv");
@@ -630,7 +645,7 @@ public class Demo {
 				phNum = userPhoneNumberEx();
 				break;
 			} catch (NotValidDepartmentOption e) {
-				System.out.println(e.getMessage());
+				System.err.println(e.getMessage());
 			}
 		} while (true);
 		return phNum;
@@ -655,8 +670,7 @@ public class Demo {
 		if (rv.isValidPhoneNumber(s)) {
 			return s;
 		} else {
-			System.err.println("Invalid phone number must be (###)###-####");
-			System.err.println("or ###-###-####");
+			System.err.println("Invalid phone number must be (###)###-#### or ###-###-####");
 			throw new NotValidDepartmentOption(s);
 		}
 	}

@@ -101,7 +101,13 @@ public class Department {
 		return false;
 	}
 
-	public static boolean removeTheEmployee(int index) {
+	/**
+	 * this function fires all the employee working in the department and deletes
+	 * the department itself
+	 * @param index
+	 * @return
+	 */
+	public static boolean removeDepartment(int index) {
 		try {
 			return FileMethods.removeTheDepartment(index);
 		} catch (IOException e) {
