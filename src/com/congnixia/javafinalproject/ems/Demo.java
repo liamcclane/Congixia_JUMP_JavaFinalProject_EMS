@@ -10,7 +10,7 @@ public class Demo {
 
 	// lia's branch
 	static Scanner scanny = new Scanner(System.in);
-	static Department dummyDepartment = new Department(0, "ExDep", 111, 0, 3000.00d);
+	static Department dummyDepartment = new Department(0, "ExDep", 0, "111", 3000.00d);
 	static Employee dummyEmployee = new Employee(-1, "fake", "fake@fake.com", "000-000-000", "1/1/11", 1000d, false,
 			-1);
 	static String userInput;
@@ -265,7 +265,7 @@ public class Demo {
 		ArrayList<Employee> employees = fakeFileCall(department);
 
 		for (int i = 0; i < employees.size(); i++) {
-			System.out.println("Name: " + employees.get(i).getName() + "\tPhone number: "
+			System.out.println("Name: " + employees.get(i).getFirstName() + "\tPhone number: "
 					+ employees.get(i).getPhoneNumber() + "\tID: " + employees.get(i).getEmployeeId());
 
 		}
@@ -285,7 +285,7 @@ public class Demo {
 				String name = scanny.nextLine();
 				// call to filereader that returns an array of employees w/ the matching name
 				fakeFileCall();
-				System.out.println("name : " + dummyEmployee.getName());
+				System.out.println("name : " + dummyEmployee.getFirstName());
 				System.out.println("email : " + dummyEmployee.getEmail());
 				System.out.println("phone number : " + dummyEmployee.getPhoneNumber());
 			}
@@ -296,7 +296,7 @@ public class Demo {
 		System.out.println("What is the employee's ID?");
 		int userInput = scanny.nextInt();
 		// call to the filereader class that returns a single employee via ID
-		System.out.println("name : " + dummyEmployee.getName());
+		System.out.println("name : " + dummyEmployee.getFirstName());
 		System.out.println("email : " + dummyEmployee.getEmail());
 		System.out.println("phone number : " + dummyEmployee.getPhoneNumber());
 	}

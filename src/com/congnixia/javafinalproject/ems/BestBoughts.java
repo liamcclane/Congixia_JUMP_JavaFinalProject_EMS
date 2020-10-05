@@ -426,10 +426,16 @@ public class BestBoughts {
 				break;
 			}
 		} else if(newStr.equalsIgnoreCase("D")) {
-			System.out.println(Employee.findAllEmployeesByDepartment(dept));
+			printEmployeeBanner();
+			for (Employee employee : Employee.findAllEmployeesByDepartment(dept)) {
+				System.out.println(printEmployee(employee));
+				printEmployeeBannerLine();
+			}
+			System.out.println();
+			
 		} else if(newStr.equalsIgnoreCase("E")) {
 			viewDepartments();
-		} else if(newStr.equalsIgnoreCase("E")) {
+		} else if(newStr.equalsIgnoreCase("F")) {
 			mainMenu();
 		}
 		Department.updateDepartment(index, dept);

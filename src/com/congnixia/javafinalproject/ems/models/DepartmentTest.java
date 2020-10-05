@@ -46,7 +46,13 @@ class DepartmentTest {
 		assertEquals(30000, testDepartment.getBudget());
 	}
 	
-	
+	@Test
+	public void testDepartmentFindByName() {
+		String s = "Sales";
+		Department d = Department.findDepartmentByName(s);
+		assertEquals(d.getName(), s);
+	}
+
 	
 	
 
