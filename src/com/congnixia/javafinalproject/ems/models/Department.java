@@ -101,7 +101,7 @@ public class Department {
 		return false;
 	}
 
-	public static boolean removeTheEmployee(int index) {
+	public static boolean removeTheDepartment(int index) {
 		try {
 			return FileMethods.removeTheDepartment(index);
 		} catch (IOException e) {

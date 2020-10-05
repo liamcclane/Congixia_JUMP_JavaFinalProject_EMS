@@ -5,8 +5,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.swing.ListModel;
-
 import com.congnixia.javafinalproject.ems.filemanipulation.FileMethods;
 
 public class Employee {
@@ -231,8 +229,7 @@ public class Employee {
 				.findFirst().orElse(null);
 	}
 
-<<<<<<< Updated upstream
-=======
+
 	public static Employee findEmployeeByEmail(String email) {
 		System.out.println(email);
 		return listEmployees().stream().filter(x -> x.getEmail() == email).findFirst().orElse(null);
@@ -243,7 +240,6 @@ public class Employee {
 	 * 
 	 * @return Employee
 	 */
->>>>>>> Stashed changes
 	public static Employee findEmployeeToBeNewHeadBySalary() {
 		return listEmployees().stream().max(Comparator.comparing(Employee::getSalary)).orElse(null);	
 	}

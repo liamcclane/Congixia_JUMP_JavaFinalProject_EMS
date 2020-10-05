@@ -14,24 +14,22 @@ public class FileDriver {
 	public static void main(String[] args) throws IOException {
 		FileMethods.runOnce();
 		
-<<<<<<< Updated upstream
-		for(String s: Department.getAllDepartmentNames()) {
-			System.out.println(s);
-		}
-=======
+//		for(String s: Department.getAllDepartmentNames()) {
+//			System.out.println(s);
+//		}
+
 //		System.out.println(Department.findDepartmentById(2));
 		
 		// for(String s: Department.getAllDepartmentNames()) {
 		// 	System.out.println(s);
 		// }
->>>>>>> Stashed changes
+
 		
-		System.out.println(Department.findAllEmployeesWorkingInDepartment(new Department(1, "Sales", 6, "111", 1000000.00d)));
+//		System.out.println(Department.findAllEmployeesWorkingInDepartment(new Department(1, "Sales", 6, "111", 1000000.00d)));
+//		
+//		System.out.println(Department.findDepartmentByName("HQ"));
 		
-		System.out.println(Department.findDepartmentByName("HQ"));
-		
-<<<<<<< Updated upstream
-=======
+
 //		System.out.println(Employee.findEmployeeToBeNewHeadBySalary());
 		
 //		Employee emp1 = Employee.findEmployeeById(10);
@@ -52,7 +50,7 @@ public class FileDriver {
 //		
 //		System.out.println(employeeList);
 //		System.out.println("TEST");
->>>>>>> Stashed changes
+
 		
 		// LIST: 
 //		System.out.println("This will list all of the employees: " + Employee.listEmployees());

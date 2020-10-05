@@ -4,6 +4,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import com.congnixia.javafinalproject.ems.exceptions.NotValidExtensionNumber;
 import com.congnixia.javafinalproject.ems.models.Department;
 import com.congnixia.javafinalproject.ems.models.Employee;
 
@@ -72,6 +73,84 @@ public class BestBoughts {
 		employeeView();
 	}
 	
+	private static void viewDepartments() {
+		System.out.println("\nDepartments:");
+		printDepartmentBanner();
+		List<Department> dept = Department.listDepartments();
+		for(Department dep: dept) {
+			System.out.println(printDepartment(dep));
+			printDepartmentBannerLine();
+		}
+		System.out.println();
+		departmentView();
+	}
+	
+	private static void employeeView() {
+		System.out.println("Pick an option (A, B, C, or D):");
+		System.out.println("-------------------------------");
+		System.out.println("A - View/Edit an employee.");
+		System.out.println("B - Add an employee.");
+		System.out.println("C - Remove an employee.");
+		System.out.println("D - Return to main menu.");
+		
+		String newStr = scan.nextLine();
+		
+		while(!(newStr.equalsIgnoreCase("A") || newStr.equalsIgnoreCase("B") || newStr.equalsIgnoreCase("C") || newStr.equalsIgnoreCase("D"))) {
+			System.out.println("You have entered in: " + newStr + "\nPlease enter in either A, B, C, or D:");
+			newStr = scan.nextLine();
+		}
+		
+		if(newStr.equalsIgnoreCase("A")) {
+			if(Employee.listEmployees().size() == 0) {
+				System.out.println("INFO: There are no employees to view.");
+				viewEmployees();
+			}
+			System.out.println("Enter in the id of the person to view or edit");
+			selectedViewEmployee(validInterger());
+		} else if(newStr.equalsIgnoreCase("B")) {
+			if(Department.listDepartments().size() == 0) {
+				System.out.println("WARNING: Cannot add an employee without a department first.");
+				viewEmployees();
+			}
+			addEmployee();
+		} else if(newStr.equalsIgnoreCase("C")) {
+			removeEmployee();
+		} else if(newStr.equalsIgnoreCase("D")) {
+			mainMenu();
+		}
+	}
+	
+	private static void departmentView() {
+		System.out.println("Pick an option (A, B, C, or D):");
+		System.out.println("-------------------------------");
+		System.out.println("A - View/Edit a Department.");
+		System.out.println("B - Add a Department.");
+		System.out.println("C - Remove a Department.");
+		System.out.println("D - Return to Main Menu.");
+		
+		String newStr = scan.nextLine();
+		
+		while(!(newStr.equalsIgnoreCase("A") || newStr.equalsIgnoreCase("B") || newStr.equalsIgnoreCase("C") || newStr.equalsIgnoreCase("D"))) {
+			System.out.println("You have entered in: " + newStr + "\nPlease enter in either A, B, C, or D:");
+			newStr = scan.nextLine();
+		}
+		
+		if(newStr.equalsIgnoreCase("A")) {
+			if(Department.listDepartments().size() == 0) {
+				System.out.println("INFO: There are no departments to view.");
+				viewDepartments();
+			}
+			System.out.println("Enter in the id of the department to view or edit");
+			selectedViewDepartment(validInterger());
+		} else if(newStr.equalsIgnoreCase("B")) {
+			addDepartment();
+		} else if(newStr.equalsIgnoreCase("C")) {
+			removeDepartment();
+		} else if(newStr.equalsIgnoreCase("D")) {
+			mainMenu();
+		}
+	}
+	
 	private static String printEmployee(Employee emp) {
 		String newString = "";
 		newString += "| " + emp.getEmployeeId() + "	| " + emp.getFirstName();
@@ -111,17 +190,6 @@ public class BestBoughts {
 		return newString;
 	}
 	
-	private static void viewDepartments() {
-		System.out.println("\nDepartments:");
-		printDepartmentBanner();
-		List<Department> dept = Department.listDepartments();
-		for(Department dep: dept) {
-			System.out.println(printDepartment(dep));
-			printDepartmentBannerLine();
-		}
-		System.out.println();
-//		departmentView();
-	}
 	
 	private static String printDepartment(Department dept) {
 		String newString = "| " + dept.getDepartmentId() + "		| " + dept.getName();
@@ -139,40 +207,9 @@ public class BestBoughts {
 		return newString;
 	}
 	
-	private static void departmentView() {
-		
-	}
 	
-	private static void employeeView() {
-		System.out.println("Pick an option (A, B, C, or D):");
-		System.out.println("-------------------------------");
-		System.out.println("A - View/Edit an employee.");
-		System.out.println("B - Add an employee.");
-		System.out.println("C - Remove an employee.");
-		System.out.println("D - Return to main menu.");
-		
-		String newStr = scan.nextLine();
-		
-		while(!(newStr.equalsIgnoreCase("A") || newStr.equalsIgnoreCase("B") || newStr.equalsIgnoreCase("C") || newStr.equalsIgnoreCase("D"))) {
-			System.out.println("You have entered in: " + newStr + "\nPlease enter in either A, B, C, or D:");
-			newStr = scan.nextLine();
-		}
-		
-		if(newStr.equalsIgnoreCase("A")) {
-			if(Employee.listEmployees().size() == 0) {
-				System.out.println("There are no employees to view.");
-				viewEmployees();
-			}
-			System.out.println("Enter in the id of the person to view or edit");
-			selectedViewEmployee(validInterger());
-		} else if(newStr.equalsIgnoreCase("B")) {
-			addEmployee();
-		} else if(newStr.equalsIgnoreCase("C")) {
-			removeEmployee();
-		} else if(newStr.equalsIgnoreCase("D")) {
-			mainMenu();
-		}
-	}
+	
+	
 	
 	private static void selectedViewEmployee(int index) {
 		while(Employee.findEmployeeById(index) == null) {
@@ -208,7 +245,7 @@ public class BestBoughts {
 			System.out.println("Enter a valid First Name: (a-z')");
 			while(true) {
 				String firstName = scan.nextLine();
-				if(firstName.matches("^[a-z']+$")) {
+				if(firstName.matches("^[a-zA-Z']+$")) {
 					emp.setFirstName(firstName);
 					break;
 				}
@@ -217,7 +254,7 @@ public class BestBoughts {
 			System.out.println("Enter a valid Last Name: (a-z')");
 			while(true) {
 				String lastName = scan.nextLine();
-				if(lastName.matches("^[a-z']+$")) {
+				if(lastName.matches("^[a-zA-Z']+$")) {
 					emp.setLastName(lastName);
 					break;
 				}
@@ -330,9 +367,82 @@ public class BestBoughts {
 		selectedViewEmployee(index);
 	}
 	
+	private static void selectedViewDepartment(int index) {
+		while(Department.findDepartmentById(index) == null) {
+			System.out.println("Enter a valid id in the table: ");
+			index = validInterger();
+		}
+		printDepartmentBanner();
+		System.out.println(printDepartment(Department.findDepartmentById(index)));
+		printDepartmentBannerLine();
+		System.out.println();
+		
+		System.out.println("Pick an option (A, B, C, D, or E):");
+		System.out.println("-------------------------------------------");
+		System.out.println("A - Edit Name.");
+		System.out.println("B - Edit Phone Number Extension.");
+		System.out.println("C - Edit Budget");
+		System.out.println("D - Return to Department List");
+		System.out.println("E - Return to Main Menu.");
+		System.out.println("NOTE: Only employees can set there id in the department.");
+		
+		String newStr = scan.nextLine();
+		
+		while(!(newStr.equalsIgnoreCase("A") || newStr.equalsIgnoreCase("B") || newStr.equalsIgnoreCase("C") || newStr.equalsIgnoreCase("D") || newStr.equalsIgnoreCase("E"))) {
+			System.out.println("You have entered in: " + newStr + "\nPlease enter in either A, B, C, D, or E:");
+			newStr = scan.nextLine();
+		}
+
+		Department dept = Department.findDepartmentById(index);
+		
+		if(newStr.equalsIgnoreCase("A")) {
+			while(true) {
+				System.out.println("Enter a valid First Name: (a-z')");
+				String name = scan.nextLine();
+				if(name.matches("^[a-zA-Z']+$")) {
+					dept.setName(name);
+					break;
+				}
+			}
+		} else if(newStr.equalsIgnoreCase("B")) {
+			while(true) {
+				String phoneExt;
+				System.out.println("Enter in a 3 digit number for the phone extension.");
+				try {
+					phoneExt = validPhoneExtension(scan.nextLine());
+					dept.setPhoneNumberExt(phoneExt);
+					break;
+				} catch(NotValidExtensionNumber ex) {
+					System.out.println(ex);
+				}
+			}
+
+		} else if(newStr.equalsIgnoreCase("C")) {
+			while(true) {
+				System.out.println("Enter a valid budget for the department:");
+				double budget = validDouble();
+				dept.setBudget(budget);
+				break;
+			}
+		} else if(newStr.equalsIgnoreCase("D")) {
+			viewDepartments();
+		} else if(newStr.equalsIgnoreCase("E")) {
+			mainMenu();
+		}
+		Department.updateDepartment(index, dept);
+		selectedViewDepartment(index);
+	}
+	
+	private static String validPhoneExtension(String newStr) throws NotValidExtensionNumber {
+		if(newStr.matches("^[0-9]{3}$")) {
+			return newStr;
+		} else {
+			throw new NotValidExtensionNumber(newStr);
+		}
+	}
+	
 	private static void addEmployee() {
 		System.out.println("Please answer all prompts below: ");
-		System.out.println("Enter in the persons first name: ");
 		String firstName = "";
 		String lastName = "";
 		String email = "";
@@ -344,7 +454,7 @@ public class BestBoughts {
 		System.out.println("Enter a valid First Name: (a-z')");
 		while(true) {
 			firstName = scan.nextLine();
-			if(firstName.matches("^[a-z']+$")) {
+			if(firstName.matches("^[a-zA-Z']+$")) {
 				break;
 			}
 		}
@@ -352,7 +462,7 @@ public class BestBoughts {
 		System.out.println("Enter a valid Last Name: (a-z')");
 		while(true) {
 			lastName = scan.nextLine();
-			if(lastName.matches("^[a-z']+$")) {
+			if(lastName.matches("^[a-zA-Z']+$")) {
 				break;
 			}
 		}
@@ -398,9 +508,6 @@ public class BestBoughts {
 					departmentId = dept.getDepartmentId();
 					break;
 				}
-//				while(Department.findDepartmentById(deptInt) == null) {
-//					Department dept = Department.findDepartmentById(deptInt);
-//				}
 			}
 			
 			// check for T or F.
@@ -417,7 +524,6 @@ public class BestBoughts {
 				}
 				String departmentHead1 = scan.nextLine();
 				if(departmentHead1.equalsIgnoreCase("T")) {
-//					Department deptHead = Department.findDepartmentById(departmentId);
 					Employee employeeHead = Employee.findEmployeeById(deptHead.getEmployeeId());
 					System.out.println(deptHead);
 					System.out.println(employeeHead);
@@ -446,6 +552,38 @@ public class BestBoughts {
 				
 		 System.out.println("The Employee has been added to the database.");
 			viewEmployees();
+	}
+	
+	private static void addDepartment() {
+		System.out.println("Please answer all prompts below: ");
+//		System.out.println("Enter in the Department's name: ");
+		String name = "";
+		String phoneNumberExt = "";
+		double budget = 0;
+		while(true) {
+			System.out.println("Enter a valid Department Name: (a-z')");
+			name = scan.nextLine();
+			if(name.matches("^[a-zA-Z']+$")) {
+				break;
+			}
+		}
+		while(true) {
+			System.out.println("Enter in a 3 digit number for the phone extension.");
+			try {
+				phoneNumberExt = validPhoneExtension(scan.nextLine());
+				break;
+			} catch(NotValidExtensionNumber ex) {
+				System.out.println(ex);
+			}
+		}
+		while(true) {
+			System.out.println("Enter a valid budget for the department:");
+			budget = validDouble();
+			break;
+		}
+		Department.addDepartment(new Department(Department.getLastDepartmentId(), name, -1, phoneNumberExt, budget));
+		System.out.println("The Department has been added to the database.");
+		viewDepartments();
 	}
 	
 	private static void removeEmployee() {
@@ -491,6 +629,32 @@ public class BestBoughts {
 		}
 		System.out.println("The Employee has been removed from the list.\n");
 		viewEmployees();
+	}
+	
+	private static void removeDepartment() {
+		if(Department.listDepartments().size() == 0) {
+			System.out.println("There are no more departments to delete.");
+			viewDepartments();
+		}
+		System.out.println("REMOVING DEPARTMENT: Enter a valid id:");
+		int validInt = validInterger();
+		Employee emp = null;
+		Department dept = null;
+		boolean check = false;
+		int deptInt = -1;
+		
+		while(true) {
+			dept = Department.findDepartmentById(validInt);
+			if(dept != null) {
+				System.out.println("Successfully Removed the department with the name: " + dept.getName());
+				Department.removeTheDepartment(validInt);
+				viewDepartments();
+				break;
+			}
+			System.out.println("FAILED TO REMOVE. Please enter an id in the table: ");
+			validInt = validInterger();
+		}
+		
 	}
 	
 	private static int validInterger() {

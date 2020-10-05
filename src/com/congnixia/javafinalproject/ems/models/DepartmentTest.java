@@ -39,7 +39,7 @@ class DepartmentTest {
 	public void testDepartmentSetters() {
 		Department testDepartment = new Department(0, "HR", 0, "40000", 0);
 		testDepartment.setName("Sales");
-		testDepartment.setPhoneNumberExt(1);
+		testDepartment.setPhoneNumberExt("1");
 		testDepartment.setBudget(30000);
 		assertEquals("Sales", testDepartment.getName());
 		assertEquals(1, testDepartment.getPhoneNumberExt());

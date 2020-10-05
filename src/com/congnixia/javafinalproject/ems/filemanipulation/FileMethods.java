@@ -203,16 +203,20 @@ public class FileMethods {
 		List<Department> listOfDepartments = listTheDepartments();
 		try (FileWriter fr = new FileWriter(fileDepartment, false); BufferedWriter br = new BufferedWriter(fr);) {
 			int count = 0;
+			System.out.println("Remove DEPT 1");
 			for (int i = 0; i < listOfDepartments.size(); i++) {
 				if(listOfDepartments.get(i).getDepartmentId() == index) {
 					count++;
+					System.out.println("Done do anything here: " + listOfDepartments.get(i).getDepartmentId());
+					
 				}
-				if (listOfDepartments.get(i).getEmployeeId() != index) {
+				else{// (listOfDepartments.get(i).getEmployeeId() != index) {
 					if (fileEmployee.length() != 0) {
-						br.append("\n" +  listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "/n");
+						br.append(listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "\n");
 					} else {
-						br.append(listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "/n");
+						br.append(listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "\n");
 					}
+					System.out.println("Remove DEPT: " + listOfDepartments.get(i).getDepartmentId());
 				}
 			}
 			if(count != 1) {
@@ -290,16 +294,16 @@ public class FileMethods {
 				
 				if (listOfDepartments.get(i).getDepartmentId() != dep.getDepartmentId()) {
 					if (fileDepartment.length() != 0) {
-						br.append("\n" +  listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "/n");
+						br.append("\n" +  listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "\n");
 					} else {
-						br.append(listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "/n");
+						br.append(listOfDepartments.get(i).getDepartmentId() + "," + listOfDepartments.get(i).getName() + "," + listOfDepartments.get(i).getEmployeeId() + "," + listOfDepartments.get(i).getPhoneNumberExt() + "," + listOfDepartments.get(i).getBudget() + "\n");
 					}
 				}
 				else {
 					if (fileDepartment.length() != 0) {
-						br.append("\n" + index + "," + dep.getName() + "," + dep.getEmployeeId() + "," + dep.getPhoneNumberExt() + "," + dep.getBudget());
+						br.append("\n" + index + "," + dep.getName() + "," + dep.getEmployeeId() + "," + dep.getPhoneNumberExt() + "," + dep.getBudget() + "\n");
 					} else {
-						br.append(index + "," + dep.getName() + "," + dep.getEmployeeId() + "," + dep.getPhoneNumberExt() + "," + dep.getBudget());
+						br.append(index + "," + dep.getName() + "," + dep.getEmployeeId() + "," + dep.getPhoneNumberExt() + "," + dep.getBudget() + "\n");
 					}
 				}
 			}
