@@ -223,7 +223,6 @@ public class Demo {
 					System.out.println("id " + headId + " not found");
 					throw new NotValidDepartmentOption("s");
 				}
-				empToAppoint.prettyPrintln();
 				break;
 			} catch (InputMismatchException e) {
 				System.err.println("not an number");
@@ -238,6 +237,7 @@ public class Demo {
 		// employees
 		// head = dummyEmployee;
 
+		empToAppoint.prettyPrintln();
 		System.out.println("Is this the employee you want to appoint to the head of " + type + "?");
 		System.out.println("Y/N?");
 		String whatever;
@@ -251,6 +251,7 @@ public class Demo {
 					phoneNumberExt, budget);
 			// success message
 			boolean b = Department.addDepartment(newestDepart);
+			Department.makeEmployeeHeadOfDepartment(empToAppoint, newestDepart);
 			if (b) {
 				System.out.println("you have created a new department," + newestDepart.getName() + "! with "
 						+ empToAppoint.getName() + " as the head!");
