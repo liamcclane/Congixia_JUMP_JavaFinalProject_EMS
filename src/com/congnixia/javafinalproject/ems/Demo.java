@@ -96,7 +96,7 @@ public class Demo {
 		phoneNumber = getUserPhoneNumber();
 		System.out.println("\nWhat is their email?");
 		email = getUserEmail();
-		System.out.println("\nWhat is the new employee," + name + " , salary going to be?");
+		System.out.println("\nWhat is the new employee, " + name + " , salary going to be?");
 		do {
 			try {
 				salary = scanny.nextDouble();
@@ -215,12 +215,12 @@ public class Demo {
 				System.out.println("Please input their employee id");
 				headId = scanny.nextInt();
 				if (headId > Employee.getLastEmployeeId()) {
-					System.out.println("id " + headId + " not found");
+					System.err.println("id " + headId + " not found");
 					throw new NotValidDepartmentOption("blah");
 				}
 				empToAppoint = Employee.findEmployeeById(headId);
 				if (empToAppoint == null) {
-					System.out.println("id " + headId + " not found");
+					System.err.println("id " + headId + " not found");
 					throw new NotValidDepartmentOption("s");
 				}
 				break;
@@ -253,7 +253,7 @@ public class Demo {
 			boolean b = Department.addDepartment(newestDepart);
 			Department.makeEmployeeHeadOfDepartment(empToAppoint, newestDepart);
 			if (b) {
-				System.out.println("you have created a new department," + newestDepart.getName() + "! with "
+				System.out.println("you have created a new department, " + newestDepart.getName() + "! with "
 						+ empToAppoint.getName() + " as the head!");
 			}
 			return;
@@ -442,13 +442,14 @@ public class Demo {
 		if (whatever.equals("y")) {
 			editEmployee(employee);
 			return;
-		}
-		System.out.println("Would you like to delete" + employee.getName() + "\nY/N?");
-		whatever = YorNLoop();
-		if (whatever.equals("y")) {
-			boolean b = Employee.removeEmployee(employee.getEmployeeId());
-			if (b) {
-				System.out.println("\nEmployee was deleted!\n");
+		} else {
+			System.out.println("Would you like to delete " + employee.getName() + "\nY/N?");
+			whatever = YorNLoop();
+			if (whatever.equals("y")) {
+				boolean b = Employee.removeEmployee(employee.getEmployeeId());
+				if (b) {
+					System.out.println("\nEmployee was deleted!\n");
+				}
 			}
 		}
 	}
@@ -480,21 +481,21 @@ public class Demo {
 		if (whatever.equals("y")) {
 			department = Department.findDepartmentById(employee.getDepartmentId());
 			if (employee.isDepartmentHead()) {
-				System.out.println("It looks like this employee" + employee.getName()
+				System.out.println("It looks like this employee " + employee.getName()
 						+ " is already the head of thier department in " + department.getName());
 			} else {
 				System.out.println(
 						"Okay we are appointing " + employee.getName() + " to the head of " + department.getName());
-				System.out.println("And " + department.getName() + " has been fired!");
+				System.out.println("And the old head will be deleted!");
 				try {
 					Employee oldHead;
 					oldHead = Employee.findEmployeeById(department.getEmployeeId());
-					System.out.println("over throwing " + oldHead.getName());
+					System.out.println("deleting " + oldHead.getName());
 					boolean b = Department.makeEmployeeHeadOfDepartment(employee, department);
 					if (!b) {
 						System.out.println(
 								"couldn't appoint " + employee.getName() + "as the head of " + department.getName());
-					}
+					} 
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
