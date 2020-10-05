@@ -24,9 +24,9 @@ public class FileDriver {
 		
 //		System.out.println(Employee.findEmployeeToBeNewHeadBySalary());
 		
-		Employee emp1 = Employee.findEmployeeById(10);
-		Department dep1 = Department.findDepartmentByName("Sales");
-		Department.makeEmployeeHeadOfDepartment(emp1, dep1);
+//		Employee emp1 = Employee.findEmployeeById(10);
+//		Department dep1 = Department.findDepartmentByName("Sales");
+//		Department.makeEmployeeHeadOfDepartment(emp1, dep1);
 		
 		// LIST: 
 //		System.out.println("This will list all of the employees: " + Employee.listEmployees());

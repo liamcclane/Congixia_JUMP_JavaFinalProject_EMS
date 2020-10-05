@@ -10,7 +10,7 @@ public class Demo {
 
 	// lia's branch
 	static Scanner scanny = new Scanner(System.in);
-	static Department dummyDepartment = new Department(0, "ExDep", 111, 0, 3000.00d);
+//	static Department dummyDepartment = new Department(0, "ExDep", 111, 0, 3000.00d);
 	static Employee dummyEmployee = new Employee(-1, "fake", "fake@fake.com", "000-000-000", "1/1/11", 1000d, false,
 			-1);
 	static String userInput;
